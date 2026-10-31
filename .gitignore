@@ -1,0 +1,9 @@
+baseline/
+backups/
+decompile/
+downloads/
+evidence/
+stage/
+**/bin/
+**/obj/
+installation.txt

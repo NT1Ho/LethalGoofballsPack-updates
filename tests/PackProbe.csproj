@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>netstandard2.1</TargetFramework><LangVersion>latest</LangVersion><AssemblyName>PackMaintenance.TestProbe</AssemblyName><GameRoot>D:/STEAM/steamapps/common/Lethal Company</GameRoot></PropertyGroup>
+  <ItemGroup>
+    <Reference Include="$(GameRoot)/Lethal Company_Data/Managed/*.dll" Exclude="$(GameRoot)/Lethal Company_Data/Managed/netstandard.dll;$(GameRoot)/Lethal Company_Data/Managed/mscorlib.dll;$(GameRoot)/Lethal Company_Data/Managed/System*.dll"><Private>false</Private></Reference>
+    <Reference Include="$(GameRoot)/BepInEx/core/BepInEx.dll"><Private>false</Private></Reference>
+    <Reference Include="$(GameRoot)/BepInEx/core/0Harmony.dll"><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>
