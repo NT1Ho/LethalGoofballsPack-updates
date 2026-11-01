@@ -1,30 +1,13 @@
 using System;
 using System.Drawing;
-using System.IO;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Microsoft.Win32;
 
 namespace LcPack {
 internal static class DiagnosticDialogs {
-    [DllImport("shell32.dll", CharSet=CharSet.Unicode, ExactSpelling=true)]
-    static extern uint ExtractIconExW(string file,int index,IntPtr large,out IntPtr small,uint count);
-    [DllImport("user32.dll")]
-    static extern bool DestroyIcon(IntPtr icon);
-
+    // Original pixels extracted from Explorer's FileExplorerSearchBox at 125% DPI.
     internal static Icon ExplorerSearchIcon() {
-        const string searchHome=@"HKEY_CLASSES_ROOT\CLSID\{9343812E-1C37-4A49-A12E-4B2D810D956B}\DefaultIcon";
-        string location=Registry.GetValue(searchHome,"",null) as string;
-        if(String.IsNullOrEmpty(location))return null;
-        int comma=location.LastIndexOf(','),index;
-        if(comma<0 || !Int32.TryParse(location.Substring(comma+1),out index))return null;
-        string file=Environment.ExpandEnvironmentVariables(location.Substring(0,comma).Trim().Trim('"'));
-        if(!String.Equals(Path.GetDirectoryName(file),Environment.SystemDirectory,StringComparison.OrdinalIgnoreCase) || !File.Exists(file))return null;
-        IntPtr handle;
-        ExtractIconExW(file,index,IntPtr.Zero,out handle,1);
-        if(handle==IntPtr.Zero)return null;
-        try{return (Icon)Icon.FromHandle(handle).Clone();}
-        finally{DestroyIcon(handle);}
+        using(var stream=typeof(DiagnosticDialogs).Assembly.GetManifestResourceStream("explorer-searchbox.ico"))
+        using(var icon=new Icon(stream))return (Icon)icon.Clone();
     }
 
     internal static void ExportComplete(Form owner) {

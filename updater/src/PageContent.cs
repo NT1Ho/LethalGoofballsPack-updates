@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ public class PageMod {
     public string Key{get;set;} public string Name{get;set;} public string Purpose{get;set;}
     public int Order{get;set;} public bool? New{get;set;} public bool Own{get;set;}
     public string Details{get;set;} public string VersionColor{get;set;}
-    public ModFeature[] Features(){return (Details??"").Split(new[]{'\n'},StringSplitOptions.RemoveEmptyEntries).Select(s=>new ModFeature{Text=s.Trim().TrimStart('*').Trim(),SelfDeveloped=s.TrimStart().StartsWith("*")}).ToArray();}
+    public ModFeature[] Features(){return String.IsNullOrEmpty(Details)?new ModFeature[0]:(Details??"").Replace("\r\n","\n").Replace('\r','\n').Split(new[]{'\n'},StringSplitOptions.None).Select(s=>new ModFeature{Text=s.TrimStart().StartsWith("*")?s.TrimStart().Substring(1).TrimStart():s,SelfDeveloped=s.TrimStart().StartsWith("*")}).ToArray();}
 }
 public class PageContent {
     public const string RelativePath="BepInEx/pack-info/display-pages.json";
@@ -23,6 +23,14 @@ public class PageContent {
         return key;
     }
     public PageMod Find(string key){return Mods.FirstOrDefault(m=>String.Equals(m.Key,key,StringComparison.OrdinalIgnoreCase))??Mods.FirstOrDefault(m=>String.Equals(Identity(m.Key),Identity(key),StringComparison.OrdinalIgnoreCase));}
+    public IEnumerable<T> DisplayOrder<T>(IEnumerable<T> items,Func<T,string> key,Func<T,PageMod> metadata,Func<T,bool> detectedNew){
+        return items.Select(item=>{
+            string id=key(item);var m=metadata(item);
+            bool own=m==null?ModNames.OwnRank(id)>0:m.Own;
+            bool fresh=m!=null&&m.New.HasValue?m.New.Value:detectedNew(item);
+            return new{item,id=m==null?id:m.Key,group=own?0:fresh?1:2,order=m==null?Int32.MaxValue:m.Order};
+        }).OrderBy(x=>x.group).ThenBy(x=>x.order).ThenBy(x=>x.id,StringComparer.OrdinalIgnoreCase).ThenBy(x=>x.id,StringComparer.Ordinal).Select(x=>x.item);
+    }
     public static PageContent Load(string path){if(new FileInfo(path).Length>2*1024*1024)throw new InvalidDataException("展示资料超过 2 MB。");var p=Data.Load<PageContent>(path);p.Validate();return p;}
     public static PageContent ForRoot(string root){string p=Path.Combine(root,RelativePath.Replace('/',Path.DirectorySeparatorChar));return File.Exists(p)?Load(p):new PageContent{History=HistoryWindow.ReadHistory()};}
     public void Validate(){

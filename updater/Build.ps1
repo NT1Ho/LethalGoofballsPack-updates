@@ -16,7 +16,7 @@ $wpf = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\WPF'
 foreach($dll in @('WindowsBase.dll','PresentationCore.dll','PresentationFramework.dll','WindowsFormsIntegration.dll')){$refs += "/r:$wpf\$dll"}
 $common = @((Join-Path $projectRoot 'src\Common.cs'),(Join-Path $projectRoot 'src\Cloud.cs'))
 $ui = Join-Path $projectRoot 'src\UiStartup.cs'
-$diagnostics=@((Join-Path $projectRoot 'src\DiagnosticPresentation.cs'),(Join-Path $projectRoot 'src\DiagnosticDialogs.cs'),(Join-Path $projectRoot 'src\DiagnosticsReview.cs'),(Join-Path $projectRoot 'src\DiagnosticsTimeline.cs'),(Join-Path $projectRoot 'src\DiagnosticsStore.cs'),(Join-Path $projectRoot 'src\DiagnosticsWindow.cs'),"/resource:$diagnosticDll,LethalDiagnostics.dll")
+$diagnostics=@("/resource:$(Join-Path $projectRoot 'assets\explorer-searchbox.ico'),explorer-searchbox.ico",(Join-Path $projectRoot 'src\DiagnosticPresentation.cs'),(Join-Path $projectRoot 'src\DiagnosticDialogs.cs'),(Join-Path $projectRoot 'src\DiagnosticsReview.cs'),(Join-Path $projectRoot 'src\DiagnosticsTimeline.cs'),(Join-Path $projectRoot 'src\DiagnosticsStore.cs'),(Join-Path $projectRoot 'src\DiagnosticsWindow.cs'),"/resource:$diagnosticDll,LethalDiagnostics.dll")
 $selfUpdate=Join-Path $projectRoot 'src\SelfUpdate.cs'
 $clientVersion=Join-Path $projectRoot 'src\ClientVersion.cs'
 $inventory=@((Join-Path $projectRoot 'src\ModInventory.cs'),(Join-Path $projectRoot 'src\ModWindow.cs'),(Join-Path $projectRoot 'src\ModNames.cs'))
@@ -41,10 +41,15 @@ if (!$AdminOnly -and -not $SkipTests -and (Test-Path (Join-Path $projectRoot 'te
     if ($LASTEXITCODE -ne 0) { throw 'Page publication test build failed' }
     & (Join-Path $outputDir 'PagePublishTests.exe')
     if ($LASTEXITCODE -ne 0) { throw 'Page publication tests failed' }
-    & $compiler /nologo /target:exe @refs "/r:$(Join-Path $outputDir 'Lethal company pack Updater Admin.exe')" "/out:$(Join-Path $outputDir 'PageEditorTests.exe')" (Join-Path $projectRoot 'tests\PageEditorTests.cs')
-    if ($LASTEXITCODE -ne 0) { throw 'Page editor test build failed' }
-    & (Join-Path $outputDir 'PageEditorTests.exe')
-    if ($LASTEXITCODE -ne 0) { throw 'Page editor tests failed' }
+    $presentationQa=Join-Path ([IO.Path]::GetTempPath()) ('lgp-pages-'+[Guid]::NewGuid().ToString('N'))
+    foreach($pair in @(@('PageEditorTests','Lethal company pack Updater Admin.exe'),@('ReceiverPresentationTests','Lethal company pack Updater.exe'))){
+        $test=$pair[0]
+        $testExe=Join-Path $outputDir "$test.exe"
+        & $compiler /nologo /target:exe "/win32manifest:$manifest" @refs "/r:$(Join-Path $outputDir $pair[1])" "/out:$testExe" (Join-Path $projectRoot "tests/$test.cs")
+        if($LASTEXITCODE){throw "$test build failed"}
+        & $testExe $presentationQa
+        if($LASTEXITCODE){throw "$test failed"}
+    }
 
     & $compiler /nologo /optimize+ /target:exe /platform:anycpu /utf8output @refs "/out:$(Join-Path $projectRoot 'tests\Tests.exe')" $common $publisherCore (Join-Path $projectRoot 'tests\Tests.cs')
     if ($LASTEXITCODE -ne 0) { throw 'Test build failed' }

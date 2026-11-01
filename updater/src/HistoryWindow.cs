@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Drawing;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ public class HistoryWindow:Form {
         var panel=new C.Grid{Background=M.Brushes.White,UseLayoutRounding=true,SnapsToDevicePixels=true};
         panel.RowDefinitions.Add(new C.RowDefinition{Height=W.GridLength.Auto});
         panel.RowDefinitions.Add(new C.RowDefinition{Height=new W.GridLength(1,W.GridUnitType.Star)});
-        panel.SetValue(C.Control.FontFamilyProperty,new M.FontFamily("Microsoft YaHei UI"));panel.SetValue(C.Control.FontSizeProperty,presentation==null?13.0:(double)presentation.FontSize);
+        panel.SetValue(C.Control.FontFamilyProperty,new M.FontFamily("Microsoft YaHei UI"));panel.SetValue(C.Control.FontSizeProperty,13.0);
         M.TextOptions.SetTextFormattingMode(panel,M.TextFormattingMode.Display);
         var top=new C.StackPanel{Orientation=C.Orientation.Horizontal,Margin=new W.Thickness(12,10,12,10)};
         var versions=new C.ComboBox{Width=120,ItemsSource=releases,DisplayMemberPath="Version"};
@@ -47,8 +47,8 @@ public class HistoryWindow:Form {
         var headers=new W.Style(typeof(C.Primitives.DataGridColumnHeader));headers.Setters.Add(new W.Setter(C.Control.PaddingProperty,new W.Thickness(8,7,8,7)));headers.Setters.Add(new W.Setter(C.Control.BackgroundProperty,M.Brushes.WhiteSmoke));table.ColumnHeaderStyle=headers;
         table.ColumnHeaderHeight=32;
         table.Columns.Add(new C.DataGridTextColumn{Header="类型",Binding=new D.Binding("Kind"),Width=new C.DataGridLength(8,C.DataGridLengthUnitType.Star),MinWidth=56,MaxWidth=96,ElementStyle=cells});
-        table.Columns.Add(new C.DataGridTextColumn{Header="MOD",Binding=new D.Binding("Mod"),Width=new C.DataGridLength(presentation==null?32:presentation.HistoryModPercent,C.DataGridLengthUnitType.Star),MinWidth=200,ElementStyle=cells});
-        table.Columns.Add(new C.DataGridTextColumn{Header="更新内容",Binding=new D.Binding("Summary"),Width=new C.DataGridLength(presentation==null?60:92-presentation.HistoryModPercent,C.DataGridLengthUnitType.Star),MinWidth=250,ElementStyle=cells});
+        table.Columns.Add(new C.DataGridTextColumn{Header="MOD",Binding=new D.Binding("Mod"),Width=C.DataGridLength.SizeToCells,MaxWidth=285,MinWidth=115,ElementStyle=cells});
+        table.Columns.Add(new C.DataGridTextColumn{Header="更新内容",Binding=new D.Binding("Summary"),Width=new C.DataGridLength(62,C.DataGridLengthUnitType.Star),MinWidth=185,ElementStyle=cells});
         C.Grid.SetRow(table,1);panel.Children.Add(table);
         Action fit=()=>QueueFit(table,top);
         versions.SelectionChanged+=(s,e)=>{var item=versions.SelectedItem as HistoryRelease;if(item==null)return;
@@ -57,7 +57,7 @@ public class HistoryWindow:Form {
             table.ItemsSource=item.Changes;table.SelectedIndex=0;if(table.SelectedItem!=null)table.ScrollIntoView(table.SelectedItem);
             fit();
         };
-        table.SizeChanged+=(s,e)=>{if(e.WidthChanged)fit();};
+        table.SizeChanged+=(s,e)=>{if(e.WidthChanged){table.Columns[1].MaxWidth=Math.Max(115,Math.Min(400,table.ActualWidth*.38));fit();}};
         table.ItemContainerGenerator.StatusChanged+=(s,e)=>{if(table.ItemContainerGenerator.Status==C.Primitives.GeneratorStatus.ContainersGenerated)fit();};
         Shown+=(s,e)=>fit();DpiChanged+=(s,e)=>fit();
         ResizeBegin+=(s,e)=>resizing=true;ResizeEnd+=(s,e)=>{resizing=false;fit();};

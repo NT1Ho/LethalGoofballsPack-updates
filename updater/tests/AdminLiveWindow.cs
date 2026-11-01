@@ -22,7 +22,7 @@ class AdminLiveWindow {
         using(var p=Process.Start(new ProcessStartInfo(exe,"--workspace \""+workspace+"\""){UseShellExecute=false,WindowStyle=ProcessWindowStyle.Hidden})){
             try{
                 for(int i=0;i<150&&p.MainWindowHandle==IntPtr.Zero;i++){Thread.Sleep(100);p.Refresh();}
-                if(p.MainWindowHandle==IntPtr.Zero||p.MainWindowTitle!="Pack Updater 管理端 · 2.0")throw new Exception("Expected admin window");
+                if(p.MainWindowHandle==IntPtr.Zero||!p.MainWindowTitle.StartsWith("Pack Updater 管理端 · "))throw new Exception("Expected admin window");
                 var window=AutomationElement.FromHandle(p.MainWindowHandle);
                 string[] labels={"整合包内容","接收端资料","发布中心","渠道设置"},images={"catalog-live","history-live","release-live","channels-live"};
                 for(int i=0;i<labels.Length;i++){

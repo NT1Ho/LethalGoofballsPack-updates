@@ -11,9 +11,6 @@ using System.Windows.Forms;
 using LcPack;
 [assembly:System.Runtime.Versioning.TargetFramework(".NETFramework,Version=v4.8")]
 class WindowPolishTests {
-    [DllImport("shell32.dll",CharSet=CharSet.Unicode,ExactSpelling=true)]
-    static extern uint ExtractIconExW(string file,int index,IntPtr large,out IntPtr small,uint count);
-    [DllImport("user32.dll")]static extern bool DestroyIcon(IntPtr icon);
     static int passed;
     static string output;
     static void Check(bool ok,string name){if(!ok)throw new Exception(name);Console.WriteLine("PASS "+(++passed)+" "+name);}
@@ -48,10 +45,8 @@ class WindowPolishTests {
     static void Dialogs(string root){
         using(var diagnostics=new DiagnosticsWindow(root){Opacity=0,ShowInTaskbar=false}){
             diagnostics.Show();Pump(200);
-            var registry=@"HKEY_CLASSES_ROOT\CLSID\{9343812E-1C37-4A49-A12E-4B2D810D956B}\DefaultIcon";
-            string source=(string)Microsoft.Win32.Registry.GetValue(registry,"",null);int comma=source.LastIndexOf(',');IntPtr h;
-            ExtractIconExW(Environment.ExpandEnvironmentVariables(source.Substring(0,comma)),Int32.Parse(source.Substring(comma+1)),IntPtr.Zero,out h,1);
-            try{Check(h!=IntPtr.Zero&&diagnostics.ShowIcon&&Identical(diagnostics.Icon,Icon.FromHandle(h)),"diagnostics icon pixels match registered Explorer SearchHome resource");}finally{if(h!=IntPtr.Zero)DestroyIcon(h);}
+            using(var stream=typeof(DiagnosticsWindow).Assembly.GetManifestResourceStream("explorer-searchbox.ico"))
+            using(var reference=new Icon(stream))Check(diagnostics.ShowIcon&&Identical(diagnostics.Icon,reference),"title uses extracted Explorer search-box control resource");
             Render(diagnostics,"diagnostics.png");
             var timer=new System.Windows.Forms.Timer{Interval=80};Exception failure=null;
             timer.Tick+=(s,e)=>{

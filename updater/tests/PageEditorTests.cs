@@ -1,33 +1,77 @@
-﻿using System;using System.IO;using System.Linq;using System.Collections.Generic;using System.Reflection;using System.Windows.Forms;using LcPack;
-class PageEditorTests{
- static int n;static void Check(bool b,string s){if(!b)throw new Exception(s);Console.WriteLine("PASS "+s);n++;}
- static T Field<T>(object o,string s){return (T)o.GetType().GetField(s,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(o);}
- [STAThread]static int Main(){try{Run();Console.WriteLine(n+" checks passed");return 0;}catch(Exception e){Console.WriteLine(e);return 1;}}
- static void Run(){
- var aliases=new PageContent();aliases.Mods.Add(new PageMod{Key="KiwiBodies",Name="KiwiBodies",Purpose="edited corpse",Details="* custom detail",Order=0,VersionColor="#A8652A"});aliases.Mods.Add(new PageMod{Key="IndoorHazardGuard",Name="IndoorHazardGuard",Purpose="edited guard",Order=1});aliases.Mods.Add(new PageMod{Key="UniversalWrench",Name="wrench",Order=2});aliases.Validate();
- Check(aliases.Find("Giant Sapsucker Bodies")==aliases.Mods[0]&&aliases.Find("Indoor Hazard Guard")==aliases.Mods[1],"DLL aliases match publisher keys");
- Check(aliases.Find("Universal Wrench slot 3 listening fixture")==null,"helper plugin not merged with main mod");
- var aliasInput=new List<InstalledMod>{new InstalledMod{name="Indoor Hazard Guard",kind="MOD",version="1.0.0"},new InstalledMod{name="Giant Sapsucker Bodies",kind="MOD",version="1.0.0"}};
- using(var w=new ModWindow("",aliases,aliasInput)){w.Opacity=0;w.ShowInTaskbar=false;w.Show();Application.DoEvents();var display=Field<System.Windows.Controls.ListView>(w,"list").ItemsSource.Cast<ModWindow.ModRow>().ToList();Check(display[0].Name=="KiwiBodies"&&display[1].Name=="IndoorHazardGuard","aliases retain editor pin order");Check(display[0].Purpose=="edited corpse"&&display[0].DetailFeatures[0].Text=="custom detail","aliases use edited description and details");Check(display[0].VersionBrush.ToString()=="#FFA8652A"&&display[1].VersionBrush==System.Windows.Media.Brushes.Black,"custom version color and default color");w.Close();}
- aliases.Mods[0].VersionColor="red";bool badColor=false;try{aliases.Validate();}catch(InvalidDataException){badColor=true;}Check(badColor,"invalid color rejected");aliases.Mods[0].VersionColor="";aliases.Validate();
- var temp=Path.Combine(Path.GetTempPath(),"LcPageEdit-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(temp);
- var p=new PageContent{History=HistoryWindow.ReadHistory()};
- p.Mods.Add(new PageMod{Key="MoreCounterplay",Name="H增强版 MoreCounterplay",Purpose="反制",Own=true,New=null,Details="原作者功能\n* 修复八音盒问题",Order=1});
- p.Mods.Add(new PageMod{Key="BetterStamina",Name="体力优化",Purpose="优化体力",New=true,Order=0});p.Validate();
- var source=Data.Json(p);var installed=new List<InstalledMod>{new InstalledMod{name="MoreCounterplay",version="1.5.1",kind="MOD",status="已安装",isNew=true},new InstalledMod{name="BetterStamina",version="1.5.7",kind="MOD",status="已安装"}};
- var ws=new Workspace(Path.Combine(temp,"publisher"));PageContent saved=null;
- using(var ed=new PageEditor(p,installed,value=>{saved=value;string path=Path.Combine(temp,"edited.json");Data.Atomic(path,Data.Json(value));ws.Add(path,PageContent.RelativePath);})){ed.Opacity=0;ed.ShowInTaskbar=false;ed.Show();Application.DoEvents();
- var rows=(System.ComponentModel.BindingList<PageMod>)Field<DataGridView>(ed,"mods").DataSource;rows[0].Purpose="调整后的说明";
- Check(!Field<DataGridView>(ed,"mods").Columns.OfType<DataGridViewCheckBoxColumn>().Any(c=>c.ThreeState),"all checkboxes use two states");
- var result=ed.Read();Check(result.Mods[0].Key=="BetterStamina","display order editable without changing plugin identity");Check(Data.Json(p)==source,"editing does not mutate original on cancel");
- Check(result.Mods[1].New==false,"legacy automatic NEW normalized to unchecked");Check(result.Mods[1].Features()[1].SelfDeveloped,"feature-level self-developed mark");
- var bar=ed.Controls.OfType<FlowLayoutPanel>().Single();bar.Controls.OfType<Button>().Single(b=>b.Text=="保存到待发布").PerformClick();Application.DoEvents();
- Check(saved!=null&&ws.Current.files.Count==1,"save stages one metadata file only");Check(ws.Current.releaseVersion==""&&ws.Current.deletes.Count==0,"save does not publish or change pack version or delete mods");}
- var f=ws.Current.files.Single();var loaded=PageContent.Load(ws.ObjectPath(f.sha256));Check(loaded.Mods[0].Purpose=="调整后的说明","saved changes reload");
- string dest=Path.Combine(temp,PageContent.RelativePath.Replace('/',Path.DirectorySeparatorChar));Directory.CreateDirectory(Path.GetDirectoryName(dest));File.Copy(ws.ObjectPath(f.sha256),dest);Check(PageContent.ForRoot(temp).History.Count==p.History.Count,"receiver loads all published history");
- using(var window=new ModWindow(temp,loaded,installed)){window.Opacity=0;window.ShowInTaskbar=false;window.Show();Application.DoEvents();var list=Field<System.Windows.Controls.ListView>(window,"list");var display=list.ItemsSource.Cast<ModWindow.ModRow>().ToList();Check(display[0].Name=="体力优化"&&display[0].Purpose=="调整后的说明","real receiver preview uses names descriptions and order");Check(display[0].Version=="1.5.7","installed DLL version remains authoritative");Check(display[1].New==""&&display[1].IsHao&&!display[1].IsExpanded,"explicit NEW choice and collapsed details retained");window.Close();}
- using(var h=new HistoryWindow(loaded.History,loaded)){h.Opacity=0;h.ShowInTaskbar=false;h.Show();Application.DoEvents();Check(h.Text=="历史更新记录","history renders from edited data");h.Close();}
- loaded.Mods.Add(loaded.Mods[0]);bool failed=false;try{loaded.Validate();}catch(InvalidDataException){failed=true;}Check(failed,"duplicate identity rejected");loaded.Mods.RemoveAt(loaded.Mods.Count-1);loaded.FontSize=100;failed=false;try{loaded.Validate();}catch(InvalidDataException){failed=true;}Check(failed,"invalid layout rejected");
- Check(PageContent.ForRoot(Path.Combine(temp,"empty")).History.Count>0,"old installations retain embedded history fallback");
- }
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows.Forms;
+using C=System.Windows.Controls;
+using W=System.Windows;
+using LcPack;
+[assembly:System.Runtime.Versioning.TargetFramework(".NETFramework,Version=v4.8")]
+class PageEditorTests {
+    [DllImport("user32.dll")]static extern bool PostMessage(IntPtr hwnd,uint msg,IntPtr key,IntPtr detail);
+    static int passed;
+    static void Check(bool value,string label){if(!value)throw new Exception(label);Console.WriteLine("PASS "+(++passed)+" "+label);}
+    static T F<T>(object window,string field){return (T)window.GetType().GetField(field,BindingFlags.NonPublic|BindingFlags.Instance).GetValue(window);}
+    static void Pump(){for(int i=0;i<4;i++){Application.DoEvents();Thread.Sleep(10);}}
+    static IEnumerable<Control> Children(Control c){foreach(Control child in c.Controls){yield return child;foreach(var nested in Children(child))yield return nested;}}
+    static void Render(Form w,string path){Pump();using(var b=new Bitmap(w.Width,w.Height)){w.DrawToBitmap(b,new Rectangle(Point.Empty,b.Size));b.Save(path);}}
+    static string Edit(PageEditor w,string field){
+        var t=F<TextBox>(w,field);t.Focus();t.Text="中文首段";t.SelectionStart=t.TextLength;
+        PostMessage(t.Handle,0x100,new IntPtr(13),new IntPtr(0x001C0001));PostMessage(t.Handle,0x101,new IntPtr(13),new IntPtr(unchecked((int)0xC01C0001)));Pump();
+        Check(t.Text=="中文首段\r\n"&&t.Focused,"plain Enter inserts newline and keeps focus in "+field);
+        t.Paste("第二段\r\n\r\n第三段");
+        Check(t.Text=="中文首段\r\n第二段\r\n\r\n第三段","paste preserves paragraph break in "+field);
+        return t.Text;
+    }
+    static PageMod M(string key,int order,bool own,bool? fresh){return new PageMod{Key=key,Name=key,Purpose="用途",Details="",Own=own,New=fresh,Order=order};}
+    [STAThread]static int Main(string[] args){try{UiStartup.Run(()=>Run(args));return 0;}catch(Exception e){Console.Error.WriteLine(e);return 1;}}
+    static void Run(string[] args){
+        string output=args.Length==0?Path.Combine(Path.GetTempPath(),"lgp-edit-"+Guid.NewGuid().ToString("N")):Path.GetFullPath(args[0]);
+        Directory.CreateDirectory(output);
+        var p=new PageContent{FontSize=17,ModNamePercent=45,ModVersionPercent=20,HistoryModPercent=48};
+        p.Mods.AddRange(new[]{M("Alpha",0,false,false),M("Beta",1,false,true),M("Gamma",3,true,true),M("Delta",2,true,false),M("Extra",0,false,null)});
+        p.Mods[2].VersionColor="#993366";p.Mods[0].Details="旧行\n\n  保留缩进";
+        p.History.Add(new HistoryRelease{Version="v-test",PublishedUtc="2026-11-01T12:34:00Z",Changes=new List<HistoryEntry>{new HistoryEntry{Mod="组件",Kind="修复",Summary="原内容"}}});
+        var installed=p.Mods.Select(m=>new InstalledMod{name=m.Key,version="1.2.3",kind="MOD",status="已安装",isNew=m.Key=="Extra"}).ToList();
+        var path=Path.Combine(output,"edited.json");string expected=null;
+        using(var editor=new PageEditor(p,installed,doc=>Data.Atomic(path,Data.Json(doc))){Opacity=0,ShowInTaskbar=false}){
+            editor.Show();Pump();
+            Check(Data.Json(editor.Read())==Data.Json(p),"untouched legacy values, LF text, order, null NEW and layout metadata survive open");
+            Check(F<TabControl>(editor,"tabs").TabPages.Count==2&&!Children(editor).Any(c=>c is NumericUpDown||c is DataGridView),"no layout tab or long-text grid");
+            var list=F<ListBox>(editor,"mods");
+            Func<string> order=()=>String.Join(",",list.Items.Cast<PageMod>().Select(m=>m.Key));
+            Check(order()=="Delta,Gamma,Extra,Beta,Alpha","own before NEW before ordinary, stable order within each");
+            list.SelectedItem=list.Items.Cast<PageMod>().Single(m=>m.Key=="Alpha");
+            F<ComboBox>(editor,"badge").SelectedIndex=1;
+            Check(order()=="Delta,Gamma,Alpha,Extra,Beta"&&((PageMod)list.SelectedItem).Key=="Alpha","NEW toggle reorders immediately and retains selection");
+            F<ComboBox>(editor,"badge").SelectedIndex=2;Check(order()=="Delta,Gamma,Extra,Beta,Alpha","removing NEW restores previous place");
+            var own=F<CheckBox>(editor,"own");own.Checked=true;Check(order().StartsWith("Alpha,Delta,Gamma"),"own toggle moves into top group");own.Checked=false;
+            list.SelectedItem=list.Items.Cast<PageMod>().Single(m=>m.Key=="Gamma");
+            expected=Edit(editor,"name");Edit(editor,"purpose");Edit(editor,"details");
+            Render(editor,Path.Combine(output,"editor.png"));
+            editor.SelectSection(1,"v-test");Edit(editor,"subject");Edit(editor,"summary");Render(editor,Path.Combine(output,"history-editor.png"));
+            Check(!F<TextBox>(editor,"version").Multiline&&!F<TextBox>(editor,"when").Multiline&&!F<TextBox>(editor,"search").Multiline,"structured fields remain single line");
+            Children(editor).OfType<Button>().Single(b=>b.Text=="保存到待发布").PerformClick();
+        }
+        var loaded=PageContent.Load(path);var changed=loaded.Find("Gamma");
+        Check(changed.Name==expected&&changed.Purpose==expected&&changed.Details==expected&&changed.VersionColor=="#993366"&&changed.Order==3,"serialized multiline MOD fields, color and underlying order intact");
+        Check(loaded.History[0].Changes[0].Summary==expected&&loaded.History[0].Changes[0].Mod==expected,"serialized multiline history intact");
+        Check(loaded.Find("Alpha").Details==p.Mods[0].Details&&loaded.Find("Extra").New==null&&loaded.FontSize==17,"untouched data not normalized on save");
+        using(var reopened=new PageEditor(loaded,installed,doc=>{}){Opacity=0,ShowInTaskbar=false}){reopened.Show();var list=F<ListBox>(reopened,"mods");list.SelectedItem=list.Items.Cast<PageMod>().Single(m=>m.Key=="Gamma");
+            Check(F<TextBox>(reopened,"details").Text==expected,"reopened native editor retains original paragraphs");reopened.Close();}
+        using(var preview=new ModWindow("",loaded,installed){Opacity=0,ShowInTaskbar=false}){
+            preview.Show();Pump();var list=F<C.ListView>(preview,"list");var rows=list.ItemsSource.Cast<ModWindow.ModRow>().ToArray();
+            Check(rows.Select(r=>r.Name).SequenceEqual(new[]{"Delta",expected,"Extra","Beta","Alpha"}),"actual MOD window uses same effective ordering");
+            Check(rows[1].Purpose==expected&&rows[1].DetailFeatures.Length==4&&rows[1].DetailFeatures[2].Text==""&&rows[1].Version=="1.2.3","receiver purpose/detail paragraphs, blank line and actual version preserved");
+            Check(rows[1].VersionBrush.ToString()=="#FF993366"&&list.FontSize!=17,"version color retained, old typography override ignored");
+            rows[1].IsExpanded=true;preview.ClientSize=new Size(670,420);Pump();
+            var row=(C.ListViewItem)list.ItemContainerGenerator.ContainerFromIndex(1);Check(row.ActualHeight>3*list.FontSize,"expanded row grows for multiline text at narrow width");preview.Close();
+        }
+        var aliases=new PageContent();aliases.Mods.Add(M("KiwiBodies",0,true,false));Check(aliases.Find("Giant Sapsucker Bodies")==aliases.Mods[0]&&aliases.Find("unrelated")==null,"existing identity aliases preserved");
+        Console.WriteLine("RESULT "+passed+" editor and presentation checks");
+    }
 }

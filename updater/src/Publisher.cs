@@ -44,7 +44,7 @@ public class PublisherWindow:Form {
     public PublisherWindow(Workspace ws):this(ws,true){}
     public PublisherWindow(Workspace ws,bool isolated){
         workspace=ws;this.isolated=isolated;draft=new AdminWorkspace(ws);
-        Text="Pack Updater 管理端 · 2.0";Font=new Font("Microsoft YaHei UI",9);
+        Text="Pack Updater 管理端 · 2.1";Font=new Font("Microsoft YaHei UI",9);
         AutoScaleMode=AutoScaleMode.Dpi;AutoScaleDimensions=new SizeF(96,96);StartPosition=FormStartPosition.CenterScreen;
         ClientSize=new Size(946,545);MinimumSize=new Size(760,420);
         Icon=Icon.ExtractAssociatedIcon(typeof(PublisherWindow).Assembly.Location);
@@ -168,7 +168,7 @@ public class PublisherWindow:Form {
         Func<string,string> kind=p=>kinds.ContainsKey(p)?kinds[p]:"";
         IEnumerable<AdminItem> rows;
         if(view.SelectedIndex==0){
-            rows=groups.OrderBy(g=>pages.Find(g.name)==null?Int32.MaxValue:pages.Find(g.name).Order).Select(g=>{
+            rows=pages.DisplayOrder(groups,g=>g.name,g=>pages.Find(g.name),g=>g.paths.Any(kinds.ContainsKey)).Select(g=>{
                 var meta=pages.Find(g.name);
                 var states=g.paths.Select(kind).Where(k=>k!="").Distinct();
                 return new AdminItem(new[]{meta==null?g.name:meta.Name,g.version=="不适用"?"":g.version,meta==null?ModNames.Description(g.name):meta.Purpose,
@@ -258,7 +258,7 @@ public class PublisherWindow:Form {
         string tmp=Path.Combine(workspace.Root,"cfg-"+Guid.NewGuid().ToString("N")+".tmp");
         try{config.Write(tmp);await Task.Run(()=>draft.Import(new[]{Tuple.Create(tmp,path)},s=>{}));}finally{if(File.Exists(tmp))File.Delete(tmp);}ReloadView();
     }
-    List<InstalledMod> PreviewMods(){return groups.Where(g=>g.version!="不适用"&&g.status!="待删除").Select(g=>new InstalledMod{name=g.name,version=g.version,status="候选文件",kind="MOD"}).ToList();}
+    List<InstalledMod> PreviewMods(){var changed=new HashSet<string>(diff.Where(c=>c.After!=null).Select(c=>c.Path),StringComparer.OrdinalIgnoreCase);return groups.Where(g=>g.version!="不适用"&&g.status!="待删除").Select(g=>new InstalledMod{name=g.name,version=g.version,status="候选文件",kind="MOD",isNew=g.paths.Any(changed.Contains)}).ToList();}
     async Task Preview(){await EnsureCatalog();var data=draft.Pages();using(var win=new ModWindow("",data,PreviewMods()))win.ShowDialog(this);}
     async Task EditPages(int section,bool generate){
         if(draft.Pending)throw new IOException("请先完成发布恢复。");

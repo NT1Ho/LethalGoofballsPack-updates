@@ -1,83 +1,151 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-namespace LcPack {
-public class HistoryEditRow {
-    public string Version{get;set;} public string Time{get;set;} public string Kind{get;set;} public string Mod{get;set;} public string Summary{get;set;}
-}
-public sealed class EditorGrid:DataGridView {
-    public EditorGrid(){DoubleBuffered=true;ResizeRedraw=true;}
-}
-public class PageEditor:Form {
-    readonly PageContent content; readonly List<InstalledMod> installed; readonly Action<PageContent> save;
-    readonly DataGridView mods=Grid(), history=Grid(); readonly TabControl tabs=new TabControl{Dock=DockStyle.Fill};
-    readonly NumericUpDown font=Number(10,20),names=Number(20,50),versions=Number(10,25),historyNames=Number(20,50);
-    bool saved;string candidateVersion;
-    public void SelectSection(int section,string version){candidateVersion=version;tabs.SelectedIndex=section;}
-    public PageEditor(PageContent data,List<InstalledMod> items,Action<PageContent> write){
-        content=Data.Read<PageContent>(Data.Json(data));installed=items;save=write; foreach(var mod in content.Mods)if(!mod.New.HasValue)mod.New=false; using(var icon=typeof(PageEditor).Assembly.GetManifestResourceStream("settings.ico"))if(icon!=null)Icon=new Icon(icon);
-        DoubleBuffered=true;Text="编辑接收端页面";Font=new Font("Microsoft YaHei UI",9);AutoScaleMode=AutoScaleMode.Dpi;ClientSize=new Size(1080,580);MinimumSize=new Size(850,450);StartPosition=FormStartPosition.CenterParent;
-        var bar=new FlowLayoutPanel{Dock=DockStyle.Top,AutoSize=true,AutoSizeMode=AutoSizeMode.GrowAndShrink,Padding=new Padding(6),WrapContents=true};
-        AddButton(bar,"保存到待发布",()=>{try{var p=Read();save(p);saved=true;DialogResult=DialogResult.OK;Close();}catch(Exception e){MessageBox.Show(this,e.Message,"未保存");}});
-        AddButton(bar,"预览",()=>{try{var p=Read();using(var f=tabs.SelectedIndex==1?(Form)new HistoryWindow(p.History,p):new ModWindow("",p,installed))f.ShowDialog(this);}catch(Exception e){MessageBox.Show(this,e.Message,"无法预览");}});
-        AddButton(bar,"版本颜色",()=>ChooseVersionColor());AddButton(bar,"上移",()=>MoveRow(-1));AddButton(bar,"下移",()=>MoveRow(1));
-        AddButton(bar,"添加记录",()=>{Commit();((BindingList<HistoryEditRow>)history.DataSource).Add(new HistoryEditRow{Version=DefaultHistoryVersion(),Time=DefaultHistoryTime(),Kind="更新",Mod="",Summary=""});tabs.SelectedIndex=1;});
-        AddButton(bar,"删除记录",()=>{if(tabs.SelectedIndex!=1||history.CurrentRow==null)return;if(MessageBox.Show(this,"删除所选历史记录？保存后才生效。","确认",MessageBoxButtons.OKCancel)==DialogResult.OK)((BindingList<HistoryEditRow>)history.DataSource).RemoveAt(history.CurrentRow.Index);});
-        Column(mods,"标识（只读）","Key",150,true);Column(mods,"显示名称","Name",180);Column(mods,"用途","Purpose",300);Check(mods,"NEW","New");Check(mods,"自研","Own");Column(mods,"展开介绍（每行一项，* 开头为自研）","Details",350);
-        Column(mods,"版本颜色","VersionColor",95);
-        mods.Columns[mods.Columns.Count-1].ToolTipText="填写 #RRGGBB 或点击版本颜色选色；留空恢复默认。";
-        mods.DataSource=new BindingList<PageMod>(content.Mods.OrderBy(m=>m.Order).ToList());
-        Column(history,"版本分组","Version",90);Column(history,"更新时间（含时区）","Time",200);Column(history,"类型","Kind",65);Column(history,"MOD（中文名称）","Mod",220);Column(history,"更新内容","Summary",420);
-        history.DataSource=new BindingList<HistoryEditRow>(content.History.SelectMany(h=>h.Changes.Select(e=>new HistoryEditRow{Version=h.Version,Time=h.PublishedUtc,Kind=e.Kind,Mod=e.Mod,Summary=e.Summary})).ToList());
-        Tab("本地 MOD 清单",mods);Tab("历史更新记录",history);
-        var layout=new FlowLayoutPanel{Dock=DockStyle.Fill,FlowDirection=FlowDirection.TopDown,WrapContents=false,AutoScroll=true,Padding=new Padding(12)};
-        Field(layout,"字号",font,content.FontSize);Field(layout,"MOD 名称列占比 %",names,content.ModNamePercent);Field(layout,"MOD 版本列占比 %",versions,content.ModVersionPercent);Field(layout,"历史 MOD 列占比 %",historyNames,content.HistoryModPercent);
-        layout.Controls.Add(new Label{AutoSize=true,Text="其余宽度用于用途/更新内容。长介绍放入展开区域；历史内容自动换行。\n保存只加入待发布清单，点击管理端“发布更新”后才同步给朋友。"});Tab("排版",layout);
-        Controls.Add(tabs);Controls.Add(bar);
-        Size normalSize=ClientSize;
-        tabs.SelectedIndexChanged+=(s,e)=>{
-            bool formatting=tabs.SelectedIndex==2;
-            foreach(Button b in bar.Controls.OfType<Button>()){
-                if(b.Text=="添加记录"||b.Text=="删除记录")b.Visible=tabs.SelectedIndex==1;
-                if(b.Text=="版本颜色")b.Visible=tabs.SelectedIndex==0;
-                if(b.Text=="上移"||b.Text=="下移")b.Visible=!formatting;
-            }
-            if(formatting){normalSize=ClientSize;MinimumSize=new Size(850,300);ClientSize=new Size(ClientSize.Width,300);}
-            else {MinimumSize=new Size(850,450);if(ClientSize.Height<normalSize.Height)ClientSize=normalSize;}
-        };
-        foreach(Button b in bar.Controls.OfType<Button>())if(b.Text=="添加记录"||b.Text=="删除记录")b.Visible=false;
 
-        FormClosing+=(s,e)=>{if(!saved&&MessageBox.Show(this,"关闭编辑器并放弃未保存的编辑？","关闭",MessageBoxButtons.OKCancel)!=DialogResult.OK)e.Cancel=true;};
+namespace LcPack {
+public sealed class PageEditor:Form {
+    readonly PageContent content;
+    readonly List<InstalledMod> installed;
+    readonly HashSet<PageMod> detectedNew;
+    readonly Action<PageContent> save;
+    readonly TabControl tabs=new TabControl{Dock=DockStyle.Fill};
+    readonly ListBox mods=List(),entries=List();
+    readonly ComboBox releases=new ComboBox{Dock=DockStyle.Fill,DropDownStyle=ComboBoxStyle.DropDownList,FormattingEnabled=true};
+    readonly TextBox search=Box(false),name=Box(true),purpose=Box(true),details=Box(true);
+    readonly TextBox version=Box(false),when=Box(false),kind=Box(false),subject=Box(true),summary=Box(true);
+    readonly ComboBox badge=new ComboBox{DropDownStyle=ComboBoxStyle.DropDownList,Width=138};
+    readonly CheckBox own=new CheckBox{Text="自研／改版",AutoSize=true};
+    readonly Label identity=new Label{AutoSize=true,ForeColor=SystemColors.GrayText};
+    readonly Button color=new Button{AutoSize=true};
+    Control modFields,historyFields;
+    bool binding,saved;
+    string candidateVersion,original;
+    PageMod Mod {get{return mods.SelectedItem as PageMod;}}
+    HistoryRelease Release {get{return releases.SelectedItem as HistoryRelease;}}
+    HistoryEntry Entry {get{return entries.SelectedItem as HistoryEntry;}}
+
+    public PageEditor(PageContent data,List<InstalledMod> items,Action<PageContent> write){
+        content=Data.Read<PageContent>(Data.Json(data));original=Data.Json(content);installed=items;save=write;
+        detectedNew=new HashSet<PageMod>(items.Where(r=>r.isNew).Select(r=>content.Find(r.name)).Where(m=>m!=null));
+        Text="编辑接收端页面";Font=new Font("Microsoft YaHei UI",9);AutoScaleMode=AutoScaleMode.Dpi;AutoScaleDimensions=new SizeF(96,96);
+        ClientSize=new Size(884,545);MinimumSize=new Size(705,445);StartPosition=FormStartPosition.CenterParent;
+        using(var icon=typeof(PageEditor).Assembly.GetManifestResourceStream("settings.ico"))if(icon!=null)Icon=new Icon(icon);
+        var layout=Panel(1);layout.Padding=new Padding(8);layout.RowStyles.Add(Stretch());layout.RowStyles.Add(Auto());
+        tabs.TabPages.Add(Tab("MOD 资料",ModPage()));tabs.TabPages.Add(Tab("历史更新记录",HistoryPage()));layout.Controls.Add(tabs,0,0);
+        var actions=Bar();actions.FlowDirection=FlowDirection.RightToLeft;
+        Button(actions,"保存到待发布",()=>{save(Read());saved=true;DialogResult=DialogResult.OK;Close();});
+        Button(actions,"预览",()=>{var p=Read();using(var f=tabs.SelectedIndex==1?(Form)new HistoryWindow(p.History,p):new ModWindow("",p,installed))f.ShowDialog(this);});
+        layout.Controls.Add(actions,0,1);Controls.Add(layout);
+        FillMods(null);FillReleases(content.History.FirstOrDefault());
+        FormClosing+=(s,e)=>{if(!saved&&Data.Json(content)!=original&&MessageBox.Show(this,"放弃尚未保存的修改？","关闭编辑器",MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button2)!=DialogResult.Yes)e.Cancel=true;};
     }
-    string DefaultHistoryVersion(){return !String.IsNullOrEmpty(candidateVersion)?candidateVersion:content.History.Count>0?content.History[0].Version:"";}
-    string DefaultHistoryTime(){
-        var row=((BindingList<HistoryEditRow>)history.DataSource).FirstOrDefault(r=>r.Version==DefaultHistoryVersion());
-        return row==null?DateTimeOffset.Now.ToString("o"):row.Time;
+    static ListBox List(){return new ListBox{Dock=DockStyle.Fill,IntegralHeight=false,FormattingEnabled=true,HorizontalScrollbar=true};}
+    static TextBox Box(bool multi){
+        return new TextBox{Dock=DockStyle.Fill,Multiline=multi,AcceptsReturn=multi,AcceptsTab=false,WordWrap=multi,ScrollBars=multi?ScrollBars.Vertical:ScrollBars.None};
     }
-    static DataGridView Grid(){return new EditorGrid{Dock=DockStyle.Fill,AutoGenerateColumns=false,AllowUserToAddRows=false,AllowUserToDeleteRows=false,RowHeadersVisible=false,AutoSizeRowsMode=DataGridViewAutoSizeRowsMode.DisplayedCells,AutoSizeColumnsMode=DataGridViewAutoSizeColumnsMode.Fill,BorderStyle=BorderStyle.None,CellBorderStyle=DataGridViewCellBorderStyle.SingleHorizontal,GridColor=Color.FromArgb(232,232,232),ColumnHeadersHeightSizeMode=DataGridViewColumnHeadersHeightSizeMode.AutoSize,AllowUserToResizeRows=false,SelectionMode=DataGridViewSelectionMode.FullRowSelect,MultiSelect=false,BackgroundColor=Color.White,DefaultCellStyle=new DataGridViewCellStyle{WrapMode=DataGridViewTriState.True,Padding=new Padding(5,4,5,4),Alignment=DataGridViewContentAlignment.TopLeft},EditMode=DataGridViewEditMode.EditOnKeystrokeOrF2};}
-    static void Column(DataGridView grid,string title,string key,int width,bool readOnly=false){grid.Columns.Add(new DataGridViewTextBoxColumn{HeaderText=title,DataPropertyName=key,FillWeight=width,MinimumWidth=key=="Kind"?50:70,ReadOnly=readOnly,SortMode=DataGridViewColumnSortMode.NotSortable});}
-    static void Check(DataGridView grid,string title,string key){grid.Columns.Add(new DataGridViewCheckBoxColumn{HeaderText=title,DataPropertyName=key,AutoSizeMode=DataGridViewAutoSizeColumnMode.None,Width=58,ThreeState=false,ToolTipText=key=="New"?"勾选：显示 NEW；不勾选：不显示 NEW（不影响 MOD 启用状态）":"自研标记仅用于实际自研或修改的功能"});}
-    static NumericUpDown Number(int min,int max){return new NumericUpDown{Minimum=min,Maximum=max,Width=100};}
-    static void Field(FlowLayoutPanel p,string title,NumericUpDown input,int value){var row=new FlowLayoutPanel{AutoSize=true,WrapContents=false,Margin=new Padding(0,0,0,6)};row.Controls.Add(new Label{Text=title,Width=200,Height=28,TextAlign=ContentAlignment.MiddleLeft});input.Value=value;row.Controls.Add(input);p.Controls.Add(row);}
-    static void AddButton(FlowLayoutPanel p,string title,Action action){var b=new Button{Text=title,AutoSize=true,AutoSizeMode=AutoSizeMode.GrowAndShrink,Padding=new Padding(9,4,9,4),Margin=new Padding(3),MinimumSize=new Size(56,28)};b.Click+=(s,e)=>action();p.Controls.Add(b);}
-    void Tab(string title,Control control){var t=new TabPage(title);t.Controls.Add(control);tabs.TabPages.Add(t);}
-    void ChooseVersionColor(){
-        Commit();if(mods.CurrentRow==null)return;var row=(PageMod)mods.CurrentRow.DataBoundItem;
-        using(var picker=new ColorDialog{FullOpen=true}){
-            if(!String.IsNullOrEmpty(row.VersionColor)&&System.Text.RegularExpressions.Regex.IsMatch(row.VersionColor,@"\A#[0-9a-fA-F]{6}\z"))picker.Color=ColorTranslator.FromHtml(row.VersionColor);
-            if(picker.ShowDialog(this)!=DialogResult.OK)return;
-            row.VersionColor="#"+picker.Color.R.ToString("X2")+picker.Color.G.ToString("X2")+picker.Color.B.ToString("X2");mods.Refresh();
-        }
+    static string Lines(string s){return (s??"").Replace("\r\n","\n").Replace('\r','\n').Replace("\n","\r\n");}
+    static string OneLine(string s){return Lines(s).Replace("\r\n","  ");}
+    static RowStyle Auto(){return new RowStyle(SizeType.AutoSize);}
+    static RowStyle Stretch(){return new RowStyle(SizeType.Percent,100);}
+    static TableLayoutPanel Panel(int columns){
+        var p=new TableLayoutPanel{Dock=DockStyle.Fill,ColumnCount=columns,Margin=Padding.Empty};
+        if(columns==1)p.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));
+        return p;
     }
-    void Commit(){mods.EndEdit();history.EndEdit();BindingContext[mods.DataSource].EndCurrentEdit();BindingContext[history.DataSource].EndCurrentEdit();}
-    void MoveRow(int delta){Commit();var grid=tabs.SelectedIndex==0?mods:history;if(tabs.SelectedIndex>1||grid.CurrentRow==null)return;int i=grid.CurrentRow.Index,j=i+delta;if(j<0||j>=grid.Rows.Count)return;var list=(System.Collections.IList)grid.DataSource;var row=list[i];list.RemoveAt(i);list.Insert(j,row);grid.CurrentCell=grid.Rows[j].Cells[0];}
-    public PageContent Read(){Commit();content.Mods=((BindingList<PageMod>)mods.DataSource).ToList();for(int i=0;i<content.Mods.Count;i++)content.Mods[i].Order=i;
-        var rows=((BindingList<HistoryEditRow>)history.DataSource).ToList();
-        if(rows.GroupBy(r=>r.Version).Any(g=>g.Select(r=>r.Time).Distinct().Count()>1))throw new InvalidOperationException("同一版本的更新时间必须一致。");
-        content.History=rows.GroupBy(r=>r.Version).Select(g=>new HistoryRelease{Version=g.Key,PublishedUtc=g.First().Time,Changes=g.Select(r=>new HistoryEntry{Kind=r.Kind,Mod=r.Mod,Summary=r.Summary}).ToList()}).ToList();
-        content.FontSize=(int)font.Value;content.ModNamePercent=(int)names.Value;content.ModVersionPercent=(int)versions.Value;content.HistoryModPercent=(int)historyNames.Value;content.Validate();return content;}
+    static FlowLayoutPanel Bar(){return new FlowLayoutPanel{Dock=DockStyle.Fill,AutoSize=true,AutoSizeMode=AutoSizeMode.GrowAndShrink,Margin=Padding.Empty};}
+    static Label Label(string s){return new Label{Text=s,AutoSize=true,Anchor=AnchorStyles.Left,Margin=new Padding(3,5,3,2)};}
+    Button Button(Control parent,string text,Action action){
+        var button=new Button{Text=text,AutoSize=true};button.Click+=(s,e)=>{try{action();}catch(Exception ex){MessageBox.Show(this,ex.Message,"页面编辑");}};parent.Controls.Add(button);return button;
+    }
+    static TabPage Tab(string title,Control body){var tab=new TabPage(title){Padding=new Padding(8)};tab.Controls.Add(body);return tab;}
+    static TableLayoutPanel Split(Control left,Control right){
+        var p=Panel(2);p.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,32));p.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,68));p.RowStyles.Add(Stretch());
+        right.Margin=new Padding(12,0,0,0);p.Controls.Add(left,0,0);p.Controls.Add(right,1,0);return p;
+    }
+    static void Row(TableLayoutPanel panel,Control c,RowStyle size){
+        int i=panel.RowStyles.Count;panel.RowStyles.Add(size);panel.RowCount=i+1;panel.Controls.Add(c,0,i);
+    }
+    static void Field(TableLayoutPanel panel,string title,Control c,RowStyle size){Row(panel,Label(title),Auto());Row(panel,c,size);}
+    Control ModPage(){
+        var left=Panel(1);Field(left,"查找 MOD",search,Auto());Row(left,mods,Stretch());
+        var right=Panel(1);modFields=right;Row(right,identity,Auto());
+        Field(right,"显示名称",name,new RowStyle(SizeType.Percent,21));Field(right,"用途",purpose,new RowStyle(SizeType.Percent,29));
+        Field(right,"展开介绍（* 开头的行标为自研）",details,new RowStyle(SizeType.Percent,50));purpose.MaxLength=4000;details.MaxLength=20000;
+        var flags=Bar();flags.Controls.Add(own);flags.Controls.Add(Label("NEW"));badge.Items.AddRange(new object[]{"跟随安装记录","显示 NEW","不显示"});flags.Controls.Add(badge);Row(right,flags,Auto());
+        var paint=Bar();color.Click+=(s,e)=>{if(Mod==null)return;using(var dialog=new ColorDialog{FullOpen=true}){
+            if(!String.IsNullOrEmpty(Mod.VersionColor))dialog.Color=ColorTranslator.FromHtml(Mod.VersionColor);
+            if(dialog.ShowDialog(this)==DialogResult.OK){Mod.VersionColor=String.Format("#{0:X2}{1:X2}{2:X2}",dialog.Color.R,dialog.Color.G,dialog.Color.B);ShowColor();}
+        }};paint.Controls.Add(color);Button(paint,"恢复默认颜色",()=>{if(Mod!=null){Mod.VersionColor="";ShowColor();}});Row(right,paint,Auto());
+        mods.Format+=(s,e)=>{var m=(PageMod)e.ListItem;e.Value=(m.Own?"自研 · ":Fresh(m)?"NEW · ":"")+OneLine(m.Name);};
+        mods.SelectedIndexChanged+=(s,e)=>{if(!binding)ShowMod();};search.TextChanged+=(s,e)=>FillMods(Mod);
+        name.TextChanged+=(s,e)=>{if(!binding&&Mod!=null)Mod.Name=name.Text;};
+        name.Leave+=(s,e)=>{if(!binding)FillMods(Mod);};
+        purpose.TextChanged+=(s,e)=>{if(!binding&&Mod!=null)Mod.Purpose=purpose.Text;};
+        details.TextChanged+=(s,e)=>{if(!binding&&Mod!=null)Mod.Details=details.Text;};
+        own.CheckedChanged+=(s,e)=>{if(!binding&&Mod!=null){var m=Mod;m.Own=own.Checked;FillMods(m);}};
+        badge.SelectedIndexChanged+=(s,e)=>{if(!binding&&Mod!=null){var m=Mod;m.New=badge.SelectedIndex==0?(bool?)null:badge.SelectedIndex==1;FillMods(m);}};
+        return Split(left,right);
+    }
+    bool Detected(PageMod m){return detectedNew.Contains(m);}
+    bool Fresh(PageMod m){return m.New??Detected(m);}
+    void ShowColor(){color.Text=Mod==null||String.IsNullOrEmpty(Mod.VersionColor)?"版本颜色 · 默认":"版本颜色 · "+Mod.VersionColor;}
+    void FillMods(PageMod keep){
+        var query=search.Text.Trim();
+        var visible=content.Mods.Where(m=>query.Length==0||((m.Name??"")+" "+m.Key).IndexOf(query,StringComparison.OrdinalIgnoreCase)>=0);
+        binding=true;mods.BeginUpdate();
+        try{mods.Items.Clear();mods.Items.AddRange(content.DisplayOrder(visible,m=>m.Key,m=>m,Detected).Cast<object>().ToArray());
+            if(keep!=null)mods.SelectedItem=keep;if(mods.SelectedIndex<0&&mods.Items.Count>0)mods.SelectedIndex=0;}
+        finally{mods.EndUpdate();binding=false;}ShowMod();
+    }
+    void ShowMod(){
+        binding=true;try{var m=Mod;modFields.Enabled=m!=null;identity.Text=m==null?"没有匹配的 MOD":"标识   "+m.Key;
+            name.Text=Lines(m==null?null:m.Name);purpose.Text=Lines(m==null?null:m.Purpose);details.Text=Lines(m==null?null:m.Details);
+            own.Checked=m!=null&&m.Own;badge.SelectedIndex=m==null||!m.New.HasValue?0:m.New.Value?1:2;ShowColor();}
+        finally{binding=false;}
+    }
+    Control HistoryPage(){
+        var left=Panel(1);Field(left,"版本记录",releases,Auto());
+        var groups=Bar();Button(groups,"新建版本",()=>{
+            string tag=candidateVersion??"";if(content.History.Any(existing=>existing.Version==tag))tag="";
+            var h=new HistoryRelease{Version=tag,PublishedUtc=DateTimeOffset.Now.ToString("o"),Changes=new List<HistoryEntry>()};content.History.Insert(0,h);FillReleases(h);version.Focus();
+        });
+        Button(groups,"删除版本",()=>{if(Release!=null&&Confirm("删除整个版本及其中的更新记录？")){content.History.Remove(Release);FillReleases(content.History.FirstOrDefault());}});Row(left,groups,Auto());
+        Row(left,entries,Stretch());var actions=Bar();
+        Button(actions,"添加记录",()=>{if(Release==null)return;var entry=new HistoryEntry{Kind="更新",Mod="",Summary=""};Release.Changes.Add(entry);FillEntries(entry);subject.Focus();});
+        Button(actions,"删除记录",()=>{if(Release!=null&&Entry!=null&&Confirm("删除选中的更新记录？")){Release.Changes.Remove(Entry);FillEntries(null);}});Row(left,actions,Auto());
+        var right=Panel(1);
+        var groupFields=Panel(2);groupFields.AutoSize=true;groupFields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,35));groupFields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,65));
+        groupFields.Controls.Add(Label("版本"),0,0);groupFields.Controls.Add(Label("更新时间（含时区）"),1,0);groupFields.Controls.Add(version,0,1);groupFields.Controls.Add(when,1,1);Row(right,groupFields,Auto());
+        var fields=Panel(1);historyFields=fields;Field(fields,"类型",kind,Auto());Field(fields,"MOD 名称",subject,new RowStyle(SizeType.Percent,25));Field(fields,"更新说明",summary,new RowStyle(SizeType.Percent,75));summary.MaxLength=20000;Row(right,fields,Stretch());
+        releases.Format+=(s,e)=>{var h=(HistoryRelease)e.ListItem;e.Value=String.IsNullOrEmpty(h.Version)?"（填写版本名）":h.Version;};
+        entries.Format+=(s,e)=>{var item=(HistoryEntry)e.ListItem;e.Value=item.Kind+" · "+(String.IsNullOrEmpty(item.Mod)?"新记录":OneLine(item.Mod));};
+        releases.SelectedIndexChanged+=(s,e)=>{if(!binding)FillEntries(null);};entries.SelectedIndexChanged+=(s,e)=>{if(!binding)ShowEntry();};
+        version.TextChanged+=(s,e)=>{if(!binding&&Release!=null)Release.Version=version.Text;};
+        version.Leave+=(s,e)=>{if(!binding&&Release!=null)FillReleases(Release,Entry);};
+        when.TextChanged+=(s,e)=>{if(!binding&&Release!=null)Release.PublishedUtc=when.Text;};
+        kind.TextChanged+=(s,e)=>{if(!binding&&Entry!=null)Entry.Kind=kind.Text;};
+        subject.TextChanged+=(s,e)=>{if(!binding&&Entry!=null)Entry.Mod=subject.Text;};
+        kind.Leave+=(s,e)=>{if(!binding)FillEntries(Entry);};subject.Leave+=(s,e)=>{if(!binding)FillEntries(Entry);};
+        summary.TextChanged+=(s,e)=>{if(!binding&&Entry!=null)Entry.Summary=summary.Text;};
+        return Split(left,right);
+    }
+    bool Confirm(string text){return MessageBox.Show(this,text,"历史记录",MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button2)==DialogResult.Yes;}
+    void FillReleases(HistoryRelease keep,HistoryEntry selected=null){
+        binding=true;releases.Items.Clear();releases.Items.AddRange(content.History.Cast<object>().ToArray());
+        if(keep!=null)releases.SelectedItem=keep;binding=false;FillEntries(selected);
+    }
+    void FillEntries(HistoryEntry keep){
+        binding=true;try{
+            var h=Release;version.Enabled=when.Enabled=h!=null;version.Text=h==null?"":h.Version;when.Text=h==null?"":h.PublishedUtc;
+            entries.BeginUpdate();entries.Items.Clear();if(h!=null)entries.Items.AddRange(h.Changes.Cast<object>().ToArray());
+            if(keep!=null)entries.SelectedItem=keep;if(entries.SelectedIndex<0&&entries.Items.Count>0)entries.SelectedIndex=0;
+        }finally{entries.EndUpdate();binding=false;}ShowEntry();
+    }
+    void ShowEntry(){binding=true;try{var e=Entry;historyFields.Enabled=e!=null;kind.Text=e==null?"":e.Kind;subject.Text=Lines(e==null?null:e.Mod);summary.Text=Lines(e==null?null:e.Summary);}finally{binding=false;}}
+    public void SelectSection(int section,string versionName){candidateVersion=versionName;tabs.SelectedIndex=section;}
+    public PageContent Read(){content.Validate();return Data.Read<PageContent>(Data.Json(content));}
 }
+
 }

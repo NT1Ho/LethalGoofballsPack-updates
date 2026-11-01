@@ -18,6 +18,7 @@ public class ModWindow:Form {
     readonly ElementHost host=new ElementHost();readonly C.ListView list=new C.ListView();readonly C.GridView view=new C.GridView();
     List<InstalledMod> rows=new List<InstalledMod>();
     PageContent pages;
+    double preferredName=180,preferredVersion=85;
     public ModWindow(string root,PageContent presentation=null,List<InstalledMod> preview=null) {
         pages=presentation;
         SuspendLayout();DoubleBuffered=true;AutoScaleMode=AutoScaleMode.Dpi;AutoScaleDimensions=new SizeF(96,96);
@@ -47,12 +48,12 @@ public class ModWindow:Form {
         dependencies.Text="显示依赖组件";dependencies.Dock=DockStyle.Bottom;dependencies.Height=32;dependencies.Padding=new Padding(12,0,0,0);dependencies.CheckedChanged+=(s,e)=>RefreshRows();
         Controls.Add(host);Controls.Add(summary);Controls.Add(dependencies);ResumeLayout(true);
         Shown+=async(s,e)=>{
-            try{pages=pages??PageContent.ForRoot(root);list.FontSize=pages.FontSize;rows=preview??await Task.Run(()=>ModInventory.Scan(root,false));if(!IsDisposed)RefreshRows();}
+            try{pages=pages??PageContent.ForRoot(root);list.FontSize=13;rows=preview??await Task.Run(()=>ModInventory.Scan(root,false));if(!IsDisposed)RefreshRows();}
             catch(Exception ex){if(!IsDisposed)summary.Text="扫描失败："+ex.Message;}
         };
     }
     C.GridViewColumn AddColumn(string title,string property,double width){
-        var text=new W.FrameworkElementFactory(typeof(C.TextBlock));text.SetBinding(C.TextBlock.TextProperty,new D.Binding(property));text.SetValue(C.TextBlock.TextTrimmingProperty,W.TextTrimming.CharacterEllipsis);text.SetBinding(W.FrameworkElement.ToolTipProperty,new D.Binding(property=="Version"?"VersionHint":property));
+        var text=new W.FrameworkElementFactory(typeof(C.TextBlock));text.SetBinding(C.TextBlock.TextProperty,new D.Binding(property));text.SetValue(C.TextBlock.TextWrappingProperty,W.TextWrapping.Wrap);text.SetBinding(W.FrameworkElement.ToolTipProperty,new D.Binding(property=="Version"?"VersionHint":property));
         if(property=="Version"){
             var style=new W.Style(typeof(C.TextBlock));style.Setters.Add(new W.Setter(C.TextBlock.ForegroundProperty,new D.Binding("VersionBrush")));
             var selected=new W.DataTrigger{Binding=new D.Binding("IsSelected"){RelativeSource=new D.RelativeSource(D.RelativeSourceMode.FindAncestor,typeof(C.ListViewItem),1)},Value=true};selected.Setters.Add(new W.Setter(C.TextBlock.ForegroundProperty,W.SystemColors.HighlightTextBrush));style.Triggers.Add(selected);text.SetValue(W.FrameworkElement.StyleProperty,style);
@@ -64,7 +65,7 @@ public class ModWindow:Form {
     }
     static C.ControlTemplate HaoRowTemplate(){
         var root=new W.FrameworkElementFactory(typeof(C.StackPanel));var main=new W.FrameworkElementFactory(typeof(C.Border));main.SetValue(C.Border.BackgroundProperty,new W.TemplateBindingExtension(C.Control.BackgroundProperty));
-        var presenter=RowPresenter();presenter.SetValue(W.FrameworkElement.HeightProperty,23.0);main.AppendChild(presenter);root.AppendChild(main);
+        var presenter=RowPresenter();presenter.SetValue(W.FrameworkElement.MinHeightProperty,23.0);main.AppendChild(presenter);root.AppendChild(main);
         var detail=new W.FrameworkElementFactory(typeof(C.Border));detail.SetValue(C.Border.BackgroundProperty,M.Brushes.WhiteSmoke);detail.SetValue(C.Border.PaddingProperty,new W.Thickness(12,4,12,6));detail.SetBinding(W.UIElement.VisibilityProperty,new D.Binding("IsExpanded"){Converter=new C.BooleanToVisibilityConverter()});
         var content=new W.FrameworkElementFactory(typeof(C.ContentPresenter));content.SetBinding(C.ContentPresenter.ContentProperty,new D.Binding("Content"){RelativeSource=D.RelativeSource.TemplatedParent});content.SetValue(C.ContentPresenter.ContentTemplateProperty,FeatureTemplate(true));detail.AppendChild(content);root.AppendChild(detail);
         return new C.ControlTemplate(typeof(C.ListViewItem)){VisualTree=root};
@@ -73,7 +74,7 @@ public class ModWindow:Form {
         var line=new W.FrameworkElementFactory(typeof(C.DockPanel));
         var arrow=new W.FrameworkElementFactory(typeof(C.Primitives.ToggleButton));arrow.SetValue(C.DockPanel.DockProperty,C.Dock.Left);arrow.SetValue(W.FrameworkElement.FocusVisualStyleProperty,null);arrow.SetBinding(C.Control.ForegroundProperty,new D.Binding("Foreground"){RelativeSource=new D.RelativeSource(D.RelativeSourceMode.FindAncestor,typeof(C.ListViewItem),1)});arrow.SetValue(W.FrameworkElement.WidthProperty,18.0);arrow.SetValue(W.FrameworkElement.HeightProperty,23.0);arrow.SetValue(W.FrameworkElement.ToolTipProperty,"展开/收起功能");arrow.SetBinding(W.UIElement.VisibilityProperty,new D.Binding("IsHao"){Converter=new C.BooleanToVisibilityConverter()});arrow.SetBinding(C.Primitives.ToggleButton.IsCheckedProperty,new D.Binding("IsExpanded"){Mode=D.BindingMode.TwoWay});
         var glyph=new W.FrameworkElementFactory(typeof(C.TextBlock));glyph.SetBinding(C.TextBlock.TextProperty,new D.Binding("Arrow"));glyph.SetValue(W.FrameworkElement.HorizontalAlignmentProperty,W.HorizontalAlignment.Center);glyph.SetValue(W.FrameworkElement.VerticalAlignmentProperty,W.VerticalAlignment.Center);arrow.SetValue(C.Control.TemplateProperty,new C.ControlTemplate(typeof(C.Primitives.ToggleButton)){VisualTree=glyph});line.AppendChild(arrow);
-        var name=new W.FrameworkElementFactory(typeof(C.TextBlock));name.SetBinding(C.TextBlock.TextProperty,new D.Binding("Name"));name.SetBinding(W.FrameworkElement.ToolTipProperty,new D.Binding("Name"));name.SetValue(C.TextBlock.TextTrimmingProperty,W.TextTrimming.CharacterEllipsis);name.SetValue(W.FrameworkElement.VerticalAlignmentProperty,W.VerticalAlignment.Center);
+        var name=new W.FrameworkElementFactory(typeof(C.TextBlock));name.SetBinding(C.TextBlock.TextProperty,new D.Binding("Name"));name.SetBinding(W.FrameworkElement.ToolTipProperty,new D.Binding("Name"));name.SetValue(C.TextBlock.TextWrappingProperty,W.TextWrapping.Wrap);name.SetValue(W.FrameworkElement.VerticalAlignmentProperty,W.VerticalAlignment.Center);
         var style=new W.Style(typeof(C.TextBlock));var hao=new W.DataTrigger{Binding=new D.Binding("IsOwn"),Value=true};hao.Setters.Add(new W.Setter(C.TextBlock.ForegroundProperty,accent));style.Triggers.Add(hao);
         var selected=new W.DataTrigger{Binding=new D.Binding("IsSelected"){RelativeSource=new D.RelativeSource(D.RelativeSourceMode.FindAncestor,typeof(C.ListViewItem),1)},Value=true};selected.Setters.Add(new W.Setter(C.TextBlock.ForegroundProperty,W.SystemColors.HighlightTextBrush));style.Triggers.Add(selected);name.SetValue(W.FrameworkElement.StyleProperty,style);line.AppendChild(name);return new W.DataTemplate{VisualTree=line};
     }
@@ -81,7 +82,7 @@ public class ModWindow:Form {
         var features=new W.FrameworkElementFactory(typeof(C.ItemsControl));features.SetBinding(C.ItemsControl.ItemsSourceProperty,new D.Binding(detail?"DetailFeatures":"Features"));
         var line=new W.FrameworkElementFactory(typeof(C.DockPanel));line.SetValue(W.FrameworkElement.MinHeightProperty,23.0);
         var tag=new W.FrameworkElementFactory(typeof(C.TextBlock));tag.SetValue(C.DockPanel.DockProperty,C.Dock.Right);tag.SetValue(W.FrameworkElement.MarginProperty,new W.Thickness(8,0,8,0));tag.SetBinding(C.TextBlock.TextProperty,new D.Binding("Tag"));tag.SetBinding(W.UIElement.VisibilityProperty,new D.Binding("SelfDeveloped"){Converter=new C.BooleanToVisibilityConverter()});tag.SetValue(W.FrameworkElement.VerticalAlignmentProperty,W.VerticalAlignment.Center);line.AppendChild(tag);
-        var text=new W.FrameworkElementFactory(typeof(C.TextBlock));text.SetBinding(C.TextBlock.TextProperty,new D.Binding("Text"));text.SetBinding(W.FrameworkElement.ToolTipProperty,new D.Binding("Text"));text.SetValue(C.TextBlock.TextTrimmingProperty,W.TextTrimming.CharacterEllipsis);text.SetValue(W.FrameworkElement.VerticalAlignmentProperty,W.VerticalAlignment.Center);
+        var text=new W.FrameworkElementFactory(typeof(C.TextBlock));text.SetBinding(C.TextBlock.TextProperty,new D.Binding("Text"));text.SetBinding(W.FrameworkElement.ToolTipProperty,new D.Binding("Text"));text.SetValue(C.TextBlock.TextWrappingProperty,W.TextWrapping.Wrap);text.SetValue(W.FrameworkElement.VerticalAlignmentProperty,W.VerticalAlignment.Center);
         var style=new W.Style(typeof(C.TextBlock));if(detail)style.Setters.Add(new W.Setter(C.TextBlock.ForegroundProperty,M.Brushes.Black));var own=new W.DataTrigger{Binding=new D.Binding("SelfDeveloped"),Value=true};own.Setters.Add(new W.Setter(C.TextBlock.ForegroundProperty,accent));style.Triggers.Add(own);
         if(!detail){
         var selected=new W.DataTrigger{Binding=new D.Binding("IsSelected"){RelativeSource=new D.RelativeSource(D.RelativeSourceMode.FindAncestor,typeof(C.ListViewItem),1)},Value=true};selected.Setters.Add(new W.Setter(C.TextBlock.ForegroundProperty,W.SystemColors.HighlightTextBrush));style.Triggers.Add(selected);
@@ -92,15 +93,18 @@ public class ModWindow:Form {
         features.SetValue(C.ItemsControl.ItemTemplateProperty,new W.DataTemplate{VisualTree=line});return new W.DataTemplate{VisualTree=features};
     }
     void ResizeColumns(){
-        double available=list.ActualWidth-48-W.SystemParameters.VerticalScrollBarWidth-4;
-        double name=Math.Max(200,available*(pages==null?0.30:pages.ModNamePercent/100.0)),version=Math.Max(80,available*(pages==null?0.14:pages.ModVersionPercent/100.0)),purpose=Math.Max(230,available-name-version);
+        double available=Math.Max(300,list.ActualWidth-48-W.SystemParameters.VerticalScrollBarWidth-6);
+        double name=Math.Min(available*.42,Math.Max(145,preferredName));
+        double version=Math.Min(available*.22,Math.Max(75,preferredVersion));
+        double purpose=Math.Max(1,available-name-version);
         if(view.Columns[0].Width!=name)view.Columns[0].Width=name;
         if(view.Columns[2].Width!=version)view.Columns[2].Width=version;
         if(view.Columns[3].Width!=purpose)view.Columns[3].Width=purpose;
     }
     void RefreshRows(){
+        if(pages==null)return;
         var visible=rows.Where(r=>dependencies.Checked||r.kind=="MOD"||r.kind=="额外插件"||r.kind=="未识别 DLL"||r.kind=="安装记录"||r.kind=="目录").ToList();
-        visible=visible.OrderByDescending(r=>ModNames.OwnRank(r.name)).ToList();
+        visible=pages.DisplayOrder(visible,r=>r.name,r=>pages.Find(r.name),r=>r.isNew).ToList();
         var display=visible.Select(r=>new ModRow{Name=(ModNames.OwnRank(r.name)==4?"Universal Wrench":r.name=="MoreCounterplay"?"H增强版 MoreCounterplay":r.name)+(r.status=="未找到运行文件"?"（未找到）":""),New=r.isNew?"NEW":"",Version=r.version.StartsWith("未确认")?"待核对":r.version,VersionHint=r.version+"\n"+r.status,Purpose=ModNames.Description(r.name),IsOwn=ModNames.OwnRank(r.name)>0,IsHao=r.name=="MoreCounterplay",DetailFeatures=r.name=="MoreCounterplay"?ModNames.Features(r.name):null,Features=r.name=="MoreCounterplay"?new[]{new ModFeature{Text=ModNames.Description(r.name)}}:ModNames.Features(r.name)}).ToList();
         if(pages!=null){
             for(int i=0;i<visible.Count;i++){
@@ -108,8 +112,12 @@ public class ModWindow:Form {
                 if(!String.IsNullOrEmpty(edit.VersionColor))row.VersionBrush=new M.SolidColorBrush((M.Color)M.ColorConverter.ConvertFromString(edit.VersionColor));
                 row.DetailFeatures=edit.Features();row.IsHao=row.DetailFeatures.Length>0;row.Features=new[]{new ModFeature{Text=edit.Purpose,SelfDeveloped=edit.Own}};
             }
-            display=display.Select((row,i)=>new{row,index=i,order=pages.Find(visible[i].name)==null?Int32.MaxValue:pages.Find(visible[i].name).Order}).OrderBy(x=>x.order).ThenBy(x=>x.index).Select(x=>x.row).ToList();
         }
+        var measure=new C.TextBlock{FontSize=list.FontSize,FontFamily=list.FontFamily};
+        Func<string,double> width=text=>{measure.Text=text??"";measure.Measure(new W.Size(Double.PositiveInfinity,Double.PositiveInfinity));return measure.DesiredSize.Width;};
+        var names=display.Select(r=>width(r.Name)+32).OrderBy(v=>v).ToArray();
+        preferredName=names.Length==0?180:names[(names.Length-1)*3/4];
+        preferredVersion=display.Select(r=>width(r.Version)+18).DefaultIfEmpty(85).Max();
         list.ItemsSource=display;ResizeColumns();
         summary.Text="本地清单："+visible.Count+" 项"+(dependencies.Checked?"（含依赖）":"  依赖已收起");
     }
