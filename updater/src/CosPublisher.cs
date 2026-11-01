@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -82,18 +82,18 @@ public sealed class CosApi:IDisposable {
         }
     }
     public async Task<Manifest> Remote() {string text=await Read("manifest.json").ConfigureAwait(false);if(text==null)return null;var m=Data.Read<Manifest>(Cloud.Verify(text,"mods"));SafePath.ValidateManifest(m);return m;}
-    async Task<bool> Exists(string key,string hash,long size) {
+    public async Task<bool> Exists(string key,string hash,long size) {
         using(var response=await Send(HttpMethod.Head,key,null,null,null,false).ConfigureAwait(false)) {
             if(response.StatusCode==HttpStatusCode.NotFound)return false;
             if(!response.IsSuccessStatusCode||response.Content.Headers.ContentLength!=size||!response.Headers.Contains("x-cos-meta-sha256")||response.Headers.GetValues("x-cos-meta-sha256").SingleOrDefault()!=hash)throw new IOException("COS 已有同名对象但校验信息不符，已停止发布。");
             return true;
         }
     }
-    public async Task Put(string key,Stream stream,string type,bool immutable) {
+    public async Task Put(string key,Stream stream,string type,bool immutable,Action<int> sent=null) {
         long size=stream.Length;
         byte[] md5;using(var digest=MD5.Create())md5=digest.ComputeHash(stream);stream.Position=0;
         string hash;using(var digest=SHA256.Create())hash=Data.Hex(digest.ComputeHash(stream));stream.Position=0;
-        using(var content=new StreamContent(stream,65536)) {
+        using(var content=UploadContent.For(stream,sent)) {
             content.Headers.ContentType=MediaTypeHeaderValue.Parse(type);content.Headers.ContentLength=stream.Length;content.Headers.ContentMD5=md5;
             content.Headers.TryAddWithoutValidation("Cache-Control",immutable?"public, max-age=31536000, immutable":"no-store, max-age=0");
             using(var response=await Send(HttpMethod.Put,key,content,Convert.ToBase64String(md5),hash,immutable).ConfigureAwait(false)) {
@@ -165,27 +165,43 @@ public static class PagePublisher {
         }
     }
 }
+internal sealed class UploadMeter {
+    readonly string channel;readonly Action<string> report;readonly long total;readonly int files,reused;
+    readonly System.Diagnostics.Stopwatch watch=System.Diagnostics.Stopwatch.StartNew();long bytes,last=-1000;int done;
+    public UploadMeter(string channel,PackFile[] missing,int reused,Action<string> report){
+        this.channel=channel;this.report=report;this.reused=reused;files=missing.Length;total=missing.Sum(f=>f.size);Tick("",0,false);
+    }
+    public void Tick(string path,int n,bool finished){lock(this){
+        bytes+=n;if(finished)done++;long ms=watch.ElapsedMilliseconds;if(n>0&&ms-last<180)return;last=ms;
+        double rate=bytes/Math.Max(0.001,watch.Elapsed.TotalSeconds);
+        report(channel+" · 文件 "+done+"/"+files+" · 已复用 "+reused+" · 已传 "+bytes.ToString("N0")+" / "+total.ToString("N0")+" B"+
+            (total>0?" ("+((double)bytes*100/total).ToString("0.#")+"%)":"")+(ms>=1000&&rate>0?" · "+(rate/1024).ToString("0.#")+" KiB/s · 约 "+Math.Ceiling((total-bytes)/rate)+" 秒":"")+" · "+path);
+    }}
+}
 public static class CosPublisher {
     public static PackFile[] BackupUploads(Manifest manifest) {
         return manifest.files.Where(f=>f.url==Channel.Web+"/releases/download/"+manifest.version+"/"+f.sha256+".bin").GroupBy(f=>f.sha256).Select(g=>g.First()).ToArray();
     }
-    public static async Task Backup(Workspace workspace,CosAccount account,Manifest manifest,Action<string> progress,Func<HttpMessageHandler> transport=null,string expectedBaseHash=null) {
+    public static async Task Backup(Workspace workspace,CosAccount account,Manifest manifest,Action<string> progress,Func<HttpMessageHandler> transport=null,string expectedBaseHash=null,string releaseNotes=null) {
         string token=workspace.Token();if(String.IsNullOrEmpty(token))throw new IOException("未保存 GitHub 备用发布凭据。");
         using(var api=transport==null?new GitHubApi(token):new GitHubApi(token,transport()))using(var transfer=transport==null?new Transfer():new Transfer(transport())) {
             await api.ValidateAccount().ConfigureAwait(false);var release=await api.FindTag(manifest.version).ConfigureAwait(false);
-            if(release==null)release=await api.Create(manifest.version).ConfigureAwait(false);
+            if(release==null)release=await api.Create(manifest.version,releaseNotes).ConfigureAwait(false);
             if(release.draft) {
                 release=await api.GetRelease(release.id).ConfigureAwait(false);
-                using(var workers=new SemaphoreSlim(4))await Task.WhenAll(BackupUploads(manifest).Select(async file=>{
+                var all=BackupUploads(manifest);var indexed=(await api.Assets(release.id).ConfigureAwait(false)).ToDictionary(a=>a.name);
+                var missing=all.Where(f=>{ReleaseAsset a;if(!indexed.TryGetValue(f.sha256+".bin",out a))return true;
+                    if(a.size!=f.size||a.digest!="sha256:"+f.sha256)throw new IOException("GitHub 已有附件校验失败："+f.path);return false;}).ToArray();
+                var meter=new UploadMeter("GitHub",missing,all.Length-missing.Length,progress);
+                using(var workers=new SemaphoreSlim(4))await Task.WhenAll(missing.Select(async file=>{
                     await workers.WaitAsync().ConfigureAwait(false);try {
-                    var present=release.assets.FirstOrDefault(a=>a.name==file.sha256+".bin");
-                    if(present!=null){if(present.size!=file.size||present.digest!="sha256:"+file.sha256)throw new IOException("GitHub 备用草稿同名文件不一致。");return;}
-                    progress("COS 已发布，正在备份到 GitHub……");
-                    using(var stream=File.OpenRead(workspace.ObjectPath(file.sha256)))await api.Upload(release.id,file.sha256+".bin",stream,"application/octet-stream",file.size,file.sha256).ConfigureAwait(false);
+
+                    using(var stream=File.OpenRead(workspace.ObjectPath(file.sha256)))await api.Upload(release.id,file.sha256+".bin",stream,"application/octet-stream",file.size,file.sha256,n=>meter.Tick(file.path,n,false)).ConfigureAwait(false);
+                    meter.Tick(file.path,0,true);
                     }finally{workers.Release();}
                 })).ConfigureAwait(false);
                 byte[] bytes=Encoding.UTF8.GetBytes(Data.Json(manifest));string hash;using(var sha=SHA256.Create())hash=Data.Hex(sha.ComputeHash(bytes));
-                var old=release.assets.FirstOrDefault(a=>a.name=="manifest.json");
+                ReleaseAsset old;indexed.TryGetValue("manifest.json",out old);
                 if(old==null)using(var stream=new MemoryStream(bytes))await api.Upload(release.id,"manifest.json",stream,"application/json",bytes.Length,hash).ConfigureAwait(false);
                 else if(old.size!=bytes.Length||old.digest!="sha256:"+hash)throw new IOException("GitHub 备用草稿清单不一致。");
                 await api.ValidateReferences(manifest,transfer,null,manifest.version).ConfigureAwait(false);
@@ -232,15 +248,23 @@ public static class CosPublisher {
             foreach(var file in manifest.files)if(String.IsNullOrEmpty(file.url))file.url=Channel.Web+"/releases/download/"+tag+"/"+file.sha256+".bin";
             SafePath.ValidateManifest(manifest);
             if(!String.IsNullOrEmpty(workspace.Token()))using(var github=transport==null?new GitHubApi(workspace.Token()):new GitHubApi(workspace.Token(),transport()))await github.ValidateReferences(manifest,transfer,tag).ConfigureAwait(false);
+            progress("正在生成并签名正式版本清单");
             string signed=CosSettings.Sign(account,"mods",Data.Json(manifest)),versionKey="versions/"+tag+".json";
             string existing=await api.Read(versionKey).ConfigureAwait(false);if(existing!=null&&existing!=signed)throw new IOException("该版本名已有不同内容，请填写新的版本名。");
-            int completed=0;var files=manifest.files.GroupBy(f=>f.sha256).Select(g=>g.First()).ToArray();
-            using(var workers=new SemaphoreSlim(4))await Task.WhenAll(files.Select(async file=>{
+            var files=manifest.files.GroupBy(f=>f.sha256).Select(g=>g.First()).ToArray();
+            progress("COS · 核对已有对象");
+            bool[] existingObjects;
+            using(var gate=new SemaphoreSlim(4))existingObjects=await Task.WhenAll(files.Select(async f=>{await gate.WaitAsync().ConfigureAwait(false);
+                try{return await api.Exists("objects/"+f.sha256+".bin",f.sha256,f.size).ConfigureAwait(false);}finally{gate.Release();}
+            })).ConfigureAwait(false);
+            var missing=files.Where((f,i)=>!existingObjects[i]).ToArray();var meter=new UploadMeter("COS",missing,files.Length-missing.Length,progress);
+            using(var workers=new SemaphoreSlim(4))await Task.WhenAll(missing.Select(async file=>{
                 await workers.WaitAsync().ConfigureAwait(false);
                 try {
                     string path=workspace.ObjectPath(file.sha256);SafePath.NoLinks(path);
                     if(!File.Exists(path)||new FileInfo(path).Length!=file.size||Data.Hash(path)!=file.sha256){string temp=path+".tmp-"+Guid.NewGuid().ToString("N");try{await transfer.Download(file,temp,null).ConfigureAwait(false);Data.Replace(temp,path);}finally{if(File.Exists(temp))File.Delete(temp);}}
-                    await api.Blob(path,file).ConfigureAwait(false);progress("已核对/上传 "+Interlocked.Increment(ref completed)+"/"+files.Length+"（最多 4 路）");
+                    using(var stream=File.OpenRead(path))await api.Put("objects/"+file.sha256+".bin",stream,"application/octet-stream",true,n=>meter.Tick(file.path,n,false)).ConfigureAwait(false);
+                    meter.Tick(file.path,0,true);
                 }finally{workers.Release();}
             })).ConfigureAwait(false);
             await api.Document(versionKey,signed,true).ConfigureAwait(false);

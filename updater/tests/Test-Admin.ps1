@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$AdminExe,[string]$ReceiverExe)
+﻿param([Parameter(Mandatory=$true)][string]$AdminExe,[string]$ReceiverExe)
 $ErrorActionPreference='Stop'
 $root=Join-Path ([IO.Path]::GetTempPath()) ('lgp-admin-qa-'+[Guid]::NewGuid().ToString('N').Substring(0,8))
 $bin=Join-Path $root 'bin'
@@ -18,11 +18,18 @@ if($LASTEXITCODE){throw 'Admin workflow tests failed'}
 Compile UiTests @("/r:$admin",'/r:System.Drawing.dll','/r:System.Windows.Forms.dll',"/win32manifest:$PSScriptRoot\..\src\app.manifest")
 & "$bin\UiTests.exe" (Join-Path $root 'ui-workspace') $root
 if($LASTEXITCODE){throw 'Admin UI tests failed'}
+& $csc /nologo /target:exe /main:CumulativeTests "/out:$bin\CumulativeTests.exe" "/r:$admin" /r:System.Net.Http.dll /r:System.Windows.Forms.dll /r:System.Drawing.dll /r:System.IO.Compression.dll /r:System.IO.Compression.FileSystem.dll "/win32manifest:$PSScriptRoot\..\src\app.manifest" "$PSScriptRoot\AdminWorkflowTests.cs" "$PSScriptRoot\CumulativeTests.cs"
+if($LASTEXITCODE){throw 'Cumulative test build failed'}
+& "$bin\CumulativeTests.exe" $root
+if($LASTEXITCODE){throw 'Cumulative workflow failed'}
 if($ReceiverExe){
     $client=Join-Path $bin 'Lethal company pack Updater.exe'
     Copy-Item -LiteralPath $ReceiverExe -Destination $client
     Compile VerifyAdminContract @("/r:$client",'/r:System.Net.Http.dll')
     & "$bin\VerifyAdminContract.exe" $root
     if($LASTEXITCODE){throw 'Receiver compatibility failed'}
+    Compile VerifyCumulativeInstall @("/r:$client",'/r:System.Net.Http.dll')
+    & "$bin\VerifyCumulativeInstall.exe" (Join-Path $root 'public-install')
+    if($LASTEXITCODE){throw 'Receiver installation failed'}
 }
 "Evidence: $root"

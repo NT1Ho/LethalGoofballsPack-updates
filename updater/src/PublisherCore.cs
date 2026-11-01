@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 namespace LcPack {
 public class Draft {
     public string baseVersion="";
+    public string cumulative;
     public string baseManifestHash="";
     public string releaseVersion="";
     public List<PackFile> files=new List<PackFile>();
@@ -202,7 +203,7 @@ public class GitHubApi : IDisposable {
             }
         }
     }
-    public Task<Release> Create(string tag) {return Send<Release>(HttpMethod.Post,"/repos/"+Channel.Repo+"/releases",JsonBody(new {tag_name=tag,name="LethalGoofballsPack "+tag,draft=true,prerelease=false,body="由 LethalGoofballsPack 发布工具生成。客户端读取 manifest.json 并按 SHA-256 更新。"}),false);}
+    public Task<Release> Create(string tag,string notes=null) {return Send<Release>(HttpMethod.Post,"/repos/"+Channel.Repo+"/releases",JsonBody(new {tag_name=tag,name="LethalGoofballsPack "+tag,draft=true,prerelease=false,body=notes??"由 LethalGoofballsPack 发布工具生成。客户端读取 manifest.json 并按 SHA-256 更新。"}),false);}
     public Task<Release> Commit(long id) {return Send<Release>(new HttpMethod("PATCH"),"/repos/"+Channel.Repo+"/releases/"+id,JsonBody(new {draft=false,prerelease=false,make_latest="true"}),false);}
     public async Task StoreFeed(string name,string text) {
         if(!new[]{"mod-update.signed.json","client-update.signed.json"}.Contains(name))throw new InvalidDataException("备用清单路径无效。");
@@ -223,14 +224,26 @@ public class GitHubApi : IDisposable {
     }
     public Task<object> RenameAsset(long id,string name){return Send<object>(new HttpMethod("PATCH"),"/repos/"+Channel.Repo+"/releases/assets/"+id,JsonBody(new{name=name}),false);}
     public Task<object> MakeLatest(long id){return Send<object>(new HttpMethod("PATCH"),"/repos/"+Channel.Repo+"/releases/"+id,JsonBody(new{make_latest="true"}),false);}
-    public async Task Upload(long id,string name,Stream stream,string type,long size,string hash) {
+    public async Task Upload(long id,string name,Stream stream,string type,long size,string hash,Action<int> sent=null) {
         await PaceWrite().ConfigureAwait(false);
         using(var request=new HttpRequestMessage(HttpMethod.Post,"https://uploads.github.com/repos/"+Channel.Repo+"/releases/"+id+"/assets?name="+Uri.EscapeDataString(name))) {
-            request.Content=new StreamContent(stream,65536);request.Content.Headers.ContentType=new MediaTypeHeaderValue(type);request.Content.Headers.ContentLength=size;
+            request.Content=UploadContent.For(stream,sent);request.Content.Headers.ContentType=new MediaTypeHeaderValue(type);request.Content.Headers.ContentLength=size;
             using(var response=await client.SendAsync(request).ConfigureAwait(false)) {if(!response.IsSuccessStatusCode)throw Error(response.StatusCode);var asset=Data.Read<ReleaseAsset>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));if(asset.size!=size||(!String.IsNullOrEmpty(asset.digest)&&asset.digest!="sha256:"+hash))throw new IOException("GitHub 上传校验失败，未发布。");}
         }
     }
     public void Dispose(){client.Dispose();writeGate.Dispose();}
+}
+public sealed class UploadContent:HttpContent {
+    readonly Stream source;readonly Action<int> sent;
+    UploadContent(Stream source,Action<int> sent){this.source=source;this.sent=sent;}
+    public static HttpContent For(Stream s,Action<int> sent){return sent==null?(HttpContent)new StreamContent(s,65536):new UploadContent(s,sent);}
+    protected override bool TryComputeLength(out long size){size=source.Length;return true;}
+    protected override async Task SerializeToStreamAsync(Stream output,TransportContext context){
+        byte[] buffer=new byte[65536];int n;
+        while((n=await source.ReadAsync(buffer,0,buffer.Length).ConfigureAwait(false))>0){
+            await output.WriteAsync(buffer,0,n).ConfigureAwait(false);sent(n);
+        }
+    }
 }
 public class Publisher {
     public static string VersionName(string value) {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Net.Http;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LcPack {
 public sealed class AdminReleaseJob {
-    public string BaseHash,DraftHash,Stage;
+    public string BaseHash,DraftHash,Stage,Cumulative;
     public Manifest Target;
 }
 public static class AdminRelease {
@@ -33,7 +33,10 @@ public static class AdminRelease {
                     throw new IOException("GitHub 备用源与已知基线不符，请先核对渠道。");
             }
             if(!draft.Pending){
+                ws.CheckBase(await cos.Remote().ConfigureAwait(false));
                 var target=draft.Prepare(progress);
+                progress("接收端正在隔离目录演练安装 "+target.version);
+                await InstallCheck.Run(draft,target,transfer,progress).ConfigureAwait(false);
                 if(target.version!=ws.Current.baseVersion){
                     var existing=await github.FindTag(target.version).ConfigureAwait(false);
                     if(existing!=null&&!existing.draft)throw new IOException("GitHub 已有该正式版本，请核对版本名。");
@@ -45,13 +48,27 @@ public static class AdminRelease {
                 }
             }
             await Execute(draft,cos.Remote,()=>CosPublisher.Publish(ws,account,cos,transfer,progress,transport),
-                m=>CosPublisher.Backup(ws,account,m,progress,transport,Data.Load<AdminReleaseJob>(draft.JobFile).BaseHash),async m=>{
+                m=>CosPublisher.Backup(ws,account,m,progress,transport,Data.Load<AdminReleaseJob>(draft.JobFile).BaseHash,ReleaseNotes(draft,m)),async m=>{
                     string payload=Data.Json(m);
                     if(await transfer.CloudVersion("manifest.json","mods").ConfigureAwait(false)!=payload||
                        Cloud.Verify(await github.ReadModFeed().ConfigureAwait(false),"mods")!=payload)
                         throw new IOException("双端公开清单未一致，保留恢复记录。");
+                    var job=Data.Load<AdminReleaseJob>(draft.JobFile);
+                    var previousFiles=String.IsNullOrEmpty(job.BaseHash)?new Manifest():Data.Load<Manifest>(Path.Combine(ws.Root,"baseline-"+job.BaseHash+".json"));
+                    var known=new System.Collections.Generic.HashSet<string>(previousFiles.files.Select(f=>f.sha256));
+                    string temp=Path.GetTempFileName();
+                    try{foreach(var f in m.files.Where(f=>!known.Contains(f.sha256)).GroupBy(f=>f.sha256).Select(g=>g.First())){
+                        progress("双渠道回读安装文件 · "+f.path);await transfer.VerifyCloudFile(f,temp).ConfigureAwait(false);
+                        await transfer.VerifyGitHubFile(f,temp).ConfigureAwait(false);
+                    }}finally{if(File.Exists(temp))File.Delete(temp);}
+                    Cumulative.Archive(ws,job.Cumulative,m.version);
                 },progress).ConfigureAwait(false);
         }
+    }
+    static string ReleaseNotes(AdminWorkspace w,Manifest target){
+        var h=w.Pages().History.FirstOrDefault(r=>r.Version==target.version);if(h==null)return null;
+        string text=String.Join("\n",h.Changes.Select(e=>"• "+e.Kind+" · "+e.Mod+"　"+e.Summary));
+        return text.Length<=60000?text:text.Substring(0,59950)+"\n完整说明请在接收端历史记录中查看。";
     }
     public static async Task Execute(AdminWorkspace draft,Func<Task<Manifest>> read,
         Func<Task<Manifest>> publish,Func<Manifest,Task> backup,Func<Manifest,Task> verify,Action<string> progress){
@@ -69,13 +86,16 @@ public static class AdminRelease {
                 if((remote==null?"":remote.version)!=ws.Current.baseVersion)throw new IOException("工作区基线不是当前正式版本，请先核对渠道。");
                 target=draft.Prepare(progress);
             }
-            job=new AdminReleaseJob{Target=target,BaseHash=ws.Current.baseManifestHash,DraftHash=DraftId(ws.Current),Stage="等待 COS 提交"};
+            job=new AdminReleaseJob{Target=target,BaseHash=ws.Current.baseManifestHash,DraftHash=DraftId(ws.Current),Cumulative=ws.Current.cumulative,Stage="等待 COS 提交"};
             Data.Atomic(file,Data.Json(job));
         }
         SafePath.ValidateManifest(job.Target);
         string targetHash=Workspace.Fingerprint(job.Target);
         bool committed=remote!=null&&Workspace.Fingerprint(remote)==targetHash;
-        if(job.DraftHash!=DraftId(ws.Current)&&!(ws.Current.baseManifestHash==targetHash&&Data.Json(ws.Current)==Data.Json(new Draft{
+        bool legacyHash=false;
+        if(ws.Current.cumulative==null){var d=ws.Current;using(var sha=SHA256.Create())
+            legacyHash=job.DraftHash==Data.Hex(sha.ComputeHash(Encoding.UTF8.GetBytes(Data.Json(new{d.baseVersion,d.baseManifestHash,d.releaseVersion,d.files,d.deletes}))));}
+        if(!legacyHash&&job.DraftHash!=DraftId(ws.Current)&&!(ws.Current.baseManifestHash==targetHash&&Data.Json(ws.Current)==Data.Json(new Draft{
             baseVersion=job.Target.version,baseManifestHash=targetHash,files=job.Target.files,deletes=job.Target.deletes})))
             throw new IOException("恢复记录与当前草稿不匹配，已停止发布。");
         if(!committed||File.Exists(legacy)){
@@ -86,9 +106,9 @@ public static class AdminRelease {
         // A crash after the COS pointer moved is recoverable without writing it a second time.
         if(Workspace.Fingerprint(await read().ConfigureAwait(false))!=targetHash)throw new IOException("COS 正式清单与目标不符，停止 GitHub 操作。");
         ws.SetRemote(job.Target);draft.RefreshBase();
-        job.Stage="COS 已提交，等待 GitHub 备份";Data.Atomic(file,Data.Json(job));
+        progress("COS 已提交并验签，正在检查 GitHub 附件");job.Stage="COS 已提交，等待 GitHub 备份";Data.Atomic(file,Data.Json(job));
         await backup(job.Target).ConfigureAwait(false);
-        job.Stage="双端结果待核对";Data.Atomic(file,Data.Json(job));
+        progress("GitHub 已提交 · 正在回读两个正式清单及安装资源");job.Stage="双端结果待核对";Data.Atomic(file,Data.Json(job));
         await verify(job.Target).ConfigureAwait(false);
         File.Move(file,Path.Combine(ws.Root,"admin-release.done-"+Guid.NewGuid().ToString("N")+".json"));
     }

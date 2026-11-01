@@ -118,7 +118,7 @@ public sealed class PageEditor:Form {
         var right=Panel(1);
         var groupFields=Panel(2);groupFields.AutoSize=true;groupFields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,35));groupFields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,65));
         groupFields.Controls.Add(Label("版本"),0,0);groupFields.Controls.Add(Label("更新时间（含时区）"),1,0);groupFields.Controls.Add(version,0,1);groupFields.Controls.Add(when,1,1);Row(right,groupFields,Auto());
-        var fields=Panel(1);historyFields=fields;Field(fields,"类型",kind,Auto());Field(fields,"MOD 名称",subject,new RowStyle(SizeType.Percent,25));Field(fields,"更新说明",summary,new RowStyle(SizeType.Percent,75));summary.MaxLength=20000;Row(right,fields,Stretch());
+        var fields=Panel(1);historyFields=fields;Field(fields,"类型",kind,Auto());Field(fields,"MOD 名称",subject,new RowStyle(SizeType.Percent,25));Field(fields,"更新说明（必填）",summary,new RowStyle(SizeType.Percent,75));summary.MaxLength=20000;Row(right,fields,Stretch());
         releases.Format+=(s,e)=>{var h=(HistoryRelease)e.ListItem;e.Value=String.IsNullOrEmpty(h.Version)?"（填写版本名）":h.Version;};
         entries.Format+=(s,e)=>{var item=(HistoryEntry)e.ListItem;e.Value=item.Kind+" · "+(String.IsNullOrEmpty(item.Mod)?"新记录":OneLine(item.Mod));};
         releases.SelectedIndexChanged+=(s,e)=>{if(!binding)FillEntries(null);};entries.SelectedIndexChanged+=(s,e)=>{if(!binding)ShowEntry();};

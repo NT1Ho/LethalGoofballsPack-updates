@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -15,7 +15,7 @@ public sealed class AdminPackage:IDisposable {
     public readonly HashSet<string> Modified=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     public string Version,Key;
     static string Text(Dictionary<string,object> row,string key){object v;return row.TryGetValue(key,out v)?Convert.ToString(v):"";}
-    static List<Dictionary<string,object>> Metadata(Workspace ws,string name){
+    internal static List<Dictionary<string,object>> Metadata(Workspace ws,string name){
         var f=ws.Current.files.SingleOrDefault(x=>x.path==name);if(f==null)return new List<Dictionary<string,object>>();
         string path=ws.ObjectPath(f.sha256);
         if(!File.Exists(path)||f.size>8*1024*1024||Data.Hash(path)!=f.sha256)throw new IOException("请先核对渠道并取得组件登记资料。");

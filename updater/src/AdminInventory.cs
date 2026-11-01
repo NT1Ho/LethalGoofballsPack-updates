@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,6 +26,13 @@ public static class AdminInventory {
             if(ids.Count!=1)return null;
             return Tuple.Create(Convert.ToString(ids[0].ConstructorArguments[1].Value),Convert.ToString(ids[0].ConstructorArguments[2].Value));
         }
+    }
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static string[] PluginIds(string path){
+        try{using(var a=AssemblyDefinition.ReadAssembly(path))return a.MainModule.GetTypes().SelectMany(t=>t.CustomAttributes)
+            .Where(c=>c.AttributeType.FullName=="BepInEx.BepInPlugin"&&c.ConstructorArguments.Count==3)
+            .Select(c=>Convert.ToString(c.ConstructorArguments[0].Value)).Distinct().ToArray();}
+        catch(BadImageFormatException){return new string[0];} // Native DLLs have no BepInPlugin metadata.
     }
     public static List<ModGroup> Groups(Workspace ws){
         var groups=AdminCatalog.Build(ws);

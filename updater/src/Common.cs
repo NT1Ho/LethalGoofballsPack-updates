@@ -259,7 +259,7 @@ public class Engine {
         updated.UnionWith(manifest.files.Where(f=>!previous.ContainsKey(f.path)||previous[f.path].sha256!=f.sha256).Select(f=>f.path));
         return manifest.files.Where(f=>updated.Contains(f.path)&&!manifest.deletes.Contains(f.path,StringComparer.OrdinalIgnoreCase)).Select(f=>f.path).ToList();
     }
-    async Task<UpdateResult> Apply(Manifest m, Transfer transfer, Action<string,int> progress) {
+    internal async Task<UpdateResult> Apply(Manifest m, Transfer transfer, Action<string,int> progress) {
         SafePath.ValidateManifest(m); var state = State();
         progress("正在检查本地文件……",-1);
         var owned = state.files.ToDictionary(f => f.path, StringComparer.OrdinalIgnoreCase);

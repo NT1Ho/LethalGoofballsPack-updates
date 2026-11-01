@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -40,7 +40,18 @@ public class PageContent {
         foreach(var m in Mods)if(m==null||String.IsNullOrWhiteSpace(m.Key)||String.IsNullOrWhiteSpace(m.Name)||!keys.Add(m.Key)||(m.Details??"").Length>20000||(m.Purpose??"").Length>4000)throw new InvalidDataException("MOD 标识重复、名称为空或介绍过长。");
         foreach(var m in Mods)if(!String.IsNullOrEmpty(m.VersionColor)&&!System.Text.RegularExpressions.Regex.IsMatch(m.VersionColor,@"\A#[0-9a-fA-F]{6}\z"))throw new InvalidDataException("版本颜色请填写 #RRGGBB，留空使用默认颜色。");
         var versions=new HashSet<string>();DateTimeOffset date;
-        foreach(var h in History)if(h==null||String.IsNullOrWhiteSpace(h.Version)||!versions.Add(h.Version)||!DateTimeOffset.TryParse(h.PublishedUtc,out date)||h.Changes==null||h.Changes.Count>2000||h.Changes.Any(e=>e==null||String.IsNullOrWhiteSpace(e.Mod)||String.IsNullOrWhiteSpace(e.Summary)||e.Summary.Length>20000))throw new InvalidDataException("历史记录的版本、时间或更新内容无效。");
+        for(int i=0;i<History.Count;i++){
+            var h=History[i];string label="历史记录第 "+(i+1)+" 个版本";
+            if(h==null||String.IsNullOrWhiteSpace(h.Version))throw new InvalidDataException(label+" 缺少版本号。");
+            if(!versions.Add(h.Version))throw new InvalidDataException(label+" 重复使用 "+h.Version+"，请在原版本下添加记录。");
+            if(!DateTimeOffset.TryParse(h.PublishedUtc,out date))throw new InvalidDataException(h.Version+" 的更新时间无效。");
+            if(h.Changes==null||h.Changes.Count>2000)throw new InvalidDataException(h.Version+" 的条目列表无效。");
+            for(int j=0;j<h.Changes.Count;j++){var e=h.Changes[j];label=h.Version+" 第 "+(j+1)+" 条";
+                if(e==null||String.IsNullOrWhiteSpace(e.Mod))throw new InvalidDataException(label+" 缺少 MOD 名称。");
+                if(String.IsNullOrWhiteSpace(e.Summary))throw new InvalidDataException(label+"（"+e.Mod+"）缺少更新说明。");
+                if(e.Summary.Length>20000)throw new InvalidDataException(label+" 的更新说明超过 20000 字符。");
+            }
+        }
     }
 }
 }

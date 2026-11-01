@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -61,7 +61,7 @@ public sealed class AdminWorkspace {
         Store.CommitDraft(next);
     }
     public void SetVersion(string version){
-        var next=BeginEdit();next.releaseVersion=Publisher.VersionName(version.Trim());Commit(next);
+        var next=BeginEdit();string tag=Publisher.VersionName(version.Trim());if(next.cumulative!=null&&next.releaseVersion!=tag)throw new IOException("这份累计候选的历史已关联 "+next.releaseVersion+"。要更换版本请先恢复导入前草稿。");next.releaseVersion=tag;Commit(next);
     }
     public void Import(IEnumerable<Tuple<string,string>> items,Action<string> progress,IEnumerable<string> removed=null){
         var next=BeginEdit();var files=Index(next.files);var before=Index(Base.files);
@@ -149,6 +149,7 @@ public sealed class AdminWorkspace {
     }
     public Manifest Prepare(Action<string> progress){
         if(Base==null)throw new IOException("请先取得草稿基线。");
+        if(Store.Current.cumulative!=null)Cumulative.VerifySelection(Store,Data.Read<CumulativeBundle>(Store.Current.cumulative));
         var changes=Changes();
         if(changes.Count==0)throw new IOException("候选与基线一致，没有待发布内容。");
         string tag=Publisher.VersionName(Store.Current.releaseVersion??"");

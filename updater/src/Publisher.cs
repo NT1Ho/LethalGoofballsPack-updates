@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -22,14 +22,14 @@ static class PublisherProgram {
         });
     }
 }
-public class PublisherWindow:Form {
+public partial class PublisherWindow:Form {
     readonly Workspace workspace;
     readonly AdminWorkspace draft;
     readonly bool isolated;
     readonly TabControl tabs=new TabControl{Dock=DockStyle.Fill};
     readonly AdminGrid catalog=new AdminGrid(),changes=new AdminGrid(),history=new AdminGrid();
     readonly ComboBox view=new ComboBox{DropDownStyle=ComboBoxStyle.DropDownList,Width=100};
-    readonly TextBox search=new TextBox{Width=165},version=new TextBox{Width=118,ReadOnly=true};
+    readonly TextBox search=new TextBox{Width=165},version=new TextBox{Width=118};
     readonly Label header=new Label{AutoSize=true},status=new Label{Dock=DockStyle.Fill,TextAlign=ContentAlignment.MiddleLeft,AutoEllipsis=true};
     readonly Label delta=AdminControls.Label(""),connections=AdminControls.Label(""),remoteInfo=AdminControls.Label("");
     readonly Button publish,replace,config,remove,details,undo,cancelJob;
@@ -42,9 +42,11 @@ public class PublisherWindow:Form {
     bool busy;
     public PublisherWindow():this(new Workspace(Workspace.DefaultRoot),false){}
     public PublisherWindow(Workspace ws):this(ws,true){}
-    public PublisherWindow(Workspace ws,bool isolated){
+    public PublisherWindow(Workspace ws,bool isolated):this(ws,isolated,null){}
+    public PublisherWindow(Workspace ws,bool isolated,Func<System.Net.Http.HttpMessageHandler> rehearsal){
+        if(rehearsal!=null&&(!isolated||ws.Root==Workspace.DefaultRoot))throw new ArgumentException("演练仅限隔离目录");this.rehearsal=rehearsal;
         workspace=ws;this.isolated=isolated;draft=new AdminWorkspace(ws);
-        Text="Pack Updater 管理端 · 2.1";Font=new Font("Microsoft YaHei UI",9);
+        Text="Pack Updater 管理端 · 2.2";Font=new Font("Microsoft YaHei UI",9);
         AutoScaleMode=AutoScaleMode.Dpi;AutoScaleDimensions=new SizeF(96,96);StartPosition=FormStartPosition.CenterScreen;
         ClientSize=new Size(946,545);MinimumSize=new Size(760,420);
         Icon=Icon.ExtractAssociatedIcon(typeof(PublisherWindow).Assembly.Location);
@@ -73,9 +75,9 @@ public class PublisherWindow:Form {
         Tab("接收端资料",AdminControls.Page(pageBar,history));
 
         var releaseBar=AdminControls.Bar();releaseBar.Controls.Add(AdminControls.Label("候选版本"));releaseBar.Controls.Add(version);
-        Act(releaseBar,"设置版本名…",()=>Local(()=>{var name=AdminControls.Prompt(this,"候选版本","填写要管理的整合包版本名",version.Text);if(name!=null){draft.SetVersion(name);ReloadView();}}));Act(releaseBar,"检查候选",CheckCandidate);
-        Act(releaseBar,"导出候选 ZIP",ExportCandidate);undo=Act(releaseBar,"撤销所选变更",Restore);changes.SelectionChanged+=(s,e)=>SelectionState();
-        var more=DropMenu(releaseBar,"更多 ▾");Entry(more,"导出完整安装 ZIP…",ExportInstall);Entry(more,"保存草稿副本",BackupDraft);Entry(more,"恢复草稿副本…",RestoreBackup);
+        Act(releaseBar,"导入标准 ZIP…",PickStandard);Act(releaseBar,"整理累计区",BuildStandard);Act(releaseBar,"保存候选并检查",CheckCandidate);
+        undo=Act(releaseBar,"撤销所选变更",Restore);changes.SelectionChanged+=(s,e)=>SelectionState();
+        var more=DropMenu(releaseBar,"更多 ▾");Entry(more,"导出候选快照…",ExportCandidate);Entry(more,"打开累计区",()=>Local(()=>{Cumulative.Inbox(workspace);System.Diagnostics.Process.Start("explorer.exe","\""+Cumulative.Home(workspace)+"\"");}));Entry(more,"导出完整安装 ZIP…",ExportInstall);Entry(more,"保存草稿副本",BackupDraft);Entry(more,"恢复草稿副本…",RestoreBackup);
         changes.Headers(new[]{"操作","目标路径","原大小","候选大小"},new[]{65,480,90,90});
         var releaseFoot=AdminControls.Bar();publish=Act(releaseFoot,"正式发布…",Publish);Act(releaseFoot,"核对在线版本",CheckChannels);
         cancelJob=Act(releaseFoot,"解除未提交的发布任务…",CancelUncommitted);
@@ -94,11 +96,12 @@ public class PublisherWindow:Form {
     }
     void FitTab(){
         if(WindowState!=FormWindowState.Normal)return;
-        bool compact=tabs.SelectedIndex==3||tabs.SelectedIndex==2&&diff!=null&&diff.Count<6;
+        int rowCount=selectedBundle==null?(diff==null?0:diff.Count):selectedBundle.results.Sum(m=>m.files.Count);
+        bool compact=tabs.SelectedIndex==3||tabs.SelectedIndex==2&&rowCount<6;
         if(compact){
             if(lastHeight==0)lastHeight=ClientSize.Height;
             MinimumSize=new Size(MinimumSize.Width,290*DeviceDpi/96);
-            int height=tabs.SelectedIndex==3?338:284+diff.Count*27;
+            int height=tabs.SelectedIndex==3?338:284+rowCount*27;
             ClientSize=new Size(ClientSize.Width,height*DeviceDpi/96);
         }else if(lastHeight>0){
             MinimumSize=new Size(MinimumSize.Width,420*DeviceDpi/96);ClientSize=new Size(ClientSize.Width,lastHeight);lastHeight=0;
@@ -133,7 +136,7 @@ public class PublisherWindow:Form {
         if(remove!=null)remove.Enabled=canEdit&&selected.Length>0;
         if(replace!=null)replace.Enabled=canEdit&&selected.Length==1;
         if(config!=null)config.Enabled=canEdit&&selected.Length==1&&selected[0].StartsWith("BepInEx/config/",StringComparison.OrdinalIgnoreCase)&&selected[0].EndsWith(".cfg",StringComparison.OrdinalIgnoreCase);
-        if(undo!=null)undo.Enabled=canEdit&&changes.SelectedRows.Count>0;
+        if(undo!=null)undo.Enabled=canEdit&&selectedBundle==null&&changes.SelectedRows.Count>0;
     }
     void SetHeaders(){
         if(view.SelectedIndex==0)catalog.Headers(new[]{"MOD / 组件","版本","用途","标识","文件","候选状态"},new[]{167,106,220,78,53,81});
@@ -150,14 +153,15 @@ public class PublisherWindow:Form {
     static string FormatDate(string date){DateTimeOffset d;return DateTimeOffset.TryParse(date,out d)?d.ToLocalTime().ToString("yyyy/MM/dd"):date;}
     void RefreshState(){
         string baseName=String.IsNullOrEmpty(workspace.Current.baseVersion)?"尚未载入":workspace.Current.baseVersion;
-        header.Text=(isolated?"本地工作区（禁止上线）":"整合包工作区")+"     基线 "+baseName+"     候选 "+(String.IsNullOrEmpty(workspace.Current.releaseVersion)?"未指定":workspace.Current.releaseVersion);
+        header.Text=(isolated?"本地工作区（禁止上线）":"整合包工作区")+"     正式基线 "+baseName+"     "+(String.IsNullOrEmpty(workspace.Current.releaseVersion)?"尚未填写新版本号":"候选版本 "+workspace.Current.releaseVersion)+"     未发布变更 "+diff.Count+" 项";
         delta.Text=draft.Pending?"有待恢复发布，请核对渠道后继续。":draft.Base==null?"旧草稿缺少基线，请核对在线版本。":
             "新增 "+diff.Count(c=>c.Kind=="新增")+"     替换 "+diff.Count(c=>c.Kind=="替换")+"     删除 "+diff.Count(c=>c.Kind=="删除");
         if(File.Exists(draft.JobFile)){
             try{var job=Data.Load<AdminReleaseJob>(draft.JobFile);delta.Text=job.Target.version+" · "+job.Stage;}
             catch(Exception){delta.Text="本地恢复记录无法读取，请保留工作区并核查。";}
         }
-        publish.Text=draft.Pending?"继续未完成发布…":"正式发布…";publish.Enabled=!isolated&&(draft.Pending||diff.Count!=0);
+        publish.Text=draft.Pending?"继续未完成发布…":"确认正式发布…";publish.Enabled=(!isolated||rehearsal!=null)&&(draft.Pending||selectedBundle!=null||diff.Count!=0);
+        if(selectedBundle!=null)delta.Text="累计包已核验 · "+selectedBundle.results.Count+" 个组件 · "+selectedBundle.results.Sum(m=>m.files.Count)+" 个目标路径。填写新版本号后可生成历史或确认发布。";
         cancelJob.Visible=File.Exists(draft.JobFile)&&!File.Exists(Path.Combine(workspace.Root,"page-publish.pending.json"));
         SelectionState();remoteInfo.Text=channelText;
         connections.Text="COS 凭据 "+(File.Exists(Path.Combine(workspace.Root,"cos-credential.dat"))?"已保存":"未配置")+"     GitHub 凭据 "+(File.Exists(Path.Combine(workspace.Root,"credential.dat"))?"已保存":"未配置");
@@ -205,6 +209,7 @@ public class PublisherWindow:Form {
         }
     }
     async Task Import(string[] paths){
+        if(paths.Length==1&&File.Exists(paths[0])&&paths[0].EndsWith(".zip",StringComparison.OrdinalIgnoreCase)&&(tabs.SelectedIndex==2||Cumulative.Standard(paths[0]))){await LoadStandard(paths[0]);return;}
         if(paths.Any(p=>p.EndsWith(".zip",StringComparison.OrdinalIgnoreCase))){
             if(paths.Length!=1)throw new IOException("请一次导入一个组件 ZIP，以便核对归属与目标位置。");
             await ImportPackage(paths[0]);return;
@@ -273,7 +278,7 @@ public class PublisherWindow:Form {
         }
         using(var editor=new PageEditor(data,mods,draft.SavePages)){editor.SelectSection(section,workspace.Current.releaseVersion);editor.ShowDialog(this);}ReloadView();
     }
-    async Task<Manifest> CheckCandidate(){SaveVersion();await EnsureCatalog();var progress=Progress();var target=await Task.Run(()=>draft.Prepare(progress));status.Text="本地预检通过 · "+target.version+" · "+diff.Count+" 项变更。上线时还会核对在线基线与凭据。";return target;}
+    async Task<Manifest> CheckCandidate(){if(selectedBundle!=null){var bundle=selectedBundle;string tag=version.Text;await Task.Run(()=>Cumulative.Apply(draft,bundle,tag,true));selectedBundle=null;ReloadView();}else SaveVersion();await EnsureCatalog();var progress=Progress();var target=await Task.Run(()=>draft.Prepare(progress));status.Text="本地预检通过 · "+target.version+" · "+diff.Count+" 项变更。上线时还会核对在线基线与凭据。";return target;}
     async Task ExportInstall(){
         using(var d=new SaveFileDialog{Filter="安装 ZIP|*.zip",FileName="整合包安装文件.zip"})if(d.ShowDialog(this)==DialogResult.OK){
             var progress=Progress();await Task.Run(()=>draft.ExportInstall(d.FileName,progress));status.Text="完整安装包已导出："+Path.GetFileName(d.FileName);
@@ -307,13 +312,13 @@ public class PublisherWindow:Form {
     Task BackupDraft(){return Local(()=>{string file=Path.Combine(workspace.Root,"draft-copy-"+DateTime.Now.ToString("yyyyMMdd-HHmmssfff")+".json");Data.Atomic(file,Data.Json(workspace.Current));status.Text="已保存副本："+Path.GetFileName(file);});}
     Task RestoreBackup(){return Local(()=>{using(var d=new OpenFileDialog{InitialDirectory=workspace.Root,Filter="草稿副本|draft-*.json"})if(d.ShowDialog(this)==DialogResult.OK&&Confirm("恢复所选草稿副本？")){draft.RestoreDraft(d.FileName);ReloadView();}});}
     async Task Publish(){
-        if(isolated)throw new IOException("本地演练工作区不能发布。");
+        if(isolated&&rehearsal==null)throw new IOException("本地演练工作区不能发布。");
         string target;bool recovering=draft.Pending;
         if(!recovering){target=(await CheckCandidate()).version;}
         else target=File.Exists(draft.JobFile)?Data.Load<AdminReleaseJob>(draft.JobFile).Target.version:Data.Load<PagePublishJob>(Path.Combine(workspace.Root,"page-publish.pending.json")).After.version;
         if(!Confirm((recovering?"继续已记录的发布任务 ":"正式发布整合包 ")+target+"？\n将更新全体玩家使用的 COS 清单及 GitHub 备用源。\n"+delta.Text))return;
-        var progress=Progress();try{await Task.Run(()=>AdminRelease.Run(draft,progress));}finally{ReloadView();}
-        status.Text="发布完成 · COS 与 GitHub 已核对一致："+target;
+        try{await ShowPublishProgress(target);}finally{ReloadView();}
+        status.Text=isolated?"隔离演练成功："+target:"发布成功："+target+"，朋友现在可以通过接收端更新。";
     }
     async Task CancelUncommitted(){
         if(!File.Exists(draft.JobFile))throw new IOException("没有可解除的发布任务。");

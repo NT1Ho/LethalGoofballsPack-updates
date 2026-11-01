@@ -1,4 +1,4 @@
-param([string]$OutputDirectory,[string]$ChannelConfig,[switch]$SkipTests,[switch]$AdminOnly,[string]$CompatibilityReceiver,[string]$GameDir,[string]$Dotnet="dotnet")
+﻿param([string]$OutputDirectory,[string]$ChannelConfig,[switch]$SkipTests,[switch]$AdminOnly,[string]$CompatibilityReceiver,[string]$GameDir,[string]$Dotnet="dotnet")
 $ErrorActionPreference = 'Stop'
 $projectRoot = $PSScriptRoot
 if(-not $ChannelConfig -and (Test-Path (Join-Path $projectRoot 'cos-channel.json'))){$ChannelConfig=Join-Path $projectRoot 'cos-channel.json'}
@@ -26,7 +26,7 @@ $inventory += (Join-Path $projectRoot 'src\HistoryWindow.cs'),"/resource:$(Join-
 $cecil=@("/r:$(Join-Path $projectRoot 'lib\Mono.Cecil.dll')","/resource:$(Join-Path $projectRoot 'lib\Mono.Cecil.dll'),Mono.Cecil.dll","/resource:$(Join-Path $projectRoot 'lib\Mono.Cecil.LICENSE.txt'),Mono.Cecil.LICENSE.txt")
 $manifest = Join-Path $projectRoot 'src\app.manifest'
 $publisherCore = @((Join-Path $projectRoot 'src\PublisherCore.cs'),(Join-Path $projectRoot 'src\CosPublisher.cs'))
-$adminModules=@('AdminCatalog','AdminConfig','AdminPackage','AdminControls','AdminInventory','AdminWorkspace','AdminRelease','Publisher') | ForEach-Object {Join-Path $projectRoot ('src\'+$_+'.cs')}
+$adminModules=@('AdminCatalog','AdminConfig','AdminPackage','AdminControls','AdminInventory','AdminWorkspace','AdminRelease','Cumulative','CumulativeWindow','InstallCheck','Publisher') | ForEach-Object {Join-Path $projectRoot ('src\'+$_+'.cs')}
 if(!$AdminOnly){
 & $compiler /nologo /optimize+ /target:winexe /platform:anycpu "/win32manifest:$manifest" "/win32icon:$(Join-Path $projectRoot 'assets\client.ico')" /utf8output @refs @channelResource "/out:$(Join-Path $outputDir 'Lethal company pack Updater.exe')" $common $ui $selfUpdate $clientVersion @diagnostics @inventory @cecil (Join-Path $projectRoot 'src\Client.cs')
 if ($LASTEXITCODE -ne 0) { throw 'Client build failed' }
@@ -88,5 +88,3 @@ if (!$AdminOnly -and -not $SkipTests -and (Test-Path (Join-Path $projectRoot 'te
     if ($LASTEXITCODE -ne 0) { throw 'History tests failed' }
 }
 Get-ChildItem -LiteralPath $outputDir -Filter *.exe | Select-Object Name,Length
-
-

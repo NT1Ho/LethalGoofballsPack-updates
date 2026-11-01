@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -19,13 +19,13 @@ class AdminWorkflowTests {
     static void Reject(Action action,string name){try{action();}catch(IOException){Check(true,name);return;}catch(InvalidDataException){Check(true,name);return;}throw new Exception("Unexpected success: "+name);}
     static string Hash(byte[] bytes){using(var h=SHA256.Create())return Data.Hex(h.ComputeHash(bytes));}
     static void Entry(ZipArchive zip,string name,string text){using(var w=new StreamWriter(zip.CreateEntry(name).Open()))w.Write(text);}
-    class Service {
+    public class Service {
         public Dictionary<string,byte[]> Objects=new Dictionary<string,byte[]>(),Assets=new Dictionary<string,byte[]>();
         public string Feed="";public int PointerWrites,Creates;
-        public bool FailBackup=true,Published;
+        public bool FailBackup=true,Published,FailSecondAsset;
         public List<ReleaseAsset> Listing=new List<ReleaseAsset>();
     }
-    class Handler:HttpMessageHandler {
+    public class Handler:HttpMessageHandler {
         readonly Service state;public Handler(Service s){state=s;}
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage r,CancellationToken ct){
             var bytes=r.Content==null?null:await r.Content.ReadAsByteArrayAsync();
@@ -49,7 +49,7 @@ class AdminWorkflowTests {
                         else {if(r.Method.Method=="PATCH")state.Published=true;json=new Release{id=1,tag_name="qa-new",draft=!state.Published,assets=state.Listing};}
                     }else throw new Exception("unexpected GitHub route "+path);
                 }else if(uri.Host=="uploads.github.com"){
-                    string name=Uri.UnescapeDataString(uri.Query.Substring(6));state.Assets.Add(name,bytes);
+                    string name=Uri.UnescapeDataString(uri.Query.Substring(6));if(state.FailSecondAsset&&state.Assets.Count==1){state.FailSecondAsset=false;return new HttpResponseMessage(HttpStatusCode.ServiceUnavailable){RequestMessage=r};}state.Assets.Add(name,bytes);
                     var asset=new ReleaseAsset{id=state.Listing.Count+1,name=name,size=bytes.Length,digest="sha256:"+Hash(bytes)};state.Listing.Add(asset);json=asset;
                 }else if(uri.Host=="github.com"){
                     if(!state.Assets.TryGetValue(path.Split('/').Last(),out result))status=HttpStatusCode.NotFound;
@@ -133,7 +133,10 @@ class AdminWorkflowTests {
         Reject(()=>sim.SetVersion("conflict"),"unfinished release locks edits");
         var reopened=new AdminWorkspace(new Workspace(simWs.Root));service.FailBackup=false;
         service.Feed=CosSettings.Sign(account,"mods",Data.Json(new Manifest{version="unexpected"}));Reject(()=>AdminRelease.Run(reopened,s=>{},transport).GetAwaiter().GetResult(),"divergent signed GitHub pointer refuses recovery overwrite");service.Feed="";
-        AdminRelease.Run(reopened,s=>{},transport).GetAwaiter().GetResult();
+        service.FailSecondAsset=true;Reject(()=>AdminRelease.Run(reopened,s=>{},transport).GetAwaiter().GetResult(),"GitHub interrupted after its first verified attachment");
+        Check(service.PointerWrites==1&&service.Assets.Count>0&&reopened.Pending,"partial GitHub release and durable resume journal retained");
+        var retryMessages=new List<string>();AdminRelease.Run(reopened,s=>{lock(retryMessages)retryMessages.Add(s);},transport).GetAwaiter().GetResult();
+        Check(retryMessages.Any(s=>s.StartsWith("GitHub · 文件")&&!s.Contains("已复用 0")),"resumed transfer excludes previously uploaded attachment");
         string payload=Cloud.Verify(service.Feed,"mods");
         Check(service.PointerWrites==1&&service.Creates==1&&!reopened.Pending&&service.Published,"resume finishes backup without re-committing COS");
         Check(payload==Cloud.Verify(Encoding.UTF8.GetString(service.Objects["/lcpack/manifest.json"]),"mods"),"actual COS and GitHub signed payloads converge in memory");
