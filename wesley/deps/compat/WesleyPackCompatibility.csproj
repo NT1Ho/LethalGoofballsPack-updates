@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>netstandard2.1</TargetFramework><AssemblyName>WesleyPackCompatibility</AssemblyName><Version>1.0.1</Version><CandidatePlugins Condition="'$(CandidatePlugins)'==''">../../candidate/BepInEx/plugins</CandidatePlugins><GameRoot Condition="'$(GameRoot)'==''">D:/STEAM/steamapps/common/Lethal Company</GameRoot></PropertyGroup>
+  <ItemGroup>
+    <Reference Include="$(GameRoot)/BepInEx/core/BepInEx.dll" Private="false"/>
+    <Reference Include="$(GameRoot)/BepInEx/core/0Harmony.dll" Private="false"/>
+    <Reference Include="$(GameRoot)/Lethal Company_Data/Managed/Assembly-CSharp.dll" Private="false"/>
+    <Reference Include="$(CandidatePlugins)/IAmBatby-LethalLevelLoader/LethalLevelLoader.dll" Private="false"/>
+    <Reference Include="$(CandidatePlugins)/JLL/JLL.dll" Private="false"/>
+    <Reference Include="$(CandidatePlugins)/JLL/WesleyMoonScripts.dll" Private="false"/>
+    <Reference Include="$(GameRoot)/Lethal Company_Data/Managed/Unity.Collections.dll" Private="false"/>
+    <Reference Include="$(GameRoot)/Lethal Company_Data/Managed/Unity.Netcode.Runtime.dll" Private="false"/>
+    <Reference Include="$(GameRoot)/Lethal Company_Data/Managed/UnityEngine*.dll" Private="false"/>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,37 @@
+[
+  {
+    "file": "host/wesley-02.log",
+    "sha256": "51D7CDF7ACDEBBDE2959A8351BAEFCB96300A69813D0D0DB9B66BACAF28AB486",
+    "bytes": 1508530
+  },
+  {
+    "file": "host/wesley-03.log",
+    "sha256": "674A1CADA737020F165EEBF0EA9DEFBCC5D93C1BD3EC6AD9F98CE6B3074E28EA",
+    "bytes": 587885
+  },
+  {
+    "file": "host/wesley-04.log",
+    "sha256": "3FD1745995629D400F164DA3A5DE72517B6DE26855040CAD58547327033223B3",
+    "bytes": 844488
+  },
+  {
+    "file": "host/wesley-07.log",
+    "sha256": "F88A49EDF2F763DA7F26953FCBFB2576F3EE0D592B666D2E609E9120E5163AD6",
+    "bytes": 545597
+  },
+  {
+    "file": "client/wesley-07.log",
+    "sha256": "CF7A4990733C40A931A4FB76C77EFC8AE78B99EDEC2BE652A69D5834D85D9A78",
+    "bytes": 520559
+  },
+  {
+    "file": "client/wesley-finalclient.log",
+    "sha256": "F3EF98E024F7A7BADBF2112770676DCF41DFB53C9E8E454ACF0E8316FE3E897F",
+    "bytes": 522879
+  },
+  {
+    "file": "host/wesley-clean.log",
+    "sha256": "9407BE0DBAC64596B22A7D68A9D03E49EF9FAA75F04C7431C229265E18B4DA72",
+    "bytes": 520972
+  }
+]

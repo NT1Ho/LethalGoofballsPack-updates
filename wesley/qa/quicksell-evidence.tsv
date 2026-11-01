@@ -1,0 +1,79 @@
+prefab	identity evidence
+AcidirTape	Acidir videotape | Galetry | AcidirScene
+AsteroidTape	Asteroid-13 videotape | Galetry | Asteroid13Scene
+AtlanticaTape	Atlantica videotape | Galetry | AtlanticaScene
+BeholdersEyeOff	Beholder's eye | hydrenescene.lethalbundle | AnimatedObjectTrigger.TriggerAnimation
+BigBoom	Huge harold | emprascene.lethalbundle | WesleysInteriorTools.Features.EmpraPuzzle.PlaceThing
+BloodyLungApparatusDisable	Bloody apparatus | artmuseumscene.lethalbundle | JLL.Components.JClientSync.TriggerOnHost
+BlueKey	Blue key | extortscene.lethalbundle | AnimatedObjectTrigger.TriggerAnimation,JLL.Components.JClientSync.TriggerSyncedEvent
+BroodingSeed	Brooding seed | eternscenes.lethalbundle | WesleyMoons.Component.AlterActivator.Activate; Brooding seed | filitriosscene.lethalbundle | WesleyMoons.Component.AlterActivator.Activate; Brooding seed | fissionscenes.lethalbundle | WesleyMoons.Component.AlterActivator.Activate; Brooding seed | gloomscenes.lethalbundle | WesleyMoons.Component.AlterActivator.Activate; Brooding seed | utrilscene.lethalbundle | WesleyMoons.Component.AlterActivator.Activate
+ChunkofOverseer	Chunk of Overseer | berunahscene.lethalbundle | AnimatedObjectTrigger.TriggerAnimation
+CoffinKey	Coffin key | therubberrooms.lethalbundle | WesleysInteriorTools.Features.OptionalObjectiveController.InteractWithTrigger
+CosmicLungApparatusDisabled	Cosmic apparatus | artmuseumscene.lethalbundle | JLL.Components.JClientSync.TriggerOnHost
+CubeKey	Crystal cube | berunahscene.lethalbundle | WesleyMoons.Component.IndianaCubes.OpenDoor
+CunninghamLog1Prefab	Cunningham's travel log 1 | Story | AcidirScene
+CunninghamLog3Prefab	Cunningham's travel log 3 | Story | PolarusScene
+CunninghamLog4Prefab	Cunningham's travel log 4 | Story | CosmocosScene
+DonnahueNotePrefab	Donnahue's note | Story | FacilityCScene
+DormantDisc	Dormant floppy disc | Story | DormantScene
+DuneDisc	Dune floppy disc | Story | DuneScene
+DungeonKey	Dungeon key | atlanticdungeoninterior.lethalbundle | AnimatedObjectTrigger.TriggerAnimation
+EmpraTape	Empra videotape | Galetry | EmpraScene
+EternTape	Etern videotape | Galetry | EternScene
+FabricatedKeyPrefab	Fabricated key | artmuseumscene.lethalbundle | WesleysInteriorTools.Features.FabricationDoor.UnlockDoor
+FactoTape	Facto videotape | Galetry | FactoScene
+FilitriosTape	Filitrios videotape | Galetry | FilitriosScene
+FloppyDiskTape	Floppy disk | Story | KryteScene
+GeoffreyLog2Prefab	Geoffrey's log 2 | Story | CalistScene
+GeoffreyLog3Prefab	Geoffrey's log 3 | Story | GlaceScene
+GeoffreyLog4Prefab	Geoffrey's log 4 | Story | EternScene
+GeoffreyLog5Prefab	Geoffrey's final message | Story | JunicScene
+GirlBody	Emma's body | roartscene.lethalbundle | AnimatedObjectTrigger.TriggerAnimation
+GirlHead	Emma's head | roartscene.lethalbundle | UnityEngine.GameObject.SetActive,UnityEngine.Collider.set_enabled,UnityEngine.AudioSource.Play,UnityEngine.AudioSource.Play,UnityEngine.Animator.SetTrigger,UnityEngine.Animator.SetTrigger,JLL.Components.ExplosiveEmitter.ShakeLocalClient
+GloomTape	Gloom videotape | Galetry | GloomScene
+GoldenDevice	Chunk of harold | repressscene.lethalbundle | UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.AudioSource.Play,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive
+GratarTape	Gratar videotape | Galetry | GratarScene
+HalloweenTapeB	Teach the disloyal videotape | Galetry | CrowedScene
+HalloweenTapeC	Medicate the unwell videotape | Galetry | NarcoticScene
+HalloweenTapeD	Incinerate the lies videotape | Galetry | DescentScene
+HalloweenTapeE	Grind the deluded videotape | Galetry | ExtortScene
+HalloweenTapeF	Reshape the incapable videotape | Galetry | ReleaseScene
+HarringronCrashLog	Harrington's Crash Log | Story | DesolationScene
+HarringronResearch4	Harrington's research 4 | repressscene.lethalbundle | UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.AudioSource.Play,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive
+HeapDisc	Heap floppy disc | Story | HeapScene
+HyveTape	Hyve videotape | Galetry | Asteroid14Scene
+HyxTape	Hyx videotape | Galetry | HyxScene
+InfernisTape	Infernis videotape | Galetry | InfernisScene
+JunicTape	Junic videotape | Galetry | JunicScene
+Keycard	Cavil's keycard | researcherscene.lethalbundle | AnimatedObjectTrigger.TriggerAnimation
+ManorSafeKey	Manor safe key | spookymanor.lethalbundle | AnimatedObjectTrigger.TriggerAnimation,WesleysInteriorTools.Features.OptionalObjectiveController.PickAndSpawnReward
+MotraTape	Motra videotape | Galetry | MotraScene
+MyceteCasePrefab	Mycete case | repressscene.lethalbundle | UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.AudioSource.Play,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive
+OS	Untampered operating panel | repressscene.lethalbundle | UnityEngine.Animator.SetTrigger
+OldredTape	Oldred videotape | Galetry | OldredScene
+PedroNote3Prefab	Pedro's note 3 | Story | CoreScene
+RadioMessage1	Radio message 1 | Story | OldredScene
+RadioMessage2	Radio message 2 | Story | TriteScene
+RadioMessage3	Radio message 3 | Story | FilitriosScene
+RadioMessage4	Radio message 4 | Story | DemetricaScene
+RecoveredSecretLogPrefab	Recovered secret log | Story | CosmocosScene
+RecoveryOrderPrefab	Recovery order | Story | VindictScene
+RoyalLungApparatusDisabled	Royal apparatus | artmuseumscene.lethalbundle | JLL.Components.JClientSync.TriggerOnHost
+SOP	Stone of purification | repressscene.lethalbundle | UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.AudioSource.Play,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive
+SecretCoordinates	Secret coordinates | repressscene.lethalbundle | UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.AudioSource.Play,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive
+SecretFiles	Secret files | Story | AlcatrasScene
+SelectorDisc	Selector floppy disc | Story | SelectorScene
+SpineDisc	Spine floppy disc | Story | SpineScene
+SuperSecretCoordinates	Very secret coordinates | repressscene.lethalbundle | UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.AudioSource.Play,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive,UnityEngine.GameObject.SetActive
+Task1Prefab	My task 4 | Story | FaithScene
+Task2Prefab	My task 5 | Story | BerunahScene
+Ticket1	Reshape the incapable ticket | expandedfacility.lethalbundle | WesleysInteriorTools.Features.TicketInsertTool.InsertTicket
+Ticket2	Teach the disloyal ticket | expandedfacility.lethalbundle | WesleysInteriorTools.Features.TicketInsertTool.InsertTicket
+Ticket3	Medicate the unwell ticket | expandedfacility.lethalbundle | WesleysInteriorTools.Features.TicketInsertTool.InsertTicket
+Ticket5	Grind the deluded ticket | expandedfacility.lethalbundle | WesleysInteriorTools.Features.TicketInsertTool.InsertTicket
+ToyVaultKey	Toy vault key | toystoreinterior.lethalbundle | AnimatedObjectTrigger.TriggerAnimation
+TriangulationDevicePrefab	Triangulation device | centusscene.lethalbundle | WesleysInteriorTools.Features.TriangulationSpot.PlaceTriangulationDevice; Triangulation device | chasmscene.lethalbundle | WesleysInteriorTools.Features.TriangulationSpot.PlaceTriangulationDevice; Triangulation device | dunescene.lethalbundle | WesleysInteriorTools.Features.TriangulationSpot.PlaceTriangulationDevice; Triangulation device | facilitycscene.lethalbundle | WesleysInteriorTools.Features.TriangulationSpot.PlaceTriangulationDevice; Triangulation device | heapscene.lethalbundle | WesleysInteriorTools.Features.TriangulationSpot.PlaceTriangulationDevice; Triangulation device | krytescene.lethalbundle | WesleysInteriorTools.Features.TriangulationSpot.PlaceTriangulationDevice; Triangulation device | motrascene.lethalbundle | WesleysInteriorTools.Features.TriangulationSpot.PlaceTriangulationDevice; Triangulation device | selectorscene.lethalbundle | WesleysInteriorTools.Features.TriangulationSpot.PlaceTriangulationDevice; Triangulation device | spinescene.lethalbundle | WesleysInteriorTools.Features.TriangulationSpot.PlaceTriangulationDevice; Triangulation device | vindictscene.lethalbundle | WesleysInteriorTools.Features.TriangulationSpot.PlaceTriangulationDevice; Triangulation device | xenphirscene.lethalbundle | WesleysInteriorTools.Features.TriangulationSpot.PlaceTriangulationDevice
+UtrilTape	Utril videotape | Galetry | UtrilScene
+VindictTape	Vindict videotape | Galetry | VindictScene
+VisitPrefab	Cunningham's visit | Story | GratarScene
+XenphirDisc	Xenphir floppy disc | Story | XenphirScene

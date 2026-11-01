@@ -1,0 +1,50 @@
+item	prefab	loader	targetScene	consume
+Acidir videotape	AcidirTape	Galetry	AcidirScene	True
+Asteroid-13 videotape	AsteroidTape	Galetry	Asteroid13Scene	True
+Atlantica videotape	AtlanticaTape	Galetry	AtlanticaScene	True
+Cunningham's travel log 1	CunninghamLog1Prefab	Story	AcidirScene	False
+Cunningham's travel log 3	CunninghamLog3Prefab	Story	PolarusScene	False
+Cunningham's travel log 4	CunninghamLog4Prefab	Story	CosmocosScene	False
+Cunningham's visit	VisitPrefab	Story	GratarScene	False
+Donnahue's note	DonnahueNotePrefab	Story	FacilityCScene	False
+Dormant floppy disc	DormantDisc	Story	DormantScene	True
+Dune floppy disc	DuneDisc	Story	DuneScene	True
+Empra videotape	EmpraTape	Galetry	EmpraScene	True
+Etern videotape	EternTape	Galetry	EternScene	True
+Facto videotape	FactoTape	Galetry	FactoScene	True
+Filitrios videotape	FilitriosTape	Galetry	FilitriosScene	True
+Floppy disk	FloppyDiskTape	Story	KryteScene	True
+Geoffrey's final message	GeoffreyLog5Prefab	Story	JunicScene	False
+Geoffrey's log 2	GeoffreyLog2Prefab	Story	CalistScene	False
+Geoffrey's log 3	GeoffreyLog3Prefab	Story	GlaceScene	False
+Geoffrey's log 4	GeoffreyLog4Prefab	Story	EternScene	False
+Gloom videotape	GloomTape	Galetry	GloomScene	True
+Gratar videotape	GratarTape	Galetry	GratarScene	True
+Grind the deluded videotape	HalloweenTapeE	Galetry	ExtortScene	True
+Harrington's Crash Log	HarringronCrashLog	Story	DesolationScene	False
+Heap floppy disc	HeapDisc	Story	HeapScene	True
+Hyve videotape	HyveTape	Galetry	Asteroid14Scene	True
+Hyx videotape	HyxTape	Galetry	HyxScene	True
+Incinerate the lies videotape	HalloweenTapeD	Galetry	DescentScene	True
+Infernis videotape	InfernisTape	Galetry	InfernisScene	True
+Junic videotape	JunicTape	Galetry	JunicScene	True
+Medicate the unwell videotape	HalloweenTapeC	Galetry	NarcoticScene	True
+Motra videotape	MotraTape	Galetry	MotraScene	True
+My task 4	Task1Prefab	Story	FaithScene	False
+My task 5	Task2Prefab	Story	BerunahScene	False
+Oldred videotape	OldredTape	Galetry	OldredScene	True
+Pedro's note 3	PedroNote3Prefab	Story	CoreScene	False
+Radio message 1	RadioMessage1	Story	OldredScene	False
+Radio message 2	RadioMessage2	Story	TriteScene	False
+Radio message 3	RadioMessage3	Story	FilitriosScene	False
+Radio message 4	RadioMessage4	Story	DemetricaScene	False
+Recovered secret log	RecoveredSecretLogPrefab	Story	CosmocosScene	False
+Recovery order	RecoveryOrderPrefab	Story	VindictScene	False
+Reshape the incapable videotape	HalloweenTapeF	Galetry	ReleaseScene	True
+Secret files	SecretFiles	Story	AlcatrasScene	False
+Selector floppy disc	SelectorDisc	Story	SelectorScene	True
+Spine floppy disc	SpineDisc	Story	SpineScene	True
+Teach the disloyal videotape	HalloweenTapeB	Galetry	CrowedScene	True
+Utril videotape	UtrilTape	Galetry	UtrilScene	True
+Vindict videotape	VindictTape	Galetry	VindictScene	True
+Xenphir floppy disc	XenphirDisc	Story	XenphirScene	True

@@ -1,0 +1,153 @@
+{
+  "static_issues": [],
+  "candidate_plugins": [
+    {
+      "guid": "JacobG5.DestroyItemInSlotFix",
+      "version": "1.0.0",
+      "file": "BepInEx/plugins/DestroyItemInSlotFix.dll",
+      "source": "candidate",
+      "hard_dependencies": []
+    },
+    {
+      "guid": "dev.ladyalice.dungenplus",
+      "version": "1.5.1",
+      "file": "BepInEx/plugins/Alice-DungeonGenerationPlus/DunGenPlus.dll",
+      "source": "candidate",
+      "hard_dependencies": [
+        "imabatby.lethallevelloader"
+      ]
+    },
+    {
+      "guid": "AudioKnight.StarlancerAIFix",
+      "version": "3.13.2",
+      "file": "BepInEx/plugins/AudioKnight-StarlancerAIFix/StarlancerAI.dll",
+      "source": "candidate",
+      "hard_dependencies": []
+    },
+    {
+      "guid": "imabatby.lethallevelloader",
+      "version": "1.7.13",
+      "file": "BepInEx/plugins/IAmBatby-LethalLevelLoader/LethalLevelLoader.dll",
+      "source": "candidate",
+      "hard_dependencies": []
+    },
+    {
+      "guid": "Chaos.LCCutscene",
+      "version": "2.0.1",
+      "file": "BepInEx/plugins/IntegrityChaos-LCCutscene/LCCutscene/LCCutscene.dll",
+      "source": "candidate",
+      "hard_dependencies": []
+    },
+    {
+      "guid": "JacobG5.JLL",
+      "version": "1.10.1",
+      "file": "BepInEx/plugins/JLL/JLL.dll",
+      "source": "candidate",
+      "hard_dependencies": []
+    },
+    {
+      "guid": "JacobG5.JLLItemModule",
+      "version": "1.3.7",
+      "file": "BepInEx/plugins/JLL/JLLItemsModule.dll",
+      "source": "candidate",
+      "hard_dependencies": [
+        "JacobG5.JLL"
+      ]
+    },
+    {
+      "guid": "JacobG5.WesleyMoonScripts",
+      "version": "1.1.7",
+      "file": "BepInEx/plugins/JLL/WesleyMoonScripts.dll",
+      "source": "candidate",
+      "hard_dependencies": [
+        "JacobG5.JLL",
+        "JacobG5.JLLItemModule",
+        "imabatby.lethallevelloader"
+      ]
+    },
+    {
+      "guid": "MaxWasUnavailable.LethalModDataLib",
+      "version": "1.2.2",
+      "file": "BepInEx/plugins/LethalModDataLib/MaxWasUnavailable.LethalModDataLib.dll",
+      "source": "candidate",
+      "hard_dependencies": []
+    },
+    {
+      "guid": "Yorimor.CustomStoryLogs",
+      "version": "1.6.0",
+      "file": "BepInEx/plugins/Magic_Wesley-CustomStoryLogsFixed/Yorimor.CustomStoryLogs.dll",
+      "source": "candidate",
+      "hard_dependencies": [
+        "evaisa.lethallib",
+        "LethalNetworkAPI"
+      ]
+    },
+    {
+      "guid": "MW.MagicWesleyInteriors",
+      "version": "1.0.0",
+      "file": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/WesleysInteriorShenanigans.dll",
+      "source": "candidate",
+      "hard_dependencies": []
+    },
+    {
+      "guid": "JacobG5.WesleyMoons",
+      "version": "2.0.0",
+      "file": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/WesleyMoons.dll",
+      "source": "candidate",
+      "hard_dependencies": [
+        "MaxWasUnavailable.LethalModDataLib"
+      ]
+    },
+    {
+      "guid": "MagicWesley.WesleysInteriorTools",
+      "version": "1.0.3",
+      "file": "BepInEx/plugins/Magic_Wesley-Wesleys_Shenanigans/WesleysInteriorTools.dll",
+      "source": "candidate",
+      "hard_dependencies": []
+    },
+    {
+      "guid": "MrovLib",
+      "version": "0.4.15",
+      "file": "BepInEx/plugins/mrov-MrovLib/MrovLib.dll",
+      "source": "candidate",
+      "hard_dependencies": []
+    },
+    {
+      "guid": "mrov.WeatherRegistry",
+      "version": "0.8.8",
+      "file": "BepInEx/plugins/mrov-WeatherRegistry/WeatherRegistry.dll",
+      "source": "candidate",
+      "hard_dependencies": [
+        "MrovLib"
+      ]
+    },
+    {
+      "guid": "NT1Ho.WesleyPackCompatibility",
+      "version": "1.0.0",
+      "file": "BepInEx/plugins/NT1Ho-WesleyPackCompatibility/WesleyPackCompatibility.dll",
+      "source": "candidate",
+      "hard_dependencies": [
+        "MaxWasUnavailable.LethalModDataLib",
+        "MagicWesley.WesleysInteriorTools"
+      ]
+    },
+    {
+      "guid": "NT1Ho.WesleyZh.Captions",
+      "version": "0.1.0",
+      "file": "BepInEx/plugins/NT1Ho-WesleyZh/LethalGoofballsPack.WesleyZh.dll",
+      "source": "candidate",
+      "hard_dependencies": [
+        "Aueser.LCChineseProject"
+      ]
+    },
+    {
+      "guid": "NT1Ho.UniversalWrench",
+      "version": "0.1.30",
+      "file": "BepInEx/plugins/UniversalWrench/UniversalWrench.dll",
+      "source": "candidate",
+      "hard_dependencies": [
+        "evaisa.lethallib"
+      ]
+    }
+  ]
+}

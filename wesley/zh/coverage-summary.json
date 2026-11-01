@@ -1,0 +1,174 @@
+{
+  "sourceFields": 2086,
+  "candidateDistinct": 1921,
+  "terminalSubset": 438,
+  "capacity": 4096,
+  "translatedQuality": {
+    "context-draft": 328,
+    "review": 503,
+    "editor": 1090
+  },
+  "byField": {
+    "CursedMessagesSpawned[]": {
+      "candidate": 8,
+      "identified": 8,
+      "baseOwned": 0
+    },
+    "CursedMessages[]": {
+      "candidate": 31,
+      "identified": 31,
+      "baseOwned": 0
+    },
+    "DungeonName": {
+      "candidate": 14,
+      "identified": 14,
+      "baseOwned": 0
+    },
+    "EnemyDisplayName": {
+      "candidate": 17,
+      "identified": 17,
+      "baseOwned": 0
+    },
+    "InfoNodeDescription": {
+      "candidate": 21,
+      "identified": 22,
+      "baseOwned": 0
+    },
+    "LevelDescription": {
+      "candidate": 53,
+      "identified": 53,
+      "baseOwned": 0
+    },
+    "ObjectiveEntries[].DisabledTriggerName": {
+      "candidate": 5,
+      "identified": 5,
+      "baseOwned": 0
+    },
+    "ObjectiveEntries[].EnabledTriggerName": {
+      "candidate": 8,
+      "identified": 8,
+      "baseOwned": 0
+    },
+    "OverrideInfoNodeDescription": {
+      "candidate": 1,
+      "identified": 1,
+      "baseOwned": 0
+    },
+    "OverrideRouteConfirmNodeDescription": {
+      "candidate": 44,
+      "identified": 44,
+      "baseOwned": 0
+    },
+    "OverrideRouteNodeDescription": {
+      "candidate": 1,
+      "identified": 1,
+      "baseOwned": 0
+    },
+    "PlanetName": {
+      "candidate": 53,
+      "identified": 54,
+      "baseOwned": 0
+    },
+    "TriggerString (progress)": {
+      "candidate": 20,
+      "identified": 20,
+      "baseOwned": 0
+    },
+    "WeatherName": {
+      "candidate": 5,
+      "identified": 5,
+      "baseOwned": 0
+    },
+    "disabledHoverTip": {
+      "candidate": 19,
+      "identified": 25,
+      "baseOwned": 4
+    },
+    "displayText": {
+      "candidate": 12,
+      "identified": 13,
+      "baseOwned": 1
+    },
+    "dungeonDisplayName": {
+      "candidate": 2,
+      "identified": 2,
+      "baseOwned": 0
+    },
+    "enemyName": {
+      "candidate": 44,
+      "identified": 74,
+      "baseOwned": 30
+    },
+    "header": {
+      "candidate": 1,
+      "identified": 1,
+      "baseOwned": 0
+    },
+    "headerText": {
+      "candidate": 711,
+      "identified": 758,
+      "baseOwned": 39
+    },
+    "holdTip": {
+      "candidate": 1,
+      "identified": 2,
+      "baseOwned": 1
+    },
+    "hoverTip": {
+      "candidate": 199,
+      "identified": 203,
+      "baseOwned": 2
+    },
+    "itemName": {
+      "candidate": 652,
+      "identified": 720,
+      "baseOwned": 60
+    },
+    "journalNotification": {
+      "candidate": 154,
+      "identified": 154,
+      "baseOwned": 0
+    },
+    "m_text": {
+      "candidate": 65,
+      "identified": 85,
+      "baseOwned": 7
+    },
+    "message": {
+      "candidate": 1,
+      "identified": 1,
+      "baseOwned": 0
+    },
+    "name": {
+      "candidate": 150,
+      "identified": 154,
+      "baseOwned": 0
+    },
+    "runtimeLiteral": {
+      "candidate": 9,
+      "identified": 9,
+      "baseOwned": 0
+    },
+    "storyLogDescription": {
+      "candidate": 3,
+      "identified": 3,
+      "baseOwned": 0
+    },
+    "subText": {
+      "candidate": 12,
+      "identified": 19,
+      "baseOwned": 7
+    },
+    "text": {
+      "candidate": 153,
+      "identified": 153,
+      "baseOwned": 0
+    },
+    "toolTips[]": {
+      "candidate": 90,
+      "identified": 96,
+      "baseOwned": 4
+    }
+  },
+  "runtimeClaim": "static round-trip only; see external in-game evidence"
+}

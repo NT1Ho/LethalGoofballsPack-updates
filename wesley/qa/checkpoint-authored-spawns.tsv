@@ -1,0 +1,96 @@
+name	bundle	spawner	weight	pool
+Asteroid-13 videotape	artmuseumscene.lethalbundle	TapeSpawner	100	0
+Blue key	extortscene.lethalbundle	KeySpawner	20	0
+Brooding seed	berunahscene.lethalbundle	SeedSpawner	20	0
+Cavil's keycard	researcherscene.lethalbundle	KeycardSpawner	20	0
+Chunk of harold	emprascene.lethalbundle	HaroldChunk	20	0
+Coffin key	therubberrooms.lethalbundle	ItemSpawner	20	0
+Coffin key	therubberrooms.lethalbundle	KeySpawner	20	0
+Crystal cube	cubatresscene.lethalbundle	CubeKeySpawner	20	0
+Dormant floppy disc	selectorscene.lethalbundle	FloppySpawner	20	0
+Dune floppy disc	eternscenes.lethalbundle	FloppySpawner	20	0
+Emma's body	roartscene.lethalbundle	ItemSpawner	20	0
+Emma's head	roartscene.lethalbundle	ItemSpawner	20	0
+Empra videotape	truth.lethalbundle	EmpraSpawner	20	0
+Empra videotape	truthscene.lethalbundle	EmpraSpawner	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner (1)	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner (10)	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner (11)	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner (2)	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner (3)	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner (4)	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner (5)	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner (6)	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner (7)	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner (8)	20	0
+Fabricated key	artmuseumscene.lethalbundle	ItemSpawner (9)	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner (1)	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner (10)	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner (11)	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner (2)	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner (3)	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner (4)	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner (5)	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner (6)	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner (7)	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner (8)	20	0
+Fabricated key	gratarscenes.lethalbundle	ItemSpawner (9)	20	0
+Geoffrey's log 2	glacescene.lethalbundle	ItemSpawner	20	0
+Gratar videotape	repressscene.lethalbundle	GratarTapeSpawner	20	0
+Grind the deluded ticket	extortscene.lethalbundle	GameObject (6)	20	0
+Heap floppy disc	tritescene.lethalbundle	FloppySpawner	20	0
+Huge harold	empra.lethalbundle	BombSpawner	20	0
+Huge harold	emprascene.lethalbundle	BombSpawner	20	0
+Hyx videotape	artmuseumscene.lethalbundle	HyxTapeSpawner	100	0
+Infernis videotape	artmuseumscene.lethalbundle	TapeSpawner	100	0
+Medicate the unwell ticket	narcoticscene.lethalbundle	RewardSpawner (5)	20	0
+Motra videotape	artmuseumscene.lethalbundle	TapeSpawner	100	0
+My task 4	core.lethalbundle	TaskSpawner	20	0
+My task 4	corescene.lethalbundle	TaskSpawner	20	0
+Pedro's note 3	kryte.lethalbundle	Pedro3Spawner	20	0
+Pedro's note 3	krytescene.lethalbundle	Pedro3Spawner	20	0
+Recovery order	glacescene.lethalbundle	ItemSpawner	20	0
+Recovery order	selectorscene.lethalbundle	ItemSpawner	20	0
+Recovery order	tritescene.lethalbundle	ItemSpawner	20	0
+Recovery order	vindictscene.lethalbundle	ItemSpawner	20	0
+Reshape the incapable ticket	expandedfacility.lethalbundle	DiamondSpawner (1)	20	0
+Secret coordinates	expandedfacility.lethalbundle	ItemSpawner	20	0
+Selector floppy disc	fissionscenes.lethalbundle	FloppySpawner	20	0
+Spine floppy disc	chasmscene.lethalbundle	FloppySpawner	20	0
+Stone of purification	berunahscene.lethalbundle	StoneSpawner	20	0
+Teach the disloyal ticket	spookymanor.lethalbundle	Liverspawner	20	0
+Teach the disloyal videotape	artmuseumscene.lethalbundle	TapeSpawner (1)	100	0
+Triangulation device	artmuseumscene.lethalbundle	ItemSpawner	20	0
+Triangulation device	artmuseumscene.lethalbundle	ItemSpawner (1)	20	0
+Triangulation device	glacescene.lethalbundle	ItemSpawner (1)	5	0
+Triangulation device	glacescene.lethalbundle	ItemSpawner (2)	5	0
+Triangulation device	glacescene.lethalbundle	ItemSpawner (3)	5	0
+Triangulation device	glacescene.lethalbundle	ItemSpawner (4)	5	0
+Triangulation device	glacescene.lethalbundle	ItemSpawner (5)	5	0
+Triangulation device	glacescene.lethalbundle	ItemSpawner (6)	5	0
+Triangulation device	gratarscenes.lethalbundle	ItemSpawner	20	0
+Triangulation device	gratarscenes.lethalbundle	ItemSpawner (1)	20	0
+Triangulation device	selectorscene.lethalbundle	ItemSpawner (1)	5	0
+Triangulation device	selectorscene.lethalbundle	ItemSpawner (2)	5	0
+Triangulation device	selectorscene.lethalbundle	ItemSpawner (3)	5	0
+Triangulation device	selectorscene.lethalbundle	ItemSpawner (4)	5	0
+Triangulation device	selectorscene.lethalbundle	ItemSpawner (5)	5	0
+Triangulation device	selectorscene.lethalbundle	ItemSpawner (6)	5	0
+Triangulation device	tritescene.lethalbundle	ItemSpawner (1)	5	0
+Triangulation device	tritescene.lethalbundle	ItemSpawner (2)	5	0
+Triangulation device	tritescene.lethalbundle	ItemSpawner (3)	5	0
+Triangulation device	tritescene.lethalbundle	ItemSpawner (4)	5	0
+Triangulation device	tritescene.lethalbundle	ItemSpawner (5)	5	0
+Triangulation device	tritescene.lethalbundle	ItemSpawner (6)	5	0
+Triangulation device	vindictscene.lethalbundle	ItemSpawner (1)	5	0
+Triangulation device	vindictscene.lethalbundle	ItemSpawner (2)	5	0
+Triangulation device	vindictscene.lethalbundle	ItemSpawner (3)	5	0
+Triangulation device	vindictscene.lethalbundle	ItemSpawner (4)	5	0
+Triangulation device	vindictscene.lethalbundle	ItemSpawner (5)	5	0
+Triangulation device	vindictscene.lethalbundle	ItemSpawner (6)	5	0
+Untampered operating panel	artmuseumscene.lethalbundle	ItemSpawner	20	0
+Untampered operating panel	gratarscenes.lethalbundle	ItemSpawner	20	0
+Very secret coordinates	expandedfacility.lethalbundle	ItemSpawner (1)	20	0
+Xenphir floppy disc	dormantscene.lethalbundle	FloppySpawner	20	0

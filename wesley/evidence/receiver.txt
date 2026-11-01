@@ -1,0 +1,6 @@
+Wesleys_Moons|7.0.18|本地文件校验匹配|100|own=False|剧情星球、航线解锁和探索
+WesleysInteriors|5.0.19|本地文件校验匹配|100|own=False|可生成的室内、谜题和任务房
+Facto|1.2.1|本地文件校验匹配|100|own=False|Wesley 番外星球
+Decrepit_Store|1.0.2|本地文件校验匹配|100|own=False|番外独立室内：废弃商店
+Universal Wrench|0.1.30-dev|本地文件校验匹配|0|own=True|400 Credits 万能扳手：维修、失控 Jetpack、设备升级和地雷拆装
+History: Wesley 候选（未发布）; previous=V1.9.5

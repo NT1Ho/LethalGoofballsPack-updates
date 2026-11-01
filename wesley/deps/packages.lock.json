@@ -1,0 +1,2244 @@
+{
+  "Magic_Wesley-Wesleys_Moons": {
+    "package": "Magic_Wesley-Wesleys_Moons",
+    "version": "7.0.18",
+    "official_latest": "7.0.18",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "MaxWasUnavailable-LethalModDataLib-1.2.2",
+      "Hardy-LCMaxSoundsFix-1.2.0",
+      "IntegrityChaos-LCCutscene-2.0.1",
+      "JacobG5-JLL-1.10.1",
+      "AudioKnight-StarlancerAIFix-3.13.2",
+      "IAmBatby-LethalLevelLoader-1.7.12",
+      "Magic_Wesley-CustomStoryLogsFixed-1.6.1",
+      "Magic_Wesley-Wesleys_Shenanigans-1.0.0",
+      "Magic_Wesley-Wesleys_Ememy_Variants-1.3.0",
+      "Magic_Wesley-Wesleys_Weathers-1.3.0",
+      "Magic_Wesley-WesleysInteriors-5.0.0"
+    ],
+    "url": "https://thunderstore.io/package/download/Magic_Wesley/Wesleys_Moons/7.0.18/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Magic_Wesley/Wesleys_Moons/",
+    "source": "",
+    "archive_sha256": "32f2f2cd7b115a40b700bca98aafd48e8aa9a22858dd3f5501b52c1fabf98272",
+    "reason": "User-requested content",
+    "archive_size": 2580246556,
+    "files": [
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/motrascene.lethalbundle",
+        "sha256": "50373559c6cae91398779f725662db247d84ff5ee2a740fcba95dc68c295b899",
+        "size": 35974741
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/narcotic.lethalbundle",
+        "sha256": "8402670bedef9293952e9628db42f7a022d3325c6a04d3e0ce922b04682e9dd7",
+        "size": 6030221
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/narcoticscene.lethalbundle",
+        "sha256": "2509b29aa5a7133a8370b5addb2c0503961bb61398b15d1a7b91f8abc9f547cf",
+        "size": 49389095
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/oldred.lethalbundle",
+        "sha256": "a7e4b2a365fb6e290d10856b37bbbd3697ab9c4ee037a2ecd0ab06bb1c09e183",
+        "size": 6440359
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/oldredscenes.lethalbundle",
+        "sha256": "6af4598323b2ea264e062f3d217dcb1a51478101de67e1a03a9850fdc0bf666f",
+        "size": 27890892
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/polarus.lethalbundle",
+        "sha256": "c79cb77aea5e56c62d8d90deaadfedddf2fff448de94596ec5f8679f816cab91",
+        "size": 10373212
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/polarusscenes.lethalbundle",
+        "sha256": "bd47f439d9cbb4c4f3d35fe273fec67a1b22726966794af1cc1e16f315736661",
+        "size": 40363823
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/porcerin.lethalbundle",
+        "sha256": "b034b9dc3ed94bc7c42c2024431f75792f0d268a58fe49e04e4d43a2938c029e",
+        "size": 10102646
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/porcerinscenes.lethalbundle",
+        "sha256": "40d47da616024f735e6476e8811dece98f3c2932d342f8613d87a8652a1b8e59",
+        "size": 31771284
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Moons/README.md",
+        "sha256": "bfd628919ac0ebbcbc252b427ad55a137278e3843e8dab98eb54db1b8e7cafc2",
+        "size": 3517
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/release.lethalbundle",
+        "sha256": "df1e71b1c06129e108c8aa1a0e395c8c0f7aeb3a8af1bfce2c78040e6c54b799",
+        "size": 11520708
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/releasescene.lethalbundle",
+        "sha256": "31bacda8c307b4db899ce58b73208575eee8fef07e93886a5437ec276ccfcfba",
+        "size": 28732502
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/repress.lethalbundle",
+        "sha256": "a5d6f242815821e1ba56b26da5489b9fe67a945818372d03be9c95202f6c8366",
+        "size": 5230921
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/repressscene.lethalbundle",
+        "sha256": "b2893d0ecf0d9cf8923dfeb67b4f85a5669646f27529be0caffc2e8a1129cc26",
+        "size": 81016200
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/researcher.lethalbundle",
+        "sha256": "f96b765339d847b585cd7528b46be6e0d4957e1a225007103961da8470f8ef44",
+        "size": 1204809
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/researcherscene.lethalbundle",
+        "sha256": "2d7f44a1ee4f51e9c0e8d153e932cb603fae6c8ad4abcd1719eb574e1b0e6535",
+        "size": 27185759
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/roart.lethalbundle",
+        "sha256": "273742b57807fe6fdf2d92bbe402d6f40324d18d1c9e54f47fe666e0b22b2203",
+        "size": 7967446
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/roartscene.lethalbundle",
+        "sha256": "485b70373ee99095432479d1015bf8af16165bc13927fe957c2cb4d211bb191e",
+        "size": 45080945
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/selector.lethalbundle",
+        "sha256": "20c2324851bd65df84f55b495941d26ce1ea8f7dd1b0eb720fa51fe7741c03a7",
+        "size": 6436313
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/selectorscene.lethalbundle",
+        "sha256": "9caead7dfdd0844965587598da30e94b5a07853d54d7540bbd5fe05d1fbe88b5",
+        "size": 34489527
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/spine.lethalbundle",
+        "sha256": "a5ce208a5197ad843f3e54d1cf7a2b88b506528a227c88ca4beef334699613db",
+        "size": 13017538
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/spinescene.lethalbundle",
+        "sha256": "cbd0eb8a452a3ed332f31443d84d510e2c89440b2b2ac1e71592f0790a3cd407",
+        "size": 25024690
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/trite.lethalbundle",
+        "sha256": "d95bff1cc331c959b2180d0129ad7f3f7a461c9b52e4c10ae1f05df0229524b8",
+        "size": 12221632
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/tritescene.lethalbundle",
+        "sha256": "3b9c41594e32082e2704934348bb54a6cb97ddcd3acb325ffafa947626c40a69",
+        "size": 37128946
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/truth.lethalbundle",
+        "sha256": "7de764739b4224c7568e5aa891dad1cecef8c5d26ec7a827414a687e1a86e532",
+        "size": 7083408
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/truthscene.lethalbundle",
+        "sha256": "fcf836f9c32b173e301747f840deb073b233f18f7610100f3880740878e42879",
+        "size": 33941644
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/utril.lethalbundle",
+        "sha256": "44bb0355cbcf230627ec70e9ec251cbda9abc93ede531af4e82fc838e6ab28ec",
+        "size": 12406210
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/utrilscene.lethalbundle",
+        "sha256": "2432b316516eced13be4dc70e35a844ecce3320d96a52e6171f8a1bd1c57ab77",
+        "size": 35404331
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/vindict.lethalbundle",
+        "sha256": "bf857f7128dee59f4d752105b1982e8bd25a832280c5564ee49ab23aeaba1f6d",
+        "size": 13371196
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/vindictscene.lethalbundle",
+        "sha256": "69806f5a05f3346362db0c81dca64c1836b4dce21ae8c8547bd7e7de53bfe4bc",
+        "size": 26593659
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/WesleyMoons.dll",
+        "sha256": "78e07da8c4978f85db89e014e98569d21b19beb4c97163aa627d206be71db85d",
+        "size": 18432
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/xenphir.lethalbundle",
+        "sha256": "f17488a1839f04d92e808beadef1d8b44be85ecd7d9dca6760b7f2584b683f78",
+        "size": 1291488
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/xenphirscene.lethalbundle",
+        "sha256": "e06caa4a177b31f777ec749e89a9c2f211d575049067cfe3b547a7e7ee8aee77",
+        "size": 15130647
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/AcidirLogs.json",
+        "sha256": "ab642920db648cbe3dc2447de30c561374bac67177a00ed50a51c9dffec7589d",
+        "size": 3127
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/AlcatrasLogs.json",
+        "sha256": "062b78a98d3633e114e637deb8ee72f936893f662e187e479236b847482a0f54",
+        "size": 4727
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/AsteroidLogs.json",
+        "sha256": "eaea2c695f5676f3e0cf6e71db460e9992209121e8acf980cdb4fa9b0216427d",
+        "size": 6393
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/AtlanticaLogs.json",
+        "sha256": "df15aac9d14c1faac141efa94beffebcad9ec8885267a251f745264c1d9f29cc",
+        "size": 2462
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/BerunahLogs.json",
+        "sha256": "bf05830df35092a610cd75c4f380f79d72860ad1f683f9cfb5949f4219e2146e",
+        "size": 2404
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/CalistLogs.json",
+        "sha256": "677dda5a24bb59d2d44b64361eb0a1ec5cf840ca0711a61105d73f9cf135c716",
+        "size": 4620
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/CentusLogs.json",
+        "sha256": "6f5125017b48e5f4d9e258975bc3d39ea2a5ae976bf98aa29008777921be798f",
+        "size": 4102
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/CoreLogs.json",
+        "sha256": "aaa9fc76299dcbf5bc94a7706c40fe1c4b46e82d6b3af65a8040586c4b504693",
+        "size": 4188
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/CosmocosLogs.json",
+        "sha256": "8331365b7e1b991d65253ecaa7dbedbe8dc418f3461f7bfd07f11016ad4c08d5",
+        "size": 9514
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/CubatresLogs.json",
+        "sha256": "536ebe8a196aeb7459dc3984b7757d1ff5bf21311234f878acc6e882c7455525",
+        "size": 4616
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/CunninghamTravelLogs.json",
+        "sha256": "015e28d7a8dc205ac96bfd7cc5f2c342be6f973dbc3b421578125ef74d2938e7",
+        "size": 6344
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/DesolationLogs.json",
+        "sha256": "45bdac657f93114da10364af86db2c5605ca3707b674926891a098480e3d555c",
+        "size": 4626
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/DreckLogs.json",
+        "sha256": "ba97787100af097413ff29479d3eb094ddb2b3d908bbc92b5349fde5fd847e09",
+        "size": 3919
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/EmpraLogs.json",
+        "sha256": "bb214611c14c816a0dd77d56e6786b4dd3328066c896d852c8622779e2c3401f",
+        "size": 5836
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/EternLogs.json",
+        "sha256": "0f1ed1261305e3baec4d52d77d907dd47aa351d7b21affd0006dfe693f5c7214",
+        "size": 3997
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/FaithLogs.json",
+        "sha256": "023a35d15bedf629ab67514bb2ba3b86952bec37b65eb925104cf14646658013",
+        "size": 4268
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/FilitriosLogs.json",
+        "sha256": "71eec1ad741c3a9405d932ac4f041040a3c9d6b0222b1456bc48d4a1d1283050",
+        "size": 4869
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/FissionLogs.json",
+        "sha256": "c7dfc0e93b0d4c16b4bc1f5e720ed1c1906878305610886cd73437259f09922b",
+        "size": 3176
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/GeoffreyLogs.json",
+        "sha256": "a5bda6435bbe89f7a8f3a0eeb5003cad6025c0faba5645afa583e431c112bbfd",
+        "size": 8070
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/GratarLogs.json",
+        "sha256": "03759cb53d570792184588c8263dfb4d2578c050ef5d5f30bf0a6b9852c8fb8a",
+        "size": 5554
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/HyxLogs.json",
+        "sha256": "03e4dc28553ae5b2607a4e281c085fbbfca4d4c50fdd0c084f84f73c8618f635",
+        "size": 17094
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/InfernisLogs.json",
+        "sha256": "1114b7de3d4aa3a88e6da357f7e4ea56a0c48b86160d4a904ce0a5c706fc413b",
+        "size": 2659
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/JunicLogs.json",
+        "sha256": "917b22d184e5e0641b479bae22d89e6867a227f8c1e4e26291b888dcff4ca1c7",
+        "size": 3211
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/LecaroLogs.json",
+        "sha256": "4304e6f1583f3f33f36689b11bdcfd3a17b3dc15922274c880c07c1941bef20f",
+        "size": 3807
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/MotraLogs.json",
+        "sha256": "902539248bb9951ebb55cc4db2840ab9f0ffed4c08b14056b6bf13a776c67bcf",
+        "size": 1463
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/MusemaTapeLogs.json",
+        "sha256": "40c34d672b403cded41ac3b920e4f7d8759e932aacafe3ba9086086e91932af9",
+        "size": 25919
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/OldredLogs.json",
+        "sha256": "80ad4d123f296790981d989e4c1fa7bf2712a056da70769de9e15d8a76e113d9",
+        "size": 5881
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/PolarusLogs.json",
+        "sha256": "55fc9e080c447d0404bc3a5e11e1fa3950b5e61d3e7cebfdc31f3ed84060df57",
+        "size": 3443
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/RepressLogs.json",
+        "sha256": "ba1ba793968b34410dcb68011f8b414c70d8ab76fc22e681e88ccb75881de3b3",
+        "size": 6641
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/ResearcherLogs.json",
+        "sha256": "c7e526deabf395397bc69c4ce983318f6bf4f38c682678b9bb8f0694ee557fcd",
+        "size": 17403
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/RRLogs.json",
+        "sha256": "7a1ab8724fe72dba3a33db4fa762e202917ce1cc67a1bfe5c5ede310de832bb1",
+        "size": 2223
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/ThalassoLogs.json",
+        "sha256": "4e208d7e67e502fca91b99f8d9f77afbbb7132da83bc9aac1d0eff9e3e49ad73",
+        "size": 3793
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/TriteLogs.json",
+        "sha256": "df6a125813c96b8f6b9e1cdccf36f4dff148c58fbd1a7a12c32fc6ad3f20b8d4",
+        "size": 3975
+      },
+      {
+        "path": "BepInEx/plugins/CustomStoryLogs/logs/UtrilLogs.json",
+        "sha256": "a2ff64560461cdb81ce657e15d50b73bc2516e6612197e645372dedcab8867da",
+        "size": 5316
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/alcatras.lethalbundle",
+        "sha256": "3695f7539c30611c9b5122960b18fc3e4d037f733b4fa8eed4d1b6fffdc7572d",
+        "size": 8750808
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/AlcatrasModConfigsJLLMod.json",
+        "sha256": "8ca75436cad6f40d9cbea99022b841dfc61d8072b3eb35a2e6f377affa761b44",
+        "size": 285
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/alcatrasscene.lethalbundle",
+        "sha256": "b4419baaca55d9002c3b4466eea38f3712c3a088bfd9687a51dce830041fa21b",
+        "size": 27277100
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/artmuseum.lethalbundle",
+        "sha256": "58fea565f3c7e13638bec25466860c61861e92d1fed29246a7d943e3a42807d3",
+        "size": 291370574
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/artmuseumart.lethalbundle",
+        "sha256": "c31a421983f7eed730481741f6fd8edfa616ae37e3c816f33bbbbd089660cee7",
+        "size": 1896611
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/artmuseumscene.lethalbundle",
+        "sha256": "fa487df2c81707b9a12954a33f2415df613a043ba61952dd523172f6d515128b",
+        "size": 56514703
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/asteroid13.lethalbundle",
+        "sha256": "660fecd48b7e089b753d219a36da5a40552a69f24346d89f8b23584264b0ff7b",
+        "size": 11890999
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/asteroid13scenes.lethalbundle",
+        "sha256": "d87b172b2f3c012399d8bbccf5b40d564fe867ea89a397bf7bd483fb951cf489",
+        "size": 23880208
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/asteroid14.lethalbundle",
+        "sha256": "8f985fd1de8b61d58e5b002fe17ec266eb67af185a9974dd14181a59be839d7d",
+        "size": 7257287
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/asteroid14scene.lethalbundle",
+        "sha256": "a8b90443099202184d2f2d5fc633f3f29523cef0386f9628b7a59b8777cad2ca",
+        "size": 38104820
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/atlantica.lethalbundle",
+        "sha256": "7cb67adf02f214c280bccbc2a1581234d90fac41ac6231ff9f57a37d4c09da8b",
+        "size": 6860810
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/atlanticascenes.lethalbundle",
+        "sha256": "ce8edccec167708129092bc8686559f60cd6f4c0c7ffef9235422e09a2e9e4ae",
+        "size": 27315170
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/berunah.lethalbundle",
+        "sha256": "456f4554c879616dc230fd228112440640194bef64839162257c41656c751922",
+        "size": 6866715
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/berunahscene.lethalbundle",
+        "sha256": "a97d861dd0508213da600a0d393791a8de95f0594d93be8177969d6b6ff7bc04",
+        "size": 37016084
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/calist.lethalbundle",
+        "sha256": "738a6a5e33113ed28ed690837e76392f8d5a3ab88977bbcac1967f5509b6f4a7",
+        "size": 9920296
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/calistscene.lethalbundle",
+        "sha256": "5e854f0297a9b3333ad08add996713d974eeb853660610023e76010350cb2630",
+        "size": 12083621
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/carnate.lethalbundle",
+        "sha256": "6496fba61c8231fb0a52bc654ef789ae5e84820923166ff2764f41aafe543362",
+        "size": 6516754
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/carnatescene.lethalbundle",
+        "sha256": "e2392d7c6c405ae2764887f5c7e6b13a32e05c9cee0563861099dbb6271987ec",
+        "size": 37162370
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/centus.lethalbundle",
+        "sha256": "6ab24efd2de9970e61b5f0096e808f977bdeabcb577a5a450406241a169a4647",
+        "size": 5383203
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/centusscene.lethalbundle",
+        "sha256": "ecbadcf40d0e27c0a170f1f4c56d4612c7ba8ac28b949c586865e0d148c9a9be",
+        "size": 48225587
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Moons/CHANGELOG.md",
+        "sha256": "6bf2f4f52383311215a26649809d4e814b2cb13085ee7a073e313ed0c67c0072",
+        "size": 64399
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/chasm.lethalbundle",
+        "sha256": "b385385ce81a5a9a88a7cef7e0bda041fa5a735d524c430e1e66b473cf5bed91",
+        "size": 5243641
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/chasmscene.lethalbundle",
+        "sha256": "d58593a847e5eabdbfa1db50cf9481b3d4dabb5f0d8a73d777a3a32c31f70f9c",
+        "size": 39036593
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/core.lethalbundle",
+        "sha256": "98e369da0b192524f61289496212be832d6e1dbfc31205ea743cb1e1567f0619",
+        "size": 5535056
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/corescene.lethalbundle",
+        "sha256": "24c4c6f068cea66b99a53670094adea6ee8643bafe21c1f25f36a70618979129",
+        "size": 35119374
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/cosmocos.lethalbundle",
+        "sha256": "5facad7e7aa51ea6ce2fc2fa710f594590c6db5b21a357cd09da5b5b080549d4",
+        "size": 13974257
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/cosmocosscene.lethalbundle",
+        "sha256": "f3b39705566ec04cee32d6b092715f6205c48df9aec175796b5bda558e92eade",
+        "size": 36386255
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/crowed.lethalbundle",
+        "sha256": "29097765348245956bd9d80b5b151ae8447764757541e4d7b88e1e55d4ca12d2",
+        "size": 12620503
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/crowedscene.lethalbundle",
+        "sha256": "8568e964f27b05e91fd116b350e192207d4d63a80b2f978515d7365f053e9871",
+        "size": 32931876
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/cubatres.lethalbundle",
+        "sha256": "9dc344a16ae402ea2c57a0da108889368c80dd1a212da75ba45e9e824e983031",
+        "size": 4847021
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/cubatresscene.lethalbundle",
+        "sha256": "fec847e6e51accbf4d10a4dbf5cd5aa47f4e7304f077e4a2e58476619bae4e6e",
+        "size": 32093888
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/demetrica.lethalbundle",
+        "sha256": "84754a413d0d91f032be5f92d9533e652cbe1c27c2b53e36a3877fae2a2ca8c1",
+        "size": 8248297
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/demetricascene.lethalbundle",
+        "sha256": "f39aa3d359538483a82e14723ba77c2f5241e3ef7f222299a06ca376abd86b05",
+        "size": 23869128
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/descent.lethalbundle",
+        "sha256": "edc9fa39e1ef16974ab9dc797479efba955c2806ab47f2eb4cd22375192cdcf8",
+        "size": 18951059
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/descentscene.lethalbundle",
+        "sha256": "7da9ce844cd7577e884bb13621a8ece79973520ba797e3d161898895087d26b5",
+        "size": 18493965
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/desolation.lethalbundle",
+        "sha256": "87a92d4684eef32d78738ab24d999b304ab89fbf74444726c7c10cf12a32fe6e",
+        "size": 14185873
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/desolationscenes.lethalbundle",
+        "sha256": "d25c7d0bfcd8b36509e3775b66f0ff96b17d31f4acc8c8299f91fb15be205b1c",
+        "size": 21667008
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/dormant.lethalbundle",
+        "sha256": "bd599b6ac27fab74146e00f6fef0e5cdf8e8378e96b12ca7bf849313f3b20fac",
+        "size": 8055558
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/dormantscene.lethalbundle",
+        "sha256": "14ce6c581db7c72ebc0ed9ec4b56f82874328e53555b5e66e017ff1b9123581a",
+        "size": 24684984
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/dune.lethalbundle",
+        "sha256": "849fec72e01fc48b9dcc044bd6848ec785464ca2c85afea84c13c76cb54d1ae3",
+        "size": 12026627
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/dunescene.lethalbundle",
+        "sha256": "ad3d11c32fa121bbe431c57a1bb0cd5bcf3d8bf52b656edd9721e1be078dcfef",
+        "size": 28366369
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/empra.lethalbundle",
+        "sha256": "6fcaf9957db0e9b30aa0b45d36689ec6cb54595bb7da7a42b611684e80d4023f",
+        "size": 6065680
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/emprascene.lethalbundle",
+        "sha256": "417a9b0e5e68e891b0cf439e8f1e63c78872bac1dcadcec920498c8453781abb",
+        "size": 42444484
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/end.lethalbundle",
+        "sha256": "fdb56b2ca4a82a816405d23fce4af75a7081496c2d59b838e5135dc60cdc6519",
+        "size": 403562
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/endscene.lethalbundle",
+        "sha256": "9f7622cf9f5020c085fd413e5d8faaa002465bb7e5832d9f501d70cab21be838",
+        "size": 26611956
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/etern.lethalbundle",
+        "sha256": "cb6e48cabb6fb0bbb7edfc85c6734cf696b6f44ca8d3409f991f69f25bb19405",
+        "size": 7796058
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/eternscenes.lethalbundle",
+        "sha256": "7534af681a0abe93fd6a0134d8b0b7899d00d02434532dbd57922a13aae9f264",
+        "size": 41384936
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/extort.lethalbundle",
+        "sha256": "5d39a9da3ded4dcbb25d440e637cb21e14dc9a9d65aa2c981b4222b799a831df",
+        "size": 8665099
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/extortscene.lethalbundle",
+        "sha256": "c016a96c0430f1994ad13ae2fa5ea1ef4b779b6da5959b9d0a9416ed3f901f9a",
+        "size": 57966779
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/facilityc.lethalbundle",
+        "sha256": "919360425d04c8ea945340c175e833586bcd5b7b8a08ded1a9ae0085a529df6f",
+        "size": 1379036
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/facilitycscene.lethalbundle",
+        "sha256": "78688e030478b6a5b14a340f6129340a90d6fd15ab62ea693c9d97f60b922d77",
+        "size": 36554448
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/faith.lethalbundle",
+        "sha256": "b163abf3f10cb5e187ecb18fccf5d854c38bfbeed5ad60c7125ac75825870aae",
+        "size": 5929727
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/faithscene.lethalbundle",
+        "sha256": "8102bb894f5065b024f4a19ff0635aa4d58e4286f5e5ca67f497554bb7d780fe",
+        "size": 35827987
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/filitrios.lethalbundle",
+        "sha256": "c8fe806db51551d2df468f9d1d929b0be5bd193708fa3f5efa0ab363ea6ea894",
+        "size": 10897804
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/filitriosscene.lethalbundle",
+        "sha256": "f5b4387a43bb3202cc1f4d2107a892d056811a51ebece29694e919defda36e61",
+        "size": 64150344
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/fission.lethalbundle",
+        "sha256": "7739eb1057f635664e2ca3b09699e6299d4b4074ca1f3ba30d136ca77723aafb",
+        "size": 4660023
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/fissionscenes.lethalbundle",
+        "sha256": "1bd2b9973392f0fecf5e5b9e0b1952f43e31161426bbf50d452c6de43950978e",
+        "size": 25166970
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/glace.lethalbundle",
+        "sha256": "650ce04aace4f961632e225b72b7ac317c0dbe066c035cad69baaf1300dc60c3",
+        "size": 5282425
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/glacescene.lethalbundle",
+        "sha256": "d13e868a55aa3c97c9f5d495a3b4e6583464470eed9bd1f7455a5e10263f72b2",
+        "size": 45929097
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/gloom.lethalbundle",
+        "sha256": "503dac4270bf0e69116237628399dc37685291f32f38f7da5422b1839f88585c",
+        "size": 8293919
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/gloomscenes.lethalbundle",
+        "sha256": "876bb7ca618ffa17e0761e7441fc515d3e20b797699a949bdca4681d738a791e",
+        "size": 39800810
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/gratar.lethalbundle",
+        "sha256": "443ff9e6a75c76eb5575fb35592ce216895d06f46a7bebcaa06c74ed2ff66064",
+        "size": 10008327
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/gratarscenes.lethalbundle",
+        "sha256": "fbec076f03d5f18543fd5ed8c552977b4245c1f7acb529af470f415d4778dd7d",
+        "size": 38190998
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/heap.lethalbundle",
+        "sha256": "7b1fa3147bf8494cb922a20145fba7aa253fd8fb674e83b486a7b20a4f961057",
+        "size": 11468047
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/heapscene.lethalbundle",
+        "sha256": "353b73aa1a8ce4eb3dfc867128c435891cb84706e8a5ab6a41e72701fa879c60",
+        "size": 33662367
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/hydrene.lethalbundle",
+        "sha256": "3df7b6f678dec74d19754aeb64351590a1b3ad74067ef980f72a1fcae4ae5e6b",
+        "size": 4435717
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/hydrenescene.lethalbundle",
+        "sha256": "d34bc9480025cfcfc0d9aaf90fd42d77663bf882b68e2cfece3ee083cd383dd5",
+        "size": 31961610
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Moons/icon.png",
+        "sha256": "da68ec75a3e34e87ee60295565db7cc1f36de01444696207d4b68e9e010c3c99",
+        "size": 2154
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/infernis.lethalbundle",
+        "sha256": "1764034127c609fd9096e2f8839a1458eeaadd5446a6ab1c2ea6848a524b5389",
+        "size": 27645269
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/infernisscenes.lethalbundle",
+        "sha256": "c97d1740c8306c98d34e10ef097367a767b29f3f4ef7aa1c1712cb8f675f52b9",
+        "size": 29061492
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/junic.lethalbundle",
+        "sha256": "fa54dba2e8375f263d43ee2592ea70ce66067251c14b8d7065af50a8cc0f74cf",
+        "size": 8038909
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/junicscenes.lethalbundle",
+        "sha256": "d5743e4b1c29c49869438ec9904e22c6da8d59bc982088296354bd4e786058d4",
+        "size": 36548693
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/kryte.lethalbundle",
+        "sha256": "4789f586fc7945515bdda2f769a7cf3369caca772c3aaa756c65740adb816566",
+        "size": 12264237
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/krytescene.lethalbundle",
+        "sha256": "f76d89b9214db5913d1c6ece09c04d94444f81e3c3523a9d7d772595f706fc47",
+        "size": 31655213
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/lecaro.lethalbundle",
+        "sha256": "ccbf2899dff768ad0d44cb0fd80bacfa53dbcdd5410d91fc5e28337d87db4751",
+        "size": 10778391
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/lecaroscene.lethalbundle",
+        "sha256": "c03742ac992d7997e520c08b022e51a3acfb35f8e7436069452f7687605ec5a1",
+        "size": 36242654
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Moons/manifest.json",
+        "sha256": "68c25faad142279a8fda7928b40e91ed4d17037854e1b288eee98704c1e57d01",
+        "size": 739
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/Moonextras.lethalbundle",
+        "sha256": "994a1cf0743b2925550523d9a6465cc101df8d7ecf33b62eb117329960f9b367",
+        "size": 5505790
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/Moonextras2.lethalbundle",
+        "sha256": "e2b53d406b3d18c62d41331fd92f1bf3c21a4edd99da663b30df9982a7051183",
+        "size": 8643513
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/motra.lethalbundle",
+        "sha256": "06649c14efb9c99185cc433d05f2fbb083caebf7cc4077d36e1459a31e006455",
+        "size": 7979199
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "JacobG5.WesleyMoons",
+        "version": "2.0.0",
+        "file": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/WesleyMoons.dll",
+        "source": "candidate",
+        "hard_dependencies": [
+          "MaxWasUnavailable.LethalModDataLib"
+        ]
+      }
+    ]
+  },
+  "Magic_Wesley-WesleysInteriors": {
+    "package": "Magic_Wesley-WesleysInteriors",
+    "version": "5.0.19",
+    "official_latest": "5.0.19",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "Evaisa-HookGenPatcher-0.0.5",
+      "JacobG5-JLL-1.10.1",
+      "Alice-DungeonGenerationPlus-1.5.1",
+      "IAmBatby-LethalLevelLoader-1.7.12",
+      "Magic_Wesley-Wesleys_Shenanigans-1.0.0",
+      "Magic_Wesley-Wesleys_Ememy_Variants-1.3.0"
+    ],
+    "url": "https://thunderstore.io/package/download/Magic_Wesley/WesleysInteriors/5.0.19/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Magic_Wesley/WesleysInteriors/",
+    "source": "",
+    "archive_sha256": "92a0b00e48e7be8e78ec555253e0f3e9d4c312816d2c96fcdd4dac527fea0979",
+    "reason": "User-requested content",
+    "archive_size": 613822674,
+    "files": [
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/grandarmoryinterior.lethalbundle",
+        "sha256": "941b61bb1211a1eb4640f732e593dc6528b3022fa804436379bd334788cbc4aa",
+        "size": 57705815
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/greenhouseinterior.lethalbundle",
+        "sha256": "4f94a758a1a399f1e88e67bda89a7aab657e6391199d1af5e9bfea00f045bf98",
+        "size": 34762197
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-WesleysInteriors/icon.png",
+        "sha256": "1755097db9ffb4b9e99fa89d557def637b9732178b5ffc3930fd01b7221d22bf",
+        "size": 1344
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-WesleysInteriors/manifest.json",
+        "sha256": "514b9730345db726edb96d459ddedf5b8c209bd7356cd35aef17fad8f7779cb1",
+        "size": 476
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/museuminterior.lethalbundle",
+        "sha256": "1e9b620d6bfbd6bfb305a4a677629c650f315d5c8b05c2625aa564ace3cc6828",
+        "size": 65969529
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-WesleysInteriors/README.md",
+        "sha256": "727df7e4b2de7cd2a2da97402fecba845c22534050968d6fd470a4e5b5a728fd",
+        "size": 7568
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/sewers.lethalbundle",
+        "sha256": "aa40559039a5ee5033d22295c4a098d9d83cf52ef5608ec3bee438b10f5dcfb8",
+        "size": 45622861
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/spookymanor.lethalbundle",
+        "sha256": "9568314a15c767c4bb6e2e13d28731c3487daaded576d31f08b9dced2bd0f140",
+        "size": 73944380
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/therubberrooms.lethalbundle",
+        "sha256": "a53444d5c282b0b8f9e250607c44d28122fbafd002419e2ef65ab44feb2ed84e",
+        "size": 54741149
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/toystoreinterior.lethalbundle",
+        "sha256": "7a61c9f1d317521a98ff46d77360fd05414685a4fe7ddb6605675e76bcd67ca3",
+        "size": 47612909
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/WesleysInteriorShenanigans.dll",
+        "sha256": "67bd403adaf18f19c12e362b7eb43e0012f6e3ba101681f44cd0926a8f543f53",
+        "size": 6656,
+        "candidate_sha256": "fb742025dea576a998af504f98ab5e7534b3ba43c1024950b50dbdf95b61fa30",
+        "candidate_note": "V81 DunGen scope relocation; see Relink-InteriorDunGen.ps1"
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/atlanticdungeoninterior.lethalbundle",
+        "sha256": "10f5debc8362334e32602145f1aae613fa2051d603a8f852242a0fdb5844ea93",
+        "size": 34229271
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/carnivalinterior.lethalbundle",
+        "sha256": "173f629cbabe9702808828ec03f52b5afca63bd2959f850fa974671beee22143",
+        "size": 29415590
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-WesleysInteriors/CHANGELOG.md",
+        "sha256": "bb84f277abbe2a0b9898b0dfbdb7aaf724675a33c4558ddd51bb0302ae4913ea",
+        "size": 37236
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/dreadlab.lethalbundle",
+        "sha256": "0641fd58a328741abd1f14923691fcb95fcd0f610b79bd4095a6e4a0a88ce73c",
+        "size": 45172360
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/expandedfacility.lethalbundle",
+        "sha256": "b6a304abc75f76aaa0595c50edf568c51e198d50e8de9135fd08a464d4cc4f60",
+        "size": 40448488
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/extendedmineshaft.lethalbundle",
+        "sha256": "4c9184d33fbee00478ab5eca742d76668e3a5c84a04460d2f01890f01f113462",
+        "size": 38013713
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/fracturedcomplex.lethalbundle",
+        "sha256": "482af9647d4bda65374b595feb60328d1d4d92b4b848051b09e2e1889e907af2",
+        "size": 46070315
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "MW.MagicWesleyInteriors",
+        "version": "1.0.0",
+        "file": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/WesleysInteriorShenanigans.dll",
+        "source": "candidate",
+        "hard_dependencies": []
+      }
+    ]
+  },
+  "Magic_Wesley-Facto": {
+    "package": "Magic_Wesley-Facto",
+    "version": "1.2.1",
+    "official_latest": "1.2.1",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "Hardy-LCMaxSoundsFix-1.2.0",
+      "JacobG5-JLL-1.10.1",
+      "AudioKnight-StarlancerAIFix-3.13.2",
+      "IAmBatby-LethalLevelLoader-1.7.12",
+      "Magic_Wesley-CustomStoryLogsFixed-1.6.1",
+      "Magic_Wesley-Wesleys_Shenanigans-1.0.0",
+      "Magic_Wesley-Decrepit_Store-1.0.0"
+    ],
+    "url": "https://thunderstore.io/package/download/Magic_Wesley/Facto/1.2.1/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Magic_Wesley/Facto/",
+    "source": "",
+    "archive_sha256": "2c84012df2b87b5195dcd6d95cc93edd25f99ad7690e4c05728bbf9c95b4af00",
+    "reason": "User-requested content",
+    "archive_size": 56243782,
+    "files": [
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Facto/facto.lethalbundle",
+        "sha256": "ff6d5b20b55d07479073331adea1495fb65232f902f2cef27ecda0835a690d6b",
+        "size": 37909257
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Facto/factoscene.lethalbundle",
+        "sha256": "0a0809900b280fa6becdf8ac40b4ece8cfa51457a5ce5dbc2024d718817c9dc3",
+        "size": 18248336
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Facto/icon.png",
+        "sha256": "e30ffdf6ecebc217b6520d396afa80ab54ff30628067b09208f7cfacb195d790",
+        "size": 49419
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Facto/iconold.png",
+        "sha256": "2533d14e9a90e6e8acca0ad92b0c0a34298482824db3b0c5170e62d2dd7cadb7",
+        "size": 25195
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Facto/manifest.json",
+        "sha256": "de4cf489cb0a7be6d3bd16548bfb5317174338496cc4f8c323ed5d333bbd29ca",
+        "size": 630
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Facto/README.md",
+        "sha256": "57a8f7a942e164d62dffcb1cd99c3281922edc9813a33e2d62b89a8b4739a7ed",
+        "size": 1510
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Facto/TheOriginalIcon.png",
+        "sha256": "8b22e218c6d8fe3853fa7392f9f3abc56102dece0f37eb49eaaf4d4a4bec4415",
+        "size": 1632
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Facto/CHANGELOG.md",
+        "sha256": "d40945dcd89123ff154f0e1378850b7c510006b91464539790088806ccdf8c79",
+        "size": 323
+      }
+    ],
+    "plugins": []
+  },
+  "Magic_Wesley-Decrepit_Store": {
+    "package": "Magic_Wesley-Decrepit_Store",
+    "version": "1.0.2",
+    "official_latest": "1.0.2",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "Hardy-LCMaxSoundsFix-1.2.0",
+      "AudioKnight-StarlancerAIFix-3.8.4",
+      "IAmBatby-LethalLevelLoader-1.4.11",
+      "JacobG5-JLL-1.10.1",
+      "Magic_Wesley-Wesleys_Shenanigans-1.0.0",
+      "Magic_Wesley-Wesleys_Ememy_Variants-1.3.0"
+    ],
+    "url": "https://thunderstore.io/package/download/Magic_Wesley/Decrepit_Store/1.0.2/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Magic_Wesley/Decrepit_Store/",
+    "source": "",
+    "archive_sha256": "0951b8b7e8f7118d85ef1b5a9d7049556b048bbb65ab437fa013e4a65d55cc52",
+    "reason": "User-requested content",
+    "archive_size": 32388943,
+    "files": [
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Decrepit_Store/README.md",
+        "sha256": "20721b65824925fc5f7d1613c8d0a2a59e41efaf31f71b81164cb4e86b09c591",
+        "size": 2913
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Decrepit_Store/storeinterior.lethalbundle",
+        "sha256": "128ace3b4339db21243f0d61f4c7a30b586e109cbb7edbdeeb72190d91ece699",
+        "size": 32381635
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Decrepit_Store/icon.png",
+        "sha256": "39995b1255cd765f4aacd14121a94a71a7e040861e0e691a597109393e3a727b",
+        "size": 606
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Decrepit_Store/manifest.json",
+        "sha256": "126594456f0dd94648f58191baeaee77fa19962ac8c9a10aa5dd77624f3181d3",
+        "size": 489
+      }
+    ],
+    "plugins": []
+  },
+  "BepInEx-BepInExPack": {
+    "package": "BepInEx-BepInExPack",
+    "version": "5.4.2305",
+    "official_latest": "5.4.2305",
+    "installed": "5.4.2305",
+    "action": "reuse",
+    "dependencies": [],
+    "url": "https://thunderstore.io/package/download/BepInEx/BepInExPack/5.4.2305/",
+    "page": "https://thunderstore.io/c/lethal-company/p/BepInEx/BepInExPack/",
+    "source": "https://github.com/BepInEx/BepInEx",
+    "archive_sha256": "f99b6302b6bdca5bab26f275c261cca448b29bbac34eaa5cbebb42c4246fb244",
+    "files": [
+      {
+        "path": "BepInEx/core/0Harmony.dll",
+        "sha256": "1a21cc03424fc82c3dd1346905d16494536b9595ae4162228d99fb7c285c1031",
+        "size": 204800
+      },
+      {
+        "path": "BepInEx/core/0Harmony20.dll",
+        "sha256": "c755a5ab2712915a32f9a850d580a8c1b70ff1653bc76600f2767aa8ffccc663",
+        "size": 112640
+      },
+      {
+        "path": "BepInEx/core/BepInEx.dll",
+        "sha256": "8255b28902886085c578b9e427d3073c97002db85176d2090cdeda90ef14ce70",
+        "size": 128512
+      },
+      {
+        "path": "BepInEx/core/BepInEx.Harmony.dll",
+        "sha256": "00c8f2ac48593e4d45ce4eb26ce4e68b18113c5c489b38b8bf0850f65830d601",
+        "size": 6656
+      },
+      {
+        "path": "BepInEx/core/BepInEx.Preloader.dll",
+        "sha256": "55d3895351a9d16b63b6f35f1c01b44ac650979e853d0bd3a442b92a082af64f",
+        "size": 43008
+      },
+      {
+        "path": "BepInEx/core/HarmonyXInterop.dll",
+        "sha256": "7ce1342d3afa0334b59a3e38c0aed15e162b9abe9d46f95f34be44af47f3b493",
+        "size": 23552
+      },
+      {
+        "path": "BepInEx/core/Mono.Cecil.dll",
+        "sha256": "7ae470288fff4a402899c254d0a76cefef55877f5c54f96e83c797cc5bb6e2f6",
+        "size": 339456
+      },
+      {
+        "path": "BepInEx/core/Mono.Cecil.Mdb.dll",
+        "sha256": "5896d1898f616701fff18f3b2c71e6b844d2390ef9f41e1c5fccce8cb27c698e",
+        "size": 43008
+      },
+      {
+        "path": "BepInEx/core/Mono.Cecil.Pdb.dll",
+        "sha256": "174db44a067f58561510af746f3caeb032037762c57a31c8d9ee32db25174984",
+        "size": 86528
+      },
+      {
+        "path": "BepInEx/core/Mono.Cecil.Rocks.dll",
+        "sha256": "54ac539fb5ddc8b44c0e9acd0fcb7324f89d1a072edf8ebc1b06dd691e3d3927",
+        "size": 27648
+      },
+      {
+        "path": "BepInEx/core/MonoMod.RuntimeDetour.dll",
+        "sha256": "40e49bb314391cd7bddc2644f8553eeba92c194b940836b103df16955c464e0c",
+        "size": 105984
+      },
+      {
+        "path": "BepInEx/core/MonoMod.Utils.dll",
+        "sha256": "9d1495f147ac93c4f81f84538c1a326e8f8a6aefc78d6289d798f3ce1162c5e9",
+        "size": 187904
+      },
+      {
+        "path": "winhttp.dll",
+        "sha256": "8c6cdbc38836dee87e3368f5de1994d7c0ccebf29e4ce7aba3c0981f9375412c",
+        "size": 26112
+      },
+      {
+        "path": "BepInEx/pack-info/BepInEx-BepInExPack/manifest.json",
+        "sha256": "530d3168fa5c1c5fd7976e148b532a188f30b979768527013880b730196a1352",
+        "size": 241
+      }
+    ],
+    "reason": "Existing version satisfies all manifest requirements; actual installed DLL retained.",
+    "plugins": []
+  },
+  "MaxWasUnavailable-LethalModDataLib": {
+    "package": "MaxWasUnavailable-LethalModDataLib",
+    "version": "1.2.2",
+    "official_latest": "1.2.2",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100"
+    ],
+    "url": "https://thunderstore.io/package/download/MaxWasUnavailable/LethalModDataLib/1.2.2/",
+    "page": "https://thunderstore.io/c/lethal-company/p/MaxWasUnavailable/LethalModDataLib/",
+    "source": "https://github.com/MaxWasUnavailable/LethalModDataLib",
+    "archive_sha256": "23d56d3a693d75820fae2fa6cbd150fd46de8c4c60afd80c913f6babc07b511f",
+    "reason": "Manifest dependency",
+    "archive_size": 29714,
+    "files": [
+      {
+        "path": "BepInEx/pack-info/MaxWasUnavailable-LethalModDataLib/icon.png",
+        "sha256": "68697e5d847a9c08ed243379d426bd21e7cf936e3f8d9e23a9604817fff61a33",
+        "size": 2301
+      },
+      {
+        "path": "BepInEx/pack-info/MaxWasUnavailable-LethalModDataLib/README.md",
+        "sha256": "a5be66e53163ef80edc8f6623ebe8773eb50075c2992f8064088446225e73b7d",
+        "size": 18566
+      },
+      {
+        "path": "BepInEx/pack-info/MaxWasUnavailable-LethalModDataLib/manifest.json",
+        "sha256": "9809386881c5afc7522778001bd90b6baf41e28b8df4e8f1c0d95ff58d1ddd20",
+        "size": 393
+      },
+      {
+        "path": "BepInEx/pack-info/MaxWasUnavailable-LethalModDataLib/LICENSE",
+        "sha256": "7cd1c884e32c9ede9cf6451040c53a9ab3319578007b54053bace93b8d6a6910",
+        "size": 7489
+      },
+      {
+        "path": "BepInEx/pack-info/MaxWasUnavailable-LethalModDataLib/CHANGELOG.md",
+        "sha256": "713e6274924a86dd1fff87c189fc5e688782c4e46782889d5c97b1d8bbfc87ad",
+        "size": 4768
+      },
+      {
+        "path": "BepInEx/plugins/LethalModDataLib/MaxWasUnavailable.LethalModDataLib.dll",
+        "sha256": "2d9b35d78dd71a08ec7497dfbd714d19f98b4d9f913e6601b00fd8029ce4875b",
+        "size": 41984
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "MaxWasUnavailable.LethalModDataLib",
+        "version": "1.2.2",
+        "file": "BepInEx/plugins/LethalModDataLib/MaxWasUnavailable.LethalModDataLib.dll",
+        "source": "candidate",
+        "hard_dependencies": []
+      }
+    ]
+  },
+  "Hardy-LCMaxSoundsFix": {
+    "package": "Hardy-LCMaxSoundsFix",
+    "version": "1.2.0",
+    "official_latest": "1.2.0",
+    "installed": "1.2.0",
+    "action": "reuse",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100"
+    ],
+    "url": "https://thunderstore.io/package/download/Hardy/LCMaxSoundsFix/1.2.0/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Hardy/LCMaxSoundsFix/",
+    "source": "https://github.com/Hardeh/LCMaxSoundFix",
+    "archive_sha256": "6693301990080330ea0344121e809b7c9aa00e0a0ec1c600bad378885adfd57d",
+    "files": [
+      {
+        "path": "BepInEx/plugins/Hardy-LCMaxSoundsFix/LCMaxSoundsFix.dll",
+        "sha256": "92416046aa0be0a6226aa644772c7e1f0174accce42a29968619523a13afcfbd",
+        "size": 9728
+      },
+      {
+        "path": "BepInEx/pack-info/Hardy-LCMaxSoundsFix/manifest.json",
+        "sha256": "0f7e226ffa98c5bac84da1f83da2e7bcc3ed6b799d6688f2ad6bc1a9ed27a8c4",
+        "size": 360
+      }
+    ],
+    "reason": "Existing version satisfies all manifest requirements; actual installed DLL retained.",
+    "plugins": [
+      {
+        "guid": ".LCMaxSoundsFix",
+        "version": "1.2.0",
+        "file": "BepInEx/plugins/Hardy-LCMaxSoundsFix/LCMaxSoundsFix.dll",
+        "source": "installed",
+        "hard_dependencies": []
+      }
+    ]
+  },
+  "IntegrityChaos-LCCutscene": {
+    "package": "IntegrityChaos-LCCutscene",
+    "version": "2.0.1",
+    "official_latest": "2.0.1",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100"
+    ],
+    "url": "https://thunderstore.io/package/download/IntegrityChaos/LCCutscene/2.0.1/",
+    "page": "https://thunderstore.io/c/lethal-company/p/IntegrityChaos/LCCutscene/",
+    "source": "",
+    "archive_sha256": "51d44fb4364d5566cc3aafd96d1a0238b7a52fd0842ccbb84d32f3aaec6993c7",
+    "reason": "Manifest dependency",
+    "archive_size": 57313,
+    "files": [
+      {
+        "path": "BepInEx/pack-info/IntegrityChaos-LCCutscene/manifest.json",
+        "sha256": "9b76ebd9cda5e7ac378808ba403071426e94b8e3997a0c223963e1879fe633d8",
+        "size": 291
+      },
+      {
+        "path": "BepInEx/pack-info/IntegrityChaos-LCCutscene/README.md",
+        "sha256": "b183104559f3ff8885a262a3ff3fac28a830de4ed09323a874e4a9ed3505780c",
+        "size": 7200
+      },
+      {
+        "path": "BepInEx/plugins/IntegrityChaos-LCCutscene/LCCutscene/cutsceneasset",
+        "sha256": "432605e7915b1add46cfdbc71b99c6cc99cf4639d841bed1c8133d265c6d0b92",
+        "size": 1541
+      },
+      {
+        "path": "BepInEx/plugins/IntegrityChaos-LCCutscene/LCCutscene/LCCutscene.dll",
+        "sha256": "c2e8c0ba154ad3341ca5486b4b75ad2abf28c2d5e81dc8f5217ad9749927a865",
+        "size": 28672
+      },
+      {
+        "path": "BepInEx/plugins/IntegrityChaos-LCCutscene/LCCutscene/LCCutscene.pdb",
+        "sha256": "9063aa716cadb5945c5994862c8991e0e00aa8cc3b2ce37af13dcb6ca1939e44",
+        "size": 16424
+      },
+      {
+        "path": "BepInEx/pack-info/IntegrityChaos-LCCutscene/CHANGELOG.md",
+        "sha256": "ba27b1ca639b77c237578c3e91ad47999d0f9d799796e9e39c01458e634aea3d",
+        "size": 227
+      },
+      {
+        "path": "BepInEx/pack-info/IntegrityChaos-LCCutscene/icon.png",
+        "sha256": "5668367e63bd1c898d37dc33daf150cac920cadd7515c3587a4740415e91f109",
+        "size": 25864
+      },
+      {
+        "path": "BepInEx/pack-info/IntegrityChaos-LCCutscene/License.txt",
+        "sha256": "e66c269d4819aaab34b49ef5220c4ddab6756f21bb5180761a4eb8561f2b7bbd",
+        "size": 20850
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "Chaos.LCCutscene",
+        "version": "2.0.1",
+        "file": "BepInEx/plugins/IntegrityChaos-LCCutscene/LCCutscene/LCCutscene.dll",
+        "source": "candidate",
+        "hard_dependencies": []
+      }
+    ]
+  },
+  "JacobG5-JLL": {
+    "package": "JacobG5-JLL",
+    "version": "1.10.1",
+    "official_latest": "1.10.1",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2305",
+      "JacobG5-DestroyItemInSlotFix-1.0.0"
+    ],
+    "url": "https://thunderstore.io/package/download/JacobG5/JLL/1.10.1/",
+    "page": "https://thunderstore.io/c/lethal-company/p/JacobG5/JLL/",
+    "source": "https://github.com/JacobG55/JLL",
+    "archive_sha256": "3fdd0ab7503890b0a12ecac2331c460fed3a3777ede0d30b27510fcf12636f45",
+    "reason": "Manifest dependency",
+    "archive_size": 197496,
+    "files": [
+      {
+        "path": "BepInEx/plugins/JLL/JLL.dll",
+        "sha256": "bbe20f86805f8cb90cf8c88893b27b664d39ea79107edc826e1089f0ac473f5a",
+        "size": 188928
+      },
+      {
+        "path": "BepInEx/plugins/JLL/JLLItemsModule.dll",
+        "sha256": "9ac51bdaea96ba0792fa896940dd0ede26d1436e912f756c27b21e265bb2fd0d",
+        "size": 39424
+      },
+      {
+        "path": "BepInEx/plugins/JLL/WesleyMoonScripts.dll",
+        "sha256": "366f4ac03e77dc63bbba1118f6fbb821064237e3f745b4442b0c9ea7dbfbfcf8",
+        "size": 49152
+      },
+      {
+        "path": "BepInEx/pack-info/JacobG5-JLL/CHANGELOG.md",
+        "sha256": "057a3b6cdc5b4546a3e23b7909bfa30698d4d56ecbb613730ad8c0e9be7e7b68",
+        "size": 53564
+      },
+      {
+        "path": "BepInEx/pack-info/JacobG5-JLL/icon.png",
+        "sha256": "bd312f90e52f3bb282b123cdfc83eeed1d60ef608cdb8c6747ee658e415cde6a",
+        "size": 56776
+      },
+      {
+        "path": "BepInEx/pack-info/JacobG5-JLL/LICENSE.txt",
+        "sha256": "d5c73c2367ff0eac09505d4dfb7b2781ac498b361430329e0e78115552cf56f0",
+        "size": 1083
+      },
+      {
+        "path": "BepInEx/pack-info/JacobG5-JLL/manifest.json",
+        "sha256": "5887a5a73218897582eafa7f7998988e6276072c029596e337cceedde25510e8",
+        "size": 276
+      },
+      {
+        "path": "BepInEx/pack-info/JacobG5-JLL/README.md",
+        "sha256": "ad4c2f6e02f273a387d3bbc34cb81dce53a0d160d6a867649c3cea02c1b234a4",
+        "size": 238
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "JacobG5.JLL",
+        "version": "1.10.1",
+        "file": "BepInEx/plugins/JLL/JLL.dll",
+        "source": "candidate",
+        "hard_dependencies": []
+      },
+      {
+        "guid": "JacobG5.JLLItemModule",
+        "version": "1.3.7",
+        "file": "BepInEx/plugins/JLL/JLLItemsModule.dll",
+        "source": "candidate",
+        "hard_dependencies": [
+          "JacobG5.JLL"
+        ]
+      },
+      {
+        "guid": "JacobG5.WesleyMoonScripts",
+        "version": "1.1.7",
+        "file": "BepInEx/plugins/JLL/WesleyMoonScripts.dll",
+        "source": "candidate",
+        "hard_dependencies": [
+          "JacobG5.JLL",
+          "JacobG5.JLLItemModule",
+          "imabatby.lethallevelloader"
+        ]
+      }
+    ]
+  },
+  "AudioKnight-StarlancerAIFix": {
+    "package": "AudioKnight-StarlancerAIFix",
+    "version": "3.13.2",
+    "official_latest": "3.13.2",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2305"
+    ],
+    "url": "https://thunderstore.io/package/download/AudioKnight/StarlancerAIFix/3.13.2/",
+    "page": "https://thunderstore.io/c/lethal-company/p/AudioKnight/StarlancerAIFix/",
+    "source": "https://github.com/AudioKnight/Starlancer",
+    "archive_sha256": "b950134394e46534187cfdf3332556d79d7bf272539eaab1c6812d18f7b3bc7d",
+    "reason": "Manifest dependency",
+    "archive_size": 113167,
+    "files": [
+      {
+        "path": "BepInEx/pack-info/AudioKnight-StarlancerAIFix/CHANGELOG.md",
+        "sha256": "e5c52ca5f025d16eb3141f2cb573ab640fac6cdb933d75f0332c713ed9bc56ee",
+        "size": 6428
+      },
+      {
+        "path": "BepInEx/pack-info/AudioKnight-StarlancerAIFix/icon.png",
+        "sha256": "3d1f3ad2c5f327a0b19758634c1e0aa0c02e6c45b9c35dc2b493174b047e3b7c",
+        "size": 85070
+      },
+      {
+        "path": "BepInEx/pack-info/AudioKnight-StarlancerAIFix/manifest.json",
+        "sha256": "37b338afa2fc75a81b817ec2748df6cd6010e8bf83df28df9027778f4a05a7d4",
+        "size": 397
+      },
+      {
+        "path": "BepInEx/pack-info/AudioKnight-StarlancerAIFix/README.md",
+        "sha256": "0f85cb9b783cb2493843424a6e6cdc6eb1367b97b46614077833bfbfe42ac39b",
+        "size": 1105
+      },
+      {
+        "path": "BepInEx/plugins/AudioKnight-StarlancerAIFix/StarlancerAI.dll",
+        "sha256": "b517507b4acaabdfccf02e9b48ed13bc948cd7ca8f7c3374aed9d93e3cd37d99",
+        "size": 35840
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "AudioKnight.StarlancerAIFix",
+        "version": "3.13.2",
+        "file": "BepInEx/plugins/AudioKnight-StarlancerAIFix/StarlancerAI.dll",
+        "source": "candidate",
+        "hard_dependencies": []
+      }
+    ]
+  },
+  "IAmBatby-LethalLevelLoader": {
+    "package": "IAmBatby-LethalLevelLoader",
+    "version": "1.7.13",
+    "official_latest": "1.7.13",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "Evaisa-FixPluginTypesSerialization-1.1.4",
+      "BepInEx-BepInExPack-5.4.2305"
+    ],
+    "url": "https://thunderstore.io/package/download/IAmBatby/LethalLevelLoader/1.7.13/",
+    "page": "https://thunderstore.io/c/lethal-company/p/IAmBatby/LethalLevelLoader/",
+    "source": "https://github.com/pacoito123/LC_LethalLevelLoader",
+    "archive_sha256": "c46a0c21e133ed56888f6b571760e0538b341ec70dfd32ab4dba84c0efc3b150",
+    "reason": "Manifest dependency",
+    "archive_size": 246066,
+    "files": [
+      {
+        "path": "BepInEx/pack-info/IAmBatby-LethalLevelLoader/icon.png",
+        "sha256": "ffd4413400887e789ea57f7a3f60064fc526e617a9f8263ff3501d95ab7df751",
+        "size": 9706
+      },
+      {
+        "path": "BepInEx/pack-info/IAmBatby-LethalLevelLoader/README.md",
+        "sha256": "e0e22dca4dda897f16baaf0186eb70403f78747e3fd73a61414bdf120d68953e",
+        "size": 5045
+      },
+      {
+        "path": "BepInEx/pack-info/IAmBatby-LethalLevelLoader/manifest.json",
+        "sha256": "f6acf8cdb0b0dd71c26b45359dc2fced7c8a30a5ef681d76eaf049adac12aeaf",
+        "size": 470
+      },
+      {
+        "path": "BepInEx/plugins/IAmBatby-LethalLevelLoader/LethalLevelLoader.dll",
+        "sha256": "e9e44020713102ca89aa4a74176a0645eff41d859dd2767903f5f80b93264e75",
+        "size": 437248
+      },
+      {
+        "path": "BepInEx/patchers/LethalLevelLoader.Patcher.dll",
+        "sha256": "78c1ed2ea8acac6248a91632dea93533615d1113802407e6ed0e5aa98c657d91",
+        "size": 16896
+      },
+      {
+        "path": "BepInEx/pack-info/IAmBatby-LethalLevelLoader/CHANGELOG.md",
+        "sha256": "64be8a76b949f76f7a194bf2719bb0779c1416b5608d19b07990c09fe2aa7ee8",
+        "size": 57288
+      },
+      {
+        "path": "BepInEx/pack-info/IAmBatby-LethalLevelLoader/LICENSE.md",
+        "sha256": "14f1be5fedb88b90ae962237bf2fb30a59148e443ed6307abe9673a28d4c8d70",
+        "size": 1084
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "imabatby.lethallevelloader",
+        "version": "1.7.13",
+        "file": "BepInEx/plugins/IAmBatby-LethalLevelLoader/LethalLevelLoader.dll",
+        "source": "candidate",
+        "hard_dependencies": []
+      }
+    ]
+  },
+  "Magic_Wesley-CustomStoryLogsFixed": {
+    "package": "Magic_Wesley-CustomStoryLogsFixed",
+    "version": "1.6.1",
+    "official_latest": "1.6.1",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2305",
+      "Evaisa-LethalLib-1.2.0",
+      "xilophor-LethalNetworkAPI-3.3.3"
+    ],
+    "url": "https://thunderstore.io/package/download/Magic_Wesley/CustomStoryLogsFixed/1.6.1/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Magic_Wesley/CustomStoryLogsFixed/",
+    "source": "https://github.com/Yorimor/CustomStoryLogs",
+    "archive_sha256": "c5f759d08aace785bf5193c38f12ca664ad61787efb52e708f6cd96f1bd80d2f",
+    "reason": "Manifest dependency",
+    "archive_size": 726065,
+    "files": [
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-CustomStoryLogsFixed/yorimor.customlogs",
+        "sha256": "0778ef6a35459164f4413e71b9a6aa577b6de7dd8655609caf08ee29be827a4c",
+        "size": 539525
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-CustomStoryLogsFixed/Yorimor.CustomStoryLogs.dll",
+        "sha256": "8262f502fe865fcaf9bc26f7f3cf5108cbae0ff8018c15c5e50ad8bf423664b2",
+        "size": 51200
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-CustomStoryLogsFixed/CHANGELOG.md",
+        "sha256": "61801eaca5e591c0d97d5432397751a4a5bc01a2278b1e65e6e1d2ef1f6d4d11",
+        "size": 1176
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-CustomStoryLogsFixed/icon.png",
+        "sha256": "1873d7fe3da7744575eec908737f98ebab65ece1a0720a35c4e9aacee53e6cc7",
+        "size": 149141
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-CustomStoryLogsFixed/manifest.json",
+        "sha256": "6d673645cb3713fffd8c99abc6b2bcb9aa8799d4028e5d706cbe513ce6556bd0",
+        "size": 386
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-CustomStoryLogsFixed/README.md",
+        "sha256": "c0e47764b71ceb35a88c3974c62784ee5d0363f2c9e77c2e844de307e8d1c4ed",
+        "size": 7375
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "Yorimor.CustomStoryLogs",
+        "version": "1.6.0",
+        "file": "BepInEx/plugins/Magic_Wesley-CustomStoryLogsFixed/Yorimor.CustomStoryLogs.dll",
+        "source": "candidate",
+        "hard_dependencies": [
+          "evaisa.lethallib",
+          "LethalNetworkAPI"
+        ]
+      }
+    ]
+  },
+  "Magic_Wesley-Wesleys_Shenanigans": {
+    "package": "Magic_Wesley-Wesleys_Shenanigans",
+    "version": "1.0.25",
+    "official_latest": "1.0.25",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "MaxWasUnavailable-LethalModDataLib-1.2.2"
+    ],
+    "url": "https://thunderstore.io/package/download/Magic_Wesley/Wesleys_Shenanigans/1.0.25/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Magic_Wesley/Wesleys_Shenanigans/",
+    "source": "",
+    "archive_sha256": "0800844716444b6b1d46be8858c1d3876c10ed108910b2abf787f6cc1138c5b0",
+    "reason": "Manifest dependency",
+    "archive_size": 218802,
+    "files": [
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Shenanigans/CHANGELOG.md",
+        "sha256": "9623442fffe18ed3a5a07b46beb8f5d79e1a077c7f036e30a136c94871d3d22e",
+        "size": 189
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Shenanigans/DilapidatedManor.dll",
+        "sha256": "5eb2c8efeb2fde3c3d26c8f63952d5b965fa21d5cc790fc790d1aae40b7f1e9b",
+        "size": 24064
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Shenanigans/icon.png",
+        "sha256": "59f2c8fda168cf60986ce1fc347917b0bc17f89ea9138bb7dc04b6f2c283fa87",
+        "size": 1106
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Shenanigans/manifest.json",
+        "sha256": "b69d96855818531cc863c8db20c88ac43ace8d3d047830c514d7f49c50aff8cd",
+        "size": 267
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Shenanigans/README.md",
+        "sha256": "d1321c066e4c0e026849631a1ef0b2f050d2c0d59aa1847abbbb5d90ff9a5471",
+        "size": 77
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Shenanigans/WesleysInteriorTools.dll",
+        "sha256": "41e1224084885644fd4522c1eb544696e10eb52631d21a9a3be1b5a3b538b3f7",
+        "size": 617984
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Shenanigans/WesleysWeatherStuff.dll",
+        "sha256": "53f5873426e26c5d1d0839eb8574fd6cef4c4255c37f79419b00451c77fbd162",
+        "size": 4608
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "MagicWesley.WesleysInteriorTools",
+        "version": "1.0.3",
+        "file": "BepInEx/plugins/Magic_Wesley-Wesleys_Shenanigans/WesleysInteriorTools.dll",
+        "source": "candidate",
+        "hard_dependencies": []
+      }
+    ]
+  },
+  "Magic_Wesley-Wesleys_Ememy_Variants": {
+    "package": "Magic_Wesley-Wesleys_Ememy_Variants",
+    "version": "1.3.14",
+    "official_latest": "1.3.14",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "JacobG5-JLL-1.10.1",
+      "IAmBatby-LethalLevelLoader-1.7.12",
+      "Magic_Wesley-Wesleys_Shenanigans-1.0.0"
+    ],
+    "url": "https://thunderstore.io/package/download/Magic_Wesley/Wesleys_Ememy_Variants/1.3.14/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Magic_Wesley/Wesleys_Ememy_Variants/",
+    "source": "",
+    "archive_sha256": "2fc5d876f4c48dfba1025fc88cee2654ece728432792abf811943a15023eb1dc",
+    "reason": "Manifest dependency",
+    "archive_size": 59292493,
+    "files": [
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Ememy_Variants/enemyvariantspart4.lethalbundle",
+        "sha256": "d040164692692de524d4d93f46bd271b0863cb3a2dea1bf721dcfa6555849e67",
+        "size": 8009227
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Ememy_Variants/icon.png",
+        "sha256": "26eff200c5810657e620fc33013af0953e878f51a31a92eb7abeb8cac2f729ee",
+        "size": 1515
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Ememy_Variants/manifest.json",
+        "sha256": "e4ab4c958e454cc864389b4eb16c23e204edad86870b5dbb419e0efcf72e25f4",
+        "size": 366
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Ememy_Variants/README.md",
+        "sha256": "cfcf35c9c650355aa16051604e3d5a1a3194ad3fd60b57d5d3d2ca7efa7c121c",
+        "size": 2705
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Ememy_Variants/enemyvariants.lethalbundle",
+        "sha256": "089f357e2afc9d4b1786cbf55c09d4e420d2bbfd845d16080b3dada049c854e6",
+        "size": 45151426
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Ememy_Variants/enemyvariants3.lethalbundle",
+        "sha256": "5fb68af6dbaac4aeeb3c72e37481b6241966b9797734a4b9bdd3736f03332091",
+        "size": 4955250
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Ememy_Variants/enemyvariantsp2.lethalbundle",
+        "sha256": "96bc39d040b4a9846541ff97c0f2b003b355afe64621a018496f61bfee3b026d",
+        "size": 1164161
+      }
+    ],
+    "plugins": []
+  },
+  "Magic_Wesley-Wesleys_Weathers": {
+    "package": "Magic_Wesley-Wesleys_Weathers",
+    "version": "1.3.3",
+    "official_latest": "1.3.3",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "mrov-WeatherRegistry-0.8.8",
+      "JacobG5-JLL-1.10.1",
+      "IAmBatby-LethalLevelLoader-1.7.12",
+      "Magic_Wesley-Wesleys_Shenanigans-1.0.0",
+      "Magic_Wesley-Wesleys_Ememy_Variants-1.3.0"
+    ],
+    "url": "https://thunderstore.io/package/download/Magic_Wesley/Wesleys_Weathers/1.3.3/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Magic_Wesley/Wesleys_Weathers/",
+    "source": "",
+    "archive_sha256": "b35146281eb0fdbd8bbe0bc49632c47d746adcac2987bca96537f63a868c02e9",
+    "reason": "Manifest dependency",
+    "archive_size": 29370494,
+    "files": [
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Weathers/manifest.json",
+        "sha256": "332e339f8ac0de2b78a4b1351889790fa934131cba0534268c9166e4999e221d",
+        "size": 428
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Weathers/README.md",
+        "sha256": "3bb8ddbb52838a6742f8c690af33d48e7392affafb6da2e09de3a17980afb7cd",
+        "size": 3567
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Weathers/wesleysweathers.weatherbundle",
+        "sha256": "8c9dc076e7a77efca30b39a01a296049cd6e5931f12a1a8f1afe0d54ba6f1043",
+        "size": 18453678
+      },
+      {
+        "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Weathers/wesleyweathers.lethalbundle",
+        "sha256": "18cf44173b35bd48389158fd92b9bc55ad8cbcc4637c4774e64d8739ddf9f5ba",
+        "size": 10908216
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Weathers/CHANGELOG.md",
+        "sha256": "ff749c4dce8c4d6e371c42735bc354c009b3d604633dea65b4da3bf7838eb2dc",
+        "size": 1838
+      },
+      {
+        "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Weathers/icon.png",
+        "sha256": "f92ec35f4fd04b09340f633c88562f3156a20631ba1e7cd3e707718a483a63c5",
+        "size": 1301
+      }
+    ],
+    "plugins": []
+  },
+  "Evaisa-HookGenPatcher": {
+    "package": "Evaisa-HookGenPatcher",
+    "version": "0.0.5",
+    "official_latest": "0.0.5",
+    "installed": "0.0.5",
+    "action": "reuse",
+    "dependencies": [],
+    "url": "https://thunderstore.io/package/download/Evaisa/HookGenPatcher/0.0.5/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Evaisa/HookGenPatcher/",
+    "source": "https://github.com/harbingerofme/Bepinex.Monomod.HookGenPatcher",
+    "archive_sha256": "7081c8845daf3cd927682106c128b06f29488d61298616a8c82906302da86c6b",
+    "files": [
+      {
+        "path": "BepInEx/pack-info/Evaisa-HookGenPatcher/manifest.json",
+        "sha256": "f97b51623c7e2b17d419b3bf43e3269427a9fff66c0f9ad7e8c41ae10b92a322",
+        "size": 274
+      },
+      {
+        "path": "BepInEx/patchers/BepInEx.MonoMod.HookGenPatcher/BepInEx.MonoMod.HookGenPatcher.dll",
+        "sha256": "95fe40f8b8c49a991b9e69a1a1898575735c478ea6715a8f71f70bfc214d0b2b",
+        "size": 9728
+      },
+      {
+        "path": "BepInEx/patchers/BepInEx.MonoMod.HookGenPatcher/MonoMod.dll",
+        "sha256": "cc7a1093d6ead17f75545c8d8cc455fdafcb1aca48d9b887735cc21095833bb8",
+        "size": 66048
+      },
+      {
+        "path": "BepInEx/patchers/BepInEx.MonoMod.HookGenPatcher/MonoMod.RuntimeDetour.HookGen.dll",
+        "sha256": "79b2c4cef86328a482f4edc9a5973895f19d3f59566d4b57b0080bdf1872e802",
+        "size": 23552
+      }
+    ],
+    "reason": "Existing version satisfies all manifest requirements; actual installed DLL retained.",
+    "plugins": []
+  },
+  "Alice-DungeonGenerationPlus": {
+    "package": "Alice-DungeonGenerationPlus",
+    "version": "1.5.1",
+    "official_latest": "1.5.1",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "Evaisa-FixPluginTypesSerialization-1.1.4",
+      "IAmBatby-LethalLevelLoader-1.6.9"
+    ],
+    "url": "https://thunderstore.io/package/download/Alice/DungeonGenerationPlus/1.5.1/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Alice/DungeonGenerationPlus/",
+    "source": "https://git.touhou.dev/Raphtalia/DungeonGenerationPlus_LethalCompany_Mod",
+    "archive_sha256": "c67b8dc966ac826ae780b2f3e22966d491622aa010e02a3b06f32e93fec62426",
+    "reason": "Manifest dependency",
+    "archive_size": 798176,
+    "files": [
+      {
+        "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/CHANGELOG.md",
+        "sha256": "c8edd6c0bf7d49d542b036b960b22168dfa2ba46d35955914648ae9b928e0ae1",
+        "size": 1902
+      },
+      {
+        "path": "BepInEx/plugins/Alice-DungeonGenerationPlus/DunGenPlus.dll",
+        "sha256": "d6a437943ca536cc79a057308c9d2035d75b1f315336642da03800ffed945e13",
+        "size": 871424
+      },
+      {
+        "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/icon.png",
+        "sha256": "b251b37255e8c7b3554f89411bcf84b5142c47decd3b40b119509361e38d8772",
+        "size": 70943
+      },
+      {
+        "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/LICENSE",
+        "sha256": "94baf75319cecb509758ce01488a3b751e3e6fdcf73b481d0e4da7f393ad4f04",
+        "size": 1078
+      },
+      {
+        "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/LICENSE.txt",
+        "sha256": "33d3b1685796252291023afe844cbfec8959c76f1875b1c487d0792c7380243b",
+        "size": 18545
+      },
+      {
+        "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/manifest.json",
+        "sha256": "62cb387c37f7cd70c1a3ef5cb2ed73d6b95467d8c7558d3ce1f936cc32e66a67",
+        "size": 422
+      },
+      {
+        "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/README.md",
+        "sha256": "01ee1b0885eb0c45e84c150e3bdab5a499c0fa4d84de2feecc8b8e9d037fb299",
+        "size": 2202
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "dev.ladyalice.dungenplus",
+        "version": "1.5.1",
+        "file": "BepInEx/plugins/Alice-DungeonGenerationPlus/DunGenPlus.dll",
+        "source": "candidate",
+        "hard_dependencies": [
+          "imabatby.lethallevelloader"
+        ]
+      }
+    ]
+  },
+  "JacobG5-DestroyItemInSlotFix": {
+    "package": "JacobG5-DestroyItemInSlotFix",
+    "version": "1.0.0",
+    "official_latest": "1.0.0",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100"
+    ],
+    "url": "https://thunderstore.io/package/download/JacobG5/DestroyItemInSlotFix/1.0.0/",
+    "page": "https://thunderstore.io/c/lethal-company/p/JacobG5/DestroyItemInSlotFix/",
+    "source": "https://www.youtube.com/@Jacob-DT",
+    "archive_sha256": "c1725d1bda9f3e89456495e646e56a3a62f016e05489212d01a2cc6926465cdd",
+    "reason": "Manifest dependency",
+    "archive_size": 10126,
+    "files": [
+      {
+        "path": "BepInEx/plugins/DestroyItemInSlotFix.dll",
+        "sha256": "5e57698b7a0eb54a7bcc20a6ad1d5107886f93d504f817e510ee3502543fa5b2",
+        "size": 10240
+      },
+      {
+        "path": "BepInEx/pack-info/JacobG5-DestroyItemInSlotFix/CHANGELOG.md",
+        "sha256": "a459635c2d7189876debb88e4e82c8a5b55361bb2eeaff0c2fbb120522df7a15",
+        "size": 28
+      },
+      {
+        "path": "BepInEx/pack-info/JacobG5-DestroyItemInSlotFix/icon.png",
+        "sha256": "c3874d6b14c712c38a185b51b3472956ed2526c6a1b406da9cbf917d6e521d4d",
+        "size": 4587
+      },
+      {
+        "path": "BepInEx/pack-info/JacobG5-DestroyItemInSlotFix/manifest.json",
+        "sha256": "61b3095efe9b14d0eb77a323931ef0aef55fdd47a5321f5f3c3eb7fc45276074",
+        "size": 314
+      },
+      {
+        "path": "BepInEx/pack-info/JacobG5-DestroyItemInSlotFix/README.md",
+        "sha256": "59574123b6cc529d873e89df88de5abcd0fcedb3796e092dea5545789ce87bf0",
+        "size": 713
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "JacobG5.DestroyItemInSlotFix",
+        "version": "1.0.0",
+        "file": "BepInEx/plugins/DestroyItemInSlotFix.dll",
+        "source": "candidate",
+        "hard_dependencies": []
+      }
+    ]
+  },
+  "Evaisa-FixPluginTypesSerialization": {
+    "package": "Evaisa-FixPluginTypesSerialization",
+    "version": "1.1.4",
+    "official_latest": "1.1.4",
+    "installed": "1.1.4",
+    "action": "reuse",
+    "dependencies": [],
+    "url": "https://thunderstore.io/package/download/Evaisa/FixPluginTypesSerialization/1.1.4/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Evaisa/FixPluginTypesSerialization/",
+    "source": "https://github.com/xiaoxiao921/FixPluginTypesSerialization",
+    "archive_sha256": "384860a6d2caa788f75498645527fe9a85f61e45a2c2ac8a7ce034e7b1ad8329",
+    "files": [
+      {
+        "path": "BepInEx/pack-info/Evaisa-FixPluginTypesSerialization/manifest.json",
+        "sha256": "61527163a4fbcf09b8c04aff7dc5f2c118c10bec92818fab6bcc0c8d79ae5030",
+        "size": 294
+      },
+      {
+        "path": "BepInEx/patchers/FixPluginTypesSerialization/FixPluginTypesSerialization.dll",
+        "sha256": "22d0ed164e740173cdf01f66b4abfcb070b73c95846f857bcb9351826f817d6c",
+        "size": 97792
+      },
+      {
+        "path": "BepInEx/patchers/FixPluginTypesSerialization/Microsoft.Deployment.Compression.Cab.dll",
+        "sha256": "396d5c26a253cd68b880620391a2ac46881995ab8374aa65315a2c250c18b88f",
+        "size": 49152
+      },
+      {
+        "path": "BepInEx/patchers/FixPluginTypesSerialization/Microsoft.Deployment.Compression.dll",
+        "sha256": "3077b23b8637bb07e4abf83f03613e56e324d28475694b93e8bf74130e88909c",
+        "size": 36864
+      }
+    ],
+    "reason": "Existing version satisfies all manifest requirements; actual installed DLL retained.",
+    "plugins": []
+  },
+  "Evaisa-LethalLib": {
+    "package": "Evaisa-LethalLib",
+    "version": "1.2.0",
+    "official_latest": "1.2.0",
+    "installed": "1.2.0",
+    "action": "reuse",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "Evaisa-HookGenPatcher-0.0.5",
+      "MonoDetour-MonoDetour_BepInEx_5-0.6.3"
+    ],
+    "url": "https://thunderstore.io/package/download/Evaisa/LethalLib/1.2.0/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Evaisa/LethalLib/",
+    "source": "https://github.com/EvaisaDev/LethalLib",
+    "archive_sha256": "ba013e1282c503c2b1170eefaee0a770fc031485f28dea40da32a4bdbbffb180",
+    "files": [
+      {
+        "path": "BepInEx/pack-info/Evaisa-LethalLib/manifest.json",
+        "sha256": "18346322de383380993daf45c2d5573e1f02e614eeec373d8344abf1031f0aed",
+        "size": 374
+      },
+      {
+        "path": "BepInEx/plugins/LethalLib/LethalLib.dll",
+        "sha256": "28fde57d12bf14222c916d81fbc9995608639857f3c5e9dd712dd6424efa45bc",
+        "size": 101888
+      }
+    ],
+    "reason": "Existing version satisfies all manifest requirements; actual installed DLL retained.",
+    "plugins": [
+      {
+        "guid": "evaisa.lethallib",
+        "version": "1.2.0",
+        "file": "BepInEx/plugins/LethalLib/LethalLib.dll",
+        "source": "installed",
+        "hard_dependencies": []
+      }
+    ]
+  },
+  "xilophor-LethalNetworkAPI": {
+    "package": "xilophor-LethalNetworkAPI",
+    "version": "3.3.3",
+    "official_latest": "3.4.2",
+    "installed": "3.3.3",
+    "action": "reuse",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "Lordfirespeed-OdinSerializer-2024.2.2700"
+    ],
+    "url": "https://thunderstore.io/package/download/xilophor/LethalNetworkAPI/3.3.3/",
+    "page": "https://thunderstore.io/c/lethal-company/p/xilophor/LethalNetworkAPI/",
+    "source": "https://github.com/Xilophor/LethalNetworkAPI",
+    "archive_sha256": "ea558187fef69933768f18b47aadb70e5c39b633e94865b4d10e90482c07ef8a",
+    "files": [
+      {
+        "path": "BepInEx/pack-info/xilophor-LethalNetworkAPI/manifest.json",
+        "sha256": "15d2e8402d5c8aa84750320799d119503d971fd7b608d41c920c55c76201c2a3",
+        "size": 398
+      },
+      {
+        "path": "BepInEx/plugins/xilophor-LethalNetworkAPI/LethalNetworkAPI.dll",
+        "sha256": "6388dab6a12402363d63e07b6764ed28cf289e4ff9d9da08bb4f1287e107f575",
+        "size": 86016
+      }
+    ],
+    "reason": "Existing version satisfies all manifest requirements; actual installed DLL retained.",
+    "plugins": [
+      {
+        "guid": "LethalNetworkAPI",
+        "version": "3.3.3",
+        "file": "BepInEx/plugins/xilophor-LethalNetworkAPI/LethalNetworkAPI.dll",
+        "source": "installed",
+        "hard_dependencies": []
+      }
+    ]
+  },
+  "mrov-WeatherRegistry": {
+    "package": "mrov-WeatherRegistry",
+    "version": "0.8.8",
+    "official_latest": "0.8.8",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "Evaisa-FixPluginTypesSerialization-1.1.4",
+      "Hamunii-AutoHookGenPatcher-1.0.9",
+      "mrov-MrovLib-0.4.2"
+    ],
+    "url": "https://thunderstore.io/package/download/mrov/WeatherRegistry/0.8.8/",
+    "page": "https://thunderstore.io/c/lethal-company/p/mrov/WeatherRegistry/",
+    "source": "https://github.com/AndreyMrovol/LethalWeatherRegistry",
+    "archive_sha256": "94cecbbd3b67586edcb8a0c327b222c9edd35370f9bafb2d6f000ab178abf4d4",
+    "reason": "Manifest dependency",
+    "archive_size": 112381,
+    "files": [
+      {
+        "path": "BepInEx/pack-info/mrov-WeatherRegistry/icon.png",
+        "sha256": "835594ac25fa42f77cdfaa96046c2b43d156dc8faad757401a511420e2d48079",
+        "size": 4669
+      },
+      {
+        "path": "BepInEx/pack-info/mrov-WeatherRegistry/README.md",
+        "sha256": "6174c0e36e72fe5048a77e4462e39616c6f0e32afa32f8551345d0ae194ce450",
+        "size": 5831
+      },
+      {
+        "path": "BepInEx/pack-info/mrov-WeatherRegistry/manifest.json",
+        "sha256": "0206f9589d96587041ee78f9b37376b60bfc70b000e34e53740a248eb4b23040",
+        "size": 497
+      },
+      {
+        "path": "BepInEx/plugins/mrov-WeatherRegistry/WeatherRegistry.dll",
+        "sha256": "8e3cc1eb9e9e44d3af85e73ffb7aa08621d0e31ecfbaa50d447e62f01661a396",
+        "size": 179200
+      },
+      {
+        "path": "BepInEx/pack-info/mrov-WeatherRegistry/CHANGELOG.md",
+        "sha256": "e435d329f4f27e1169c038b4c7de803f04aa930a8d27eed5151767a38c41e01c",
+        "size": 21032
+      },
+      {
+        "path": "BepInEx/pack-info/mrov-WeatherRegistry/LICENSE.md",
+        "sha256": "1252abcc7d2a6fefb7fefed1da0850f70c2fde88574526a6617881ed48bd9efc",
+        "size": 7592
+      },
+      {
+        "path": "BepInEx/pack-info/mrov-WeatherRegistry/Opensource.md",
+        "sha256": "599ee5ba17b2996788fc4cd0c3326370b64333d8c1cb295b5bee8446f8a18bb5",
+        "size": 3626
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "mrov.WeatherRegistry",
+        "version": "0.8.8",
+        "file": "BepInEx/plugins/mrov-WeatherRegistry/WeatherRegistry.dll",
+        "source": "candidate",
+        "hard_dependencies": [
+          "MrovLib"
+        ]
+      }
+    ]
+  },
+  "MonoDetour-MonoDetour_BepInEx_5": {
+    "package": "MonoDetour-MonoDetour_BepInEx_5",
+    "version": "0.7.16",
+    "official_latest": "0.7.1701",
+    "installed": "0.7.16",
+    "action": "reuse",
+    "dependencies": [
+      "MonoDetour-MonoDetour-0.7.16"
+    ],
+    "url": "https://thunderstore.io/package/download/MonoDetour/MonoDetour_BepInEx_5/0.7.16/",
+    "page": "https://thunderstore.io/c/lethal-company/p/MonoDetour/MonoDetour_BepInEx_5/",
+    "source": "https://github.com/MonoDetour/MonoDetour",
+    "archive_sha256": "bbfd2eab63c8fb36e61258b98ab092738aaf426f80490ac4db017bdbc849283c",
+    "files": [
+      {
+        "path": "BepInEx/pack-info/MonoDetour-MonoDetour_BepInEx_5/manifest.json",
+        "sha256": "1d9a5a512ae803f0395c3f3e9763d67031d6d7c1388cb2beab31db214bad7a50",
+        "size": 396
+      },
+      {
+        "path": "BepInEx/core/com.github.MonoDetour.Interop.HarmonyX.dll",
+        "sha256": "557b1c32adc9a21172a541fcd6be8c5a57d81d964eb4a91e2e3ed6bd2e5f55ba",
+        "size": 51200
+      },
+      {
+        "path": "BepInEx/patchers/0.com.github.MonoDetour.BepInEx.5.dll",
+        "sha256": "86e332ea3bcdfaac2fa6b3b1ee41c77735193a6a518f4cf8d91ee64e8a4ae989",
+        "size": 12288
+      }
+    ],
+    "reason": "Existing version satisfies all manifest requirements; actual installed DLL retained.",
+    "plugins": []
+  },
+  "Lordfirespeed-OdinSerializer": {
+    "package": "Lordfirespeed-OdinSerializer",
+    "version": "2024.2.2700",
+    "official_latest": "2024.2.2700",
+    "installed": "2024.2.2700",
+    "action": "reuse",
+    "dependencies": [],
+    "url": "https://thunderstore.io/package/download/Lordfirespeed/OdinSerializer/2024.2.2700/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Lordfirespeed/OdinSerializer/",
+    "source": "https://github.com/lordfirespeed/odinserializerthunderstore",
+    "archive_sha256": "302446d2191906a0a98b4179aeb8d11d9db03617b61cac35886b03f8afea1273",
+    "files": [
+      {
+        "path": "BepInEx/pack-info/Lordfirespeed-OdinSerializer/manifest.json",
+        "sha256": "75177eed5fd63b325b31a4cc8384b36bbd42ee694591b84845fd9bf7e987748d",
+        "size": 335
+      },
+      {
+        "path": "BepInEx/core/OdinSerializer/OdinSerializer.dll",
+        "sha256": "032df552d13df91a58e796d9324eb69ec8ba0999ef2c6a0c00b9c0b924e33b84",
+        "size": 366592
+      }
+    ],
+    "reason": "Existing version satisfies all manifest requirements; actual installed DLL retained.",
+    "plugins": []
+  },
+  "Hamunii-AutoHookGenPatcher": {
+    "package": "Hamunii-AutoHookGenPatcher",
+    "version": "1.1.1",
+    "official_latest": "1.1.1",
+    "installed": "1.1.1",
+    "action": "reuse",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100",
+      "Hamunii-DetourContext_Dispose_Fix-1.0.5"
+    ],
+    "url": "https://thunderstore.io/package/download/Hamunii/AutoHookGenPatcher/1.1.1/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Hamunii/AutoHookGenPatcher/",
+    "source": "https://github.com/Hamunii/BepInEx.MonoMod.AutoHookGenPatcher",
+    "archive_sha256": "713240b073a344b405e86c6ea801d0f61eb7a90aeb79df81062706cc3b7f6756",
+    "files": [
+      {
+        "path": "BepInEx/pack-info/Hamunii-AutoHookGenPatcher/manifest.json",
+        "sha256": "8bbb8d98f49fc5fbefe798f40cb933eafe515bae62130f8acd726243c4b50e39",
+        "size": 447
+      },
+      {
+        "path": "BepInEx/patchers/BepInEx.MonoMod.AutoHookGenPatcher.dll",
+        "sha256": "9f95f5b734c0862119d9e5f892c390f07d979536944b1dc6c0b1322b32badc79",
+        "size": 35328
+      },
+      {
+        "path": "BepInEx/core/MonoMod.dll",
+        "sha256": "cc7a1093d6ead17f75545c8d8cc455fdafcb1aca48d9b887735cc21095833bb8",
+        "size": 66048
+      },
+      {
+        "path": "BepInEx/core/MonoMod.RuntimeDetour.HookGen.dll",
+        "sha256": "79b2c4cef86328a482f4edc9a5973895f19d3f59566d4b57b0080bdf1872e802",
+        "size": 23552
+      }
+    ],
+    "reason": "Existing version satisfies all manifest requirements; actual installed DLL retained.",
+    "plugins": []
+  },
+  "mrov-MrovLib": {
+    "package": "mrov-MrovLib",
+    "version": "0.4.15",
+    "official_latest": "0.4.15",
+    "installed": null,
+    "action": "add",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100"
+    ],
+    "url": "https://thunderstore.io/package/download/mrov/MrovLib/0.4.15/",
+    "page": "https://thunderstore.io/c/lethal-company/p/mrov/MrovLib/",
+    "source": "https://github.com/AndreyMrovol/LethalMrovLib/",
+    "archive_sha256": "4a1f4cfa1957945b6d010e95e0ac79b9360c2103802b8cf051a6755475b5ea01",
+    "reason": "Manifest dependency",
+    "archive_size": 73310,
+    "files": [
+      {
+        "path": "BepInEx/pack-info/mrov-MrovLib/icon.png",
+        "sha256": "fdca1750501ad12555b33caea1c39a1df980e4ed17428203ae7680646d178763",
+        "size": 4065
+      },
+      {
+        "path": "BepInEx/pack-info/mrov-MrovLib/README.md",
+        "sha256": "43ca591f451ec842eca2f22663eed4d489146ea38e46f085f162988f6b0296b7",
+        "size": 1693
+      },
+      {
+        "path": "BepInEx/pack-info/mrov-MrovLib/manifest.json",
+        "sha256": "77e2a5a2f7fc21b4d9878bb6b40479181c83f203a5ac7f11a291455564c93dd3",
+        "size": 281
+      },
+      {
+        "path": "BepInEx/plugins/mrov-MrovLib/MrovLib.dll",
+        "sha256": "934518549a254ad3d194fbaa065cb2b65b718173af811cc4368ad47460213a5a",
+        "size": 116224
+      },
+      {
+        "path": "BepInEx/pack-info/mrov-MrovLib/LICENSE.md",
+        "sha256": "67c1a19c25754e1389117c48739e7e313b1e3b2279baeab12121059a1c5441f3",
+        "size": 7559
+      }
+    ],
+    "plugins": [
+      {
+        "guid": "MrovLib",
+        "version": "0.4.15",
+        "file": "BepInEx/plugins/mrov-MrovLib/MrovLib.dll",
+        "source": "candidate",
+        "hard_dependencies": []
+      }
+    ]
+  },
+  "MonoDetour-MonoDetour": {
+    "package": "MonoDetour-MonoDetour",
+    "version": "0.7.16",
+    "official_latest": "0.7.1701",
+    "installed": "0.7.16",
+    "action": "reuse",
+    "dependencies": [],
+    "url": "https://thunderstore.io/package/download/MonoDetour/MonoDetour/0.7.16/",
+    "page": "https://thunderstore.io/c/lethal-company/p/MonoDetour/MonoDetour/",
+    "source": "https://github.com/MonoDetour/MonoDetour",
+    "archive_sha256": "d5e32dc8bd8ed9afad83573282edbb7e96839376336b2f0328820441985b2cab",
+    "files": [
+      {
+        "path": "BepInEx/pack-info/MonoDetour-MonoDetour/manifest.json",
+        "sha256": "a5759f30258d617411bc07eea1b24da2fd34760631806406274017133249f8aa",
+        "size": 305
+      },
+      {
+        "path": "BepInEx/core/com.github.MonoDetour.Bindings.Reorg.dll",
+        "sha256": "0127b4f106a2bc161e530d6d0f1ac436688a1194de49066564251ab309445081",
+        "size": 22528
+      },
+      {
+        "path": "BepInEx/core/com.github.MonoDetour.dll",
+        "sha256": "b1cd96942485778582b821612c33115596a559324de017b7af9a78a9e18380c3",
+        "size": 179200
+      },
+      {
+        "path": "BepInEx/core/com.github.MonoDetour.Reflection.dll",
+        "sha256": "9b21abc87b17068dcd1b3276b271e2b8e6b646f110d1645e26df61c06c98d335",
+        "size": 17920
+      }
+    ],
+    "reason": "Existing version satisfies all manifest requirements; actual installed DLL retained.",
+    "plugins": []
+  },
+  "Hamunii-DetourContext_Dispose_Fix": {
+    "package": "Hamunii-DetourContext_Dispose_Fix",
+    "version": "1.0.9",
+    "official_latest": "1.0.9",
+    "installed": "1.0.9",
+    "action": "reuse",
+    "dependencies": [
+      "BepInEx-BepInExPack-5.4.2100"
+    ],
+    "url": "https://thunderstore.io/package/download/Hamunii/DetourContext_Dispose_Fix/1.0.9/",
+    "page": "https://thunderstore.io/c/lethal-company/p/Hamunii/DetourContext_Dispose_Fix/",
+    "source": "https://github.com/Hamunii/DetourContext.Dispose_Fix",
+    "archive_sha256": "d17ad48585658ea9f47d59d229d0a0c24f5779da99870db0d53c61cedb6fb9a2",
+    "files": [
+      {
+        "path": "BepInEx/pack-info/Hamunii-DetourContext_Dispose_Fix/manifest.json",
+        "sha256": "630b775ce946b7a00112ac0611dd4e49f8fd057bb730651ac9ec694da0042425",
+        "size": 384
+      },
+      {
+        "path": "BepInEx/patchers/Hamunii.DetourContext.Dispose_Fix.dll",
+        "sha256": "b83972a8a2972e4ab19efe2251a336cce8b8e93e3dfed0e20c24e4bf14e50ddb",
+        "size": 13312
+      }
+    ],
+    "reason": "Existing version satisfies all manifest requirements; actual installed DLL retained.",
+    "plugins": []
+  }
+}

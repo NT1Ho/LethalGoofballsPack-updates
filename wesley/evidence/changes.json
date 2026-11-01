@@ -1,0 +1,1640 @@
+[
+  {
+    "path": "BepInEx/config/gafoneo.quicksell.cfg",
+    "baseline": "D8BE0243DA34E6DE7ACA73B4AE98DABD945BFA4AF7A16517C47CBC33E4C499C8",
+    "candidate": "1978334F065B11ACA7AEDC740BF8FF3345493504A1300EB443F7D25E0EC94DFB",
+    "size": 1862
+  },
+  {
+    "path": "BepInEx/config/me.swipez.melonloader.morecompany.cfg",
+    "baseline": "F87FAF3D4C81C3841C32FEF294A89D56013EECBC91E27117EDD9157DCA1D2D11",
+    "candidate": "BB561DBE6A43B1E56E335D8F848DB134EC3FC040901C25FBE7B904EF3EF50183",
+    "size": 1084
+  },
+  {
+    "path": "BepInEx/config/V81TestChn/custom-localization/Wesley/wesley-01.cfg",
+    "baseline": null,
+    "candidate": "2547C82D61AA37C48AB6587D49F1D79A2C536FE054F00635ABCBC28BA30862AB",
+    "size": 199945
+  },
+  {
+    "path": "BepInEx/config/V81TestChn/custom-localization/Wesley/wesley-02.cfg",
+    "baseline": null,
+    "candidate": "F6A65FE1884572577A4695BB33ED23E06FE944A3C4174C3FB4DD9D5033AEF88F",
+    "size": 199825
+  },
+  {
+    "path": "BepInEx/config/V81TestChn/custom-localization/Wesley/wesley-03.cfg",
+    "baseline": null,
+    "candidate": "F7BA6CDC908D699B614E7363414BD46B55ADBD75D764F9BFC3A5135C5B47FDF7",
+    "size": 17118
+  },
+  {
+    "path": "BepInEx/pack-info/display-pages.json",
+    "baseline": "A7874DAECCC1D8B92DFB4EAEECD887F145337A76A41C3BA552CCBC1C13D19DCF",
+    "candidate": "641199C6F2A50FA77C02C1C78F3EA39368D2123D7BDF42D554534A8779E2631F",
+    "size": 41966
+  },
+  {
+    "path": "BepInEx/pack-info/download-sources.json",
+    "baseline": "49DDF44923D434A7436E4A47559590AA70DB0BDF5DD6013F8A2FFBBB7F28422B",
+    "candidate": "D0478EA3F11A46606AABF61202947F5FF54C5EACCBD35DAF75ED21F105F66D88",
+    "size": 37927
+  },
+  {
+    "path": "BepInEx/pack-info/original-files.json",
+    "baseline": "A0DAFC7C44C86FE513AE95796D1FAF828AF136CC70B4BDCAEDBE1C860987D409",
+    "candidate": "4CFC647687726A22730FF3C401D42F67BC2E601F28F152073232B81C68AC9726",
+    "size": 312196
+  },
+  {
+    "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "C8EDD6C0BF7D49D542B036B960B22168DFA2BA46D35955914648AE9B928E0AE1",
+    "size": 1902
+  },
+  {
+    "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/icon.png",
+    "baseline": null,
+    "candidate": "B251B37255E8C7B3554F89411BCF84B5142C47DECD3B40B119509361E38D8772",
+    "size": 70943
+  },
+  {
+    "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/LICENSE",
+    "baseline": null,
+    "candidate": "94BAF75319CECB509758CE01488A3B751E3E6FDCF73B481D0E4DA7F393AD4F04",
+    "size": 1078
+  },
+  {
+    "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/LICENSE.txt",
+    "baseline": null,
+    "candidate": "33D3B1685796252291023AFE844CBFEC8959C76F1875B1C487D0792C7380243B",
+    "size": 18545
+  },
+  {
+    "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/manifest.json",
+    "baseline": null,
+    "candidate": "62CB387C37F7CD70C1A3EF5CB2ED73D6B95467D8C7558D3CE1F936CC32E66A67",
+    "size": 422
+  },
+  {
+    "path": "BepInEx/pack-info/Alice-DungeonGenerationPlus/README.md",
+    "baseline": null,
+    "candidate": "01EE1B0885EB0C45E84C150E3BDAB5A499C0FA4D84DE2FEECC8B8E9D037FB299",
+    "size": 2202
+  },
+  {
+    "path": "BepInEx/pack-info/AudioKnight-StarlancerAIFix/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "E5C52CA5F025D16EB3141F2CB573AB640FAC6CDB933D75F0332C713ED9BC56EE",
+    "size": 6428
+  },
+  {
+    "path": "BepInEx/pack-info/AudioKnight-StarlancerAIFix/icon.png",
+    "baseline": null,
+    "candidate": "3D1F3AD2C5F327A0B19758634C1E0AA0C02E6C45B9C35DC2B493174B047E3B7C",
+    "size": 85070
+  },
+  {
+    "path": "BepInEx/pack-info/AudioKnight-StarlancerAIFix/manifest.json",
+    "baseline": null,
+    "candidate": "37B338AFA2FC75A81B817EC2748DF6CD6010E8BF83DF28DF9027778F4A05A7D4",
+    "size": 397
+  },
+  {
+    "path": "BepInEx/pack-info/AudioKnight-StarlancerAIFix/README.md",
+    "baseline": null,
+    "candidate": "0F85CB9B783CB2493843424A6E6CDC6EB1367B97B46614077833BFBFE42AC39B",
+    "size": 1105
+  },
+  {
+    "path": "BepInEx/pack-info/IAmBatby-LethalLevelLoader/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "64BE8A76B949F76F7A194BF2719BB0779C1416B5608D19B07990C09FE2AA7EE8",
+    "size": 57288
+  },
+  {
+    "path": "BepInEx/pack-info/IAmBatby-LethalLevelLoader/icon.png",
+    "baseline": null,
+    "candidate": "FFD4413400887E789EA57F7A3F60064FC526E617A9F8263FF3501D95AB7DF751",
+    "size": 9706
+  },
+  {
+    "path": "BepInEx/pack-info/IAmBatby-LethalLevelLoader/LICENSE.md",
+    "baseline": null,
+    "candidate": "14F1BE5FEDB88B90AE962237BF2FB30A59148E443ED6307ABE9673A28D4C8D70",
+    "size": 1084
+  },
+  {
+    "path": "BepInEx/pack-info/IAmBatby-LethalLevelLoader/manifest.json",
+    "baseline": null,
+    "candidate": "F6ACF8CDB0B0DD71C26B45359DC2FCED7C8A30A5EF681D76EAF049ADAC12AEAF",
+    "size": 470
+  },
+  {
+    "path": "BepInEx/pack-info/IAmBatby-LethalLevelLoader/README.md",
+    "baseline": null,
+    "candidate": "E0E22DCA4DDA897F16BAAF0186EB70403F78747E3FD73A61414BDF120D68953E",
+    "size": 5045
+  },
+  {
+    "path": "BepInEx/pack-info/IntegrityChaos-LCCutscene/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "BA27B1CA639B77C237578C3E91AD47999D0F9D799796E9E39C01458E634AEA3D",
+    "size": 227
+  },
+  {
+    "path": "BepInEx/pack-info/IntegrityChaos-LCCutscene/icon.png",
+    "baseline": null,
+    "candidate": "5668367E63BD1C898D37DC33DAF150CAC920CADD7515C3587A4740415E91F109",
+    "size": 25864
+  },
+  {
+    "path": "BepInEx/pack-info/IntegrityChaos-LCCutscene/License.txt",
+    "baseline": null,
+    "candidate": "E66C269D4819AAAB34B49EF5220C4DDAB6756F21BB5180761A4EB8561F2B7BBD",
+    "size": 20850
+  },
+  {
+    "path": "BepInEx/pack-info/IntegrityChaos-LCCutscene/manifest.json",
+    "baseline": null,
+    "candidate": "9B76EBD9CDA5E7AC378808BA403071426E94B8E3997A0C223963E1879FE633D8",
+    "size": 291
+  },
+  {
+    "path": "BepInEx/pack-info/IntegrityChaos-LCCutscene/README.md",
+    "baseline": null,
+    "candidate": "B183104559F3FF8885A262A3FF3FAC28A830DE4ED09323A874E4A9ED3505780C",
+    "size": 7200
+  },
+  {
+    "path": "BepInEx/pack-info/JacobG5-DestroyItemInSlotFix/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "A459635C2D7189876DEBB88E4E82C8A5B55361BB2EEAFF0C2FBB120522DF7A15",
+    "size": 28
+  },
+  {
+    "path": "BepInEx/pack-info/JacobG5-DestroyItemInSlotFix/icon.png",
+    "baseline": null,
+    "candidate": "C3874D6B14C712C38A185B51B3472956ED2526C6A1B406DA9CBF917D6E521D4D",
+    "size": 4587
+  },
+  {
+    "path": "BepInEx/pack-info/JacobG5-DestroyItemInSlotFix/manifest.json",
+    "baseline": null,
+    "candidate": "61B3095EFE9B14D0EB77A323931EF0AEF55FDD47A5321F5F3C3EB7FC45276074",
+    "size": 314
+  },
+  {
+    "path": "BepInEx/pack-info/JacobG5-DestroyItemInSlotFix/README.md",
+    "baseline": null,
+    "candidate": "59574123B6CC529D873E89DF88DE5ABCD0FCEDB3796E092DEA5545789CE87BF0",
+    "size": 713
+  },
+  {
+    "path": "BepInEx/pack-info/JacobG5-JLL/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "057A3B6CDC5B4546A3E23B7909BFA30698D4D56ECBB613730AD8C0E9BE7E7B68",
+    "size": 53564
+  },
+  {
+    "path": "BepInEx/pack-info/JacobG5-JLL/icon.png",
+    "baseline": null,
+    "candidate": "BD312F90E52F3BB282B123CDFC83EEED1D60EF608CDB8C6747EE658E415CDE6A",
+    "size": 56776
+  },
+  {
+    "path": "BepInEx/pack-info/JacobG5-JLL/LICENSE.txt",
+    "baseline": null,
+    "candidate": "D5C73C2367FF0EAC09505D4DFB7B2781AC498B361430329E0E78115552CF56F0",
+    "size": 1083
+  },
+  {
+    "path": "BepInEx/pack-info/JacobG5-JLL/manifest.json",
+    "baseline": null,
+    "candidate": "5887A5A73218897582EAFA7F7998988E6276072C029596E337CCEEDDE25510E8",
+    "size": 276
+  },
+  {
+    "path": "BepInEx/pack-info/JacobG5-JLL/README.md",
+    "baseline": null,
+    "candidate": "AD4C2F6E02F273A387D3BBC34CB81DCE53A0D160D6A867649C3CEA02C1B234A4",
+    "size": 238
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-CustomStoryLogsFixed/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "61801EACA5E591C0D97D5432397751A4A5BC01A2278B1E65E6E1D2EF1F6D4D11",
+    "size": 1176
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-CustomStoryLogsFixed/icon.png",
+    "baseline": null,
+    "candidate": "1873D7FE3DA7744575EEC908737F98EBAB65ECE1A0720A35C4E9AACEE53E6CC7",
+    "size": 149141
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-CustomStoryLogsFixed/manifest.json",
+    "baseline": null,
+    "candidate": "6D673645CB3713FFFD8C99ABC6B2BCB9AA8799D4028E5D706CBE513CE6556BD0",
+    "size": 386
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-CustomStoryLogsFixed/README.md",
+    "baseline": null,
+    "candidate": "C0E47764B71CEB35A88C3974C62784EE5D0363F2C9E77C2E844DE307E8D1C4ED",
+    "size": 7375
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Decrepit_Store/icon.png",
+    "baseline": null,
+    "candidate": "39995B1255CD765F4AACD14121A94A71A7E040861E0E691A597109393E3A727B",
+    "size": 606
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Decrepit_Store/manifest.json",
+    "baseline": null,
+    "candidate": "126594456F0DD94648F58191BAEAEE77FA19962AC8C9A10AA5DD77624F3181D3",
+    "size": 489
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Decrepit_Store/README.md",
+    "baseline": null,
+    "candidate": "20721B65824925FC5F7D1613C8D0A2A59E41EFAF31F71B81164CB4E86B09C591",
+    "size": 2913
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Facto/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "D40945DCD89123FF154F0E1378850B7C510006B91464539790088806CCDF8C79",
+    "size": 323
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Facto/icon.png",
+    "baseline": null,
+    "candidate": "E30FFDF6ECEBC217B6520D396AFA80AB54FF30628067B09208F7CFACB195D790",
+    "size": 49419
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Facto/iconold.png",
+    "baseline": null,
+    "candidate": "2533D14E9A90E6E8ACCA0AD92B0C0A34298482824DB3B0C5170E62D2DD7CADB7",
+    "size": 25195
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Facto/manifest.json",
+    "baseline": null,
+    "candidate": "DE4CF489CB0A7BE6D3BD16548BFB5317174338496CC4F8C323ED5D333BBD29CA",
+    "size": 630
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Facto/README.md",
+    "baseline": null,
+    "candidate": "57A8F7A942E164D62DFFCB1CD99C3281922EDC9813A33E2D62B89A8B4739A7ED",
+    "size": 1510
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Facto/TheOriginalIcon.png",
+    "baseline": null,
+    "candidate": "8B22E218C6D8FE3853FA7392F9F3ABC56102DECE0F37EB49EAAF4D4A4BEC4415",
+    "size": 1632
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-WesleysInteriors/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "BB84F277ABBE2A0B9898B0DFBDB7AAF724675A33C4558DDD51BB0302AE4913EA",
+    "size": 37236
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-WesleysInteriors/icon.png",
+    "baseline": null,
+    "candidate": "1755097DB9FFB4B9E99FA89D557DEF637B9732178B5FFC3930FD01B7221D22BF",
+    "size": 1344
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-WesleysInteriors/manifest.json",
+    "baseline": null,
+    "candidate": "514B9730345DB726EDB96D459DDEDF5B8C209BD7356CD35AEF17FAD8F7779CB1",
+    "size": 476
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-WesleysInteriors/README.md",
+    "baseline": null,
+    "candidate": "727DF7E4B2DE7CD2A2DA97402FECBA845C22534050968D6FD470A4E5B5A728FD",
+    "size": 7568
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Ememy_Variants/icon.png",
+    "baseline": null,
+    "candidate": "26EFF200C5810657E620FC33013AF0953E878F51A31A92EB7ABEB8CAC2F729EE",
+    "size": 1515
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Ememy_Variants/manifest.json",
+    "baseline": null,
+    "candidate": "E4AB4C958E454CC864389B4EB16C23E204EDAD86870B5DBB419E0EFCF72E25F4",
+    "size": 366
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Ememy_Variants/README.md",
+    "baseline": null,
+    "candidate": "CFCF35C9C650355AA16051604E3D5A1A3194AD3FD60B57D5D3D2CA7EFA7C121C",
+    "size": 2705
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Moons/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "6BF2F4F52383311215A26649809D4E814B2CB13085EE7A073E313ED0C67C0072",
+    "size": 64399
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Moons/icon.png",
+    "baseline": null,
+    "candidate": "DA68EC75A3E34E87EE60295565DB7CC1F36DE01444696207D4B68E9E010C3C99",
+    "size": 2154
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Moons/manifest.json",
+    "baseline": null,
+    "candidate": "68C25FAAD142279A8FDA7928B40E91ED4D17037854E1B288EEE98704C1E57D01",
+    "size": 739
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Moons/README.md",
+    "baseline": null,
+    "candidate": "BFD628919AC0EBBCBC252B427AD55A137278E3843E8DAB98EB54DB1B8E7CAFC2",
+    "size": 3517
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Shenanigans/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "9623442FFFE18ED3A5A07B46BEB8F5D79E1A077C7F036E30A136C94871D3D22E",
+    "size": 189
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Shenanigans/icon.png",
+    "baseline": null,
+    "candidate": "59F2C8FDA168CF60986CE1FC347917B0BC17F89EA9138BB7DC04B6F2C283FA87",
+    "size": 1106
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Shenanigans/manifest.json",
+    "baseline": null,
+    "candidate": "B69D96855818531CC863C8DB20C88AC43ACE8D3D047830C514D7F49C50AFF8CD",
+    "size": 267
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Shenanigans/README.md",
+    "baseline": null,
+    "candidate": "D1321C066E4C0E026849631A1EF0B2F050D2C0D59AA1847ABBBB5D90FF9A5471",
+    "size": 77
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Weathers/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "FF749C4DCE8C4D6E371C42735BC354C009B3D604633DEA65B4DA3BF7838EB2DC",
+    "size": 1838
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Weathers/icon.png",
+    "baseline": null,
+    "candidate": "F92EC35F4FD04B09340F633C88562F3156A20631BA1E7CD3E707718A483A63C5",
+    "size": 1301
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Weathers/manifest.json",
+    "baseline": null,
+    "candidate": "332E339F8AC0DE2B78A4B1351889790FA934131CBA0534268C9166E4999E221D",
+    "size": 428
+  },
+  {
+    "path": "BepInEx/pack-info/Magic_Wesley-Wesleys_Weathers/README.md",
+    "baseline": null,
+    "candidate": "3BB8DDBB52838A6742F8C690AF33D48E7392AFFAFB6DA2E09DE3A17980AFB7CD",
+    "size": 3567
+  },
+  {
+    "path": "BepInEx/pack-info/MaxWasUnavailable-LethalModDataLib/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "713E6274924A86DD1FFF87C189FC5E688782C4E46782889D5C97B1D8BBFC87AD",
+    "size": 4768
+  },
+  {
+    "path": "BepInEx/pack-info/MaxWasUnavailable-LethalModDataLib/icon.png",
+    "baseline": null,
+    "candidate": "68697E5D847A9C08ED243379D426BD21E7CF936E3F8D9E23A9604817FFF61A33",
+    "size": 2301
+  },
+  {
+    "path": "BepInEx/pack-info/MaxWasUnavailable-LethalModDataLib/LICENSE",
+    "baseline": null,
+    "candidate": "7CD1C884E32C9EDE9CF6451040C53A9AB3319578007B54053BACE93B8D6A6910",
+    "size": 7489
+  },
+  {
+    "path": "BepInEx/pack-info/MaxWasUnavailable-LethalModDataLib/manifest.json",
+    "baseline": null,
+    "candidate": "9809386881C5AFC7522778001BD90B6BAF41E28B8DF4E8F1C0D95FF58D1DDD20",
+    "size": 393
+  },
+  {
+    "path": "BepInEx/pack-info/MaxWasUnavailable-LethalModDataLib/README.md",
+    "baseline": null,
+    "candidate": "A5BE66E53163EF80EDC8F6623EBE8773EB50075C2992F8064088446225E73B7D",
+    "size": 18566
+  },
+  {
+    "path": "BepInEx/pack-info/mrov-MrovLib/icon.png",
+    "baseline": null,
+    "candidate": "FDCA1750501AD12555B33CAEA1C39A1DF980E4ED17428203AE7680646D178763",
+    "size": 4065
+  },
+  {
+    "path": "BepInEx/pack-info/mrov-MrovLib/LICENSE.md",
+    "baseline": null,
+    "candidate": "67C1A19C25754E1389117C48739E7E313B1E3B2279BAEAB12121059A1C5441F3",
+    "size": 7559
+  },
+  {
+    "path": "BepInEx/pack-info/mrov-MrovLib/manifest.json",
+    "baseline": null,
+    "candidate": "77E2A5A2F7FC21B4D9878BB6B40479181C83F203A5AC7F11A291455564C93DD3",
+    "size": 281
+  },
+  {
+    "path": "BepInEx/pack-info/mrov-MrovLib/README.md",
+    "baseline": null,
+    "candidate": "43CA591F451EC842ECA2F22663EED4D489146EA38E46F085F162988F6B0296B7",
+    "size": 1693
+  },
+  {
+    "path": "BepInEx/pack-info/mrov-WeatherRegistry/CHANGELOG.md",
+    "baseline": null,
+    "candidate": "E435D329F4F27E1169C038B4C7DE803F04AA930A8D27EED5151767A38C41E01C",
+    "size": 21032
+  },
+  {
+    "path": "BepInEx/pack-info/mrov-WeatherRegistry/icon.png",
+    "baseline": null,
+    "candidate": "835594AC25FA42F77CDFAA96046C2B43D156DC8FAAD757401A511420E2D48079",
+    "size": 4669
+  },
+  {
+    "path": "BepInEx/pack-info/mrov-WeatherRegistry/LICENSE.md",
+    "baseline": null,
+    "candidate": "1252ABCC7D2A6FEFB7FEFED1DA0850F70C2FDE88574526A6617881ED48BD9EFC",
+    "size": 7592
+  },
+  {
+    "path": "BepInEx/pack-info/mrov-WeatherRegistry/manifest.json",
+    "baseline": null,
+    "candidate": "0206F9589D96587041EE78F9B37376B60BFC70B000E34E53740A248EB4B23040",
+    "size": 497
+  },
+  {
+    "path": "BepInEx/pack-info/mrov-WeatherRegistry/Opensource.md",
+    "baseline": null,
+    "candidate": "599EE5BA17B2996788FC4CD0C3326370B64333D8C1CB295B5BEE8446F8A18BB5",
+    "size": 3626
+  },
+  {
+    "path": "BepInEx/pack-info/mrov-WeatherRegistry/README.md",
+    "baseline": null,
+    "candidate": "6174C0E36E72FE5048A77E4462E39616C6F0E32AFA32F8551345D0AE194CE450",
+    "size": 5831
+  },
+  {
+    "path": "BepInEx/patchers/LethalLevelLoader.Patcher.dll",
+    "baseline": null,
+    "candidate": "78C1ED2EA8ACAC6248A91632DEA93533615D1113802407E6ED0E5AA98C657D91",
+    "size": 16896
+  },
+  {
+    "path": "BepInEx/plugins/DestroyItemInSlotFix.dll",
+    "baseline": null,
+    "candidate": "5E57698B7A0EB54A7BCC20A6AD1D5107886F93D504F817E510EE3502543FA5B2",
+    "size": 10240
+  },
+  {
+    "path": "BepInEx/plugins/Alice-DungeonGenerationPlus/DunGenPlus.dll",
+    "baseline": null,
+    "candidate": "D6A437943CA536CC79A057308C9D2035D75B1F315336642DA03800FFED945E13",
+    "size": 871424
+  },
+  {
+    "path": "BepInEx/plugins/AudioKnight-StarlancerAIFix/StarlancerAI.dll",
+    "baseline": null,
+    "candidate": "B517507B4ACAABDFCCF02E9B48ED13BC948CD7CA8F7C3374AED9D93E3CD37D99",
+    "size": 35840
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/AcidirLogs.json",
+    "baseline": null,
+    "candidate": "AB642920DB648CBE3DC2447DE30C561374BAC67177A00ED50A51C9DFFEC7589D",
+    "size": 3127
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/AlcatrasLogs.json",
+    "baseline": null,
+    "candidate": "062B78A98D3633E114E637DEB8EE72F936893F662E187E479236B847482A0F54",
+    "size": 4727
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/AsteroidLogs.json",
+    "baseline": null,
+    "candidate": "EAEA2C695F5676F3E0CF6E71DB460E9992209121E8ACF980CDB4FA9B0216427D",
+    "size": 6393
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/AtlanticaLogs.json",
+    "baseline": null,
+    "candidate": "DF15AAC9D14C1FAAC141EFA94BEFFEBCAD9EC8885267A251F745264C1D9F29CC",
+    "size": 2462
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/BerunahLogs.json",
+    "baseline": null,
+    "candidate": "BF05830DF35092A610CD75C4F380F79D72860AD1F683F9CFB5949F4219E2146E",
+    "size": 2404
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/CalistLogs.json",
+    "baseline": null,
+    "candidate": "677DDA5A24BB59D2D44B64361EB0A1EC5CF840CA0711A61105D73F9CF135C716",
+    "size": 4620
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/CentusLogs.json",
+    "baseline": null,
+    "candidate": "6F5125017B48E5F4D9E258975BC3D39EA2A5AE976BF98AA29008777921BE798F",
+    "size": 4102
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/CoreLogs.json",
+    "baseline": null,
+    "candidate": "AAA9FC76299DCBF5BC94A7706C40FE1C4B46E82D6B3AF65A8040586C4B504693",
+    "size": 4188
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/CosmocosLogs.json",
+    "baseline": null,
+    "candidate": "8331365B7E1B991D65253ECAA7DBEDBE8DC418F3461F7BFD07F11016AD4C08D5",
+    "size": 9514
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/CubatresLogs.json",
+    "baseline": null,
+    "candidate": "536EBE8A196AEB7459DC3984B7757D1FF5BF21311234F878ACC6E882C7455525",
+    "size": 4616
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/CunninghamTravelLogs.json",
+    "baseline": null,
+    "candidate": "015E28D7A8DC205AC96BFD7CC5F2C342BE6F973DBC3B421578125EF74D2938E7",
+    "size": 6344
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/DesolationLogs.json",
+    "baseline": null,
+    "candidate": "45BDAC657F93114DA10364AF86DB2C5605CA3707B674926891A098480E3D555C",
+    "size": 4626
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/DreckLogs.json",
+    "baseline": null,
+    "candidate": "BA97787100AF097413FF29479D3EB094DDB2B3D908BBC92B5349FDE5FD847E09",
+    "size": 3919
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/EmpraLogs.json",
+    "baseline": null,
+    "candidate": "BB214611C14C816A0DD77D56E6786B4DD3328066C896D852C8622779E2C3401F",
+    "size": 5836
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/EternLogs.json",
+    "baseline": null,
+    "candidate": "0F1ED1261305E3BAEC4D52D77D907DD47AA351D7B21AFFD0006DFE693F5C7214",
+    "size": 3997
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/FaithLogs.json",
+    "baseline": null,
+    "candidate": "023A35D15BEDF629AB67514BB2BA3B86952BEC37B65EB925104CF14646658013",
+    "size": 4268
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/FilitriosLogs.json",
+    "baseline": null,
+    "candidate": "71EEC1AD741C3A9405D932AC4F041040A3C9D6B0222B1456BC48D4A1D1283050",
+    "size": 4869
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/FissionLogs.json",
+    "baseline": null,
+    "candidate": "C7DFC0E93B0D4C16B4BC1F5E720ED1C1906878305610886CD73437259F09922B",
+    "size": 3176
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/GeoffreyLogs.json",
+    "baseline": null,
+    "candidate": "A5BDA6435BBE89F7A8F3A0EEB5003CAD6025C0FABA5645AFA583E431C112BBFD",
+    "size": 8070
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/GratarLogs.json",
+    "baseline": null,
+    "candidate": "03759CB53D570792184588C8263DFB4D2578C050EF5D5F30BF0A6B9852C8FB8A",
+    "size": 5554
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/HyxLogs.json",
+    "baseline": null,
+    "candidate": "03E4DC28553AE5B2607A4E281C085FBBFCA4D4C50FDD0C084F84F73C8618F635",
+    "size": 17094
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/InfernisLogs.json",
+    "baseline": null,
+    "candidate": "1114B7DE3D4AA3A88E6DA357F7E4EA56A0C48B86160D4A904CE0A5C706FC413B",
+    "size": 2659
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/JunicLogs.json",
+    "baseline": null,
+    "candidate": "917B22D184E5E0641B479BAE22D89E6867A227F8C1E4E26291B888DCFF4CA1C7",
+    "size": 3211
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/LecaroLogs.json",
+    "baseline": null,
+    "candidate": "4304E6F1583F3F33F36689B11BDCFD3A17B3DC15922274C880C07C1941BEF20F",
+    "size": 3807
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/MotraLogs.json",
+    "baseline": null,
+    "candidate": "902539248BB9951EBB55CC4DB2840AB9F0FFED4C08B14056B6BF13A776C67BCF",
+    "size": 1463
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/MusemaTapeLogs.json",
+    "baseline": null,
+    "candidate": "40C34D672B403CDED41AC3B920E4F7D8759E932AACAFE3BA9086086E91932AF9",
+    "size": 25919
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/OldredLogs.json",
+    "baseline": null,
+    "candidate": "80AD4D123F296790981D989E4C1FA7BF2712A056DA70769DE9E15D8A76E113D9",
+    "size": 5881
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/PolarusLogs.json",
+    "baseline": null,
+    "candidate": "55FC9E080C447D0404BC3A5E11E1FA3950B5E61D3E7CEBFDC31F3ED84060DF57",
+    "size": 3443
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/RepressLogs.json",
+    "baseline": null,
+    "candidate": "BA1BA793968B34410DCB68011F8B414C70D8AB76FC22E681E88CCB75881DE3B3",
+    "size": 6641
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/ResearcherLogs.json",
+    "baseline": null,
+    "candidate": "C7E526DEABF395397BC69C4CE983318F6BF4F38C682678B9BB8F0694EE557FCD",
+    "size": 17403
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/RRLogs.json",
+    "baseline": null,
+    "candidate": "7A1AB8724FE72DBA3A33DB4FA762E202917CE1CC67A1BFE5C5EDE310DE832BB1",
+    "size": 2223
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/ThalassoLogs.json",
+    "baseline": null,
+    "candidate": "4E208D7E67E502FCA91B99F8D9F77AFBBB7132DA83BC9AAC1D0EFF9E3E49AD73",
+    "size": 3793
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/TriteLogs.json",
+    "baseline": null,
+    "candidate": "DF6A125813C96B8F6B9E1CDCCF36F4DFF148C58FBD1A7A12C32FC6AD3F20B8D4",
+    "size": 3975
+  },
+  {
+    "path": "BepInEx/plugins/CustomStoryLogs/logs/UtrilLogs.json",
+    "baseline": null,
+    "candidate": "A2FF64560461CDB81CE657E15D50B73BC2516E6612197E645372DEDCAB8867DA",
+    "size": 5316
+  },
+  {
+    "path": "BepInEx/plugins/IAmBatby-LethalLevelLoader/LethalLevelLoader.dll",
+    "baseline": null,
+    "candidate": "E9E44020713102CA89AA4A74176A0645EFF41D859DD2767903F5F80B93264E75",
+    "size": 437248
+  },
+  {
+    "path": "BepInEx/plugins/IntegrityChaos-LCCutscene/LCCutscene/cutsceneasset",
+    "baseline": null,
+    "candidate": "432605E7915B1ADD46CFDBC71B99C6CC99CF4639D841BED1C8133D265C6D0B92",
+    "size": 1541
+  },
+  {
+    "path": "BepInEx/plugins/IntegrityChaos-LCCutscene/LCCutscene/LCCutscene.dll",
+    "baseline": null,
+    "candidate": "C2E8C0BA154AD3341CA5486B4B75AD2ABF28C2D5E81DC8F5217AD9749927A865",
+    "size": 28672
+  },
+  {
+    "path": "BepInEx/plugins/IntegrityChaos-LCCutscene/LCCutscene/LCCutscene.pdb",
+    "baseline": null,
+    "candidate": "9063AA716CADB5945C5994862C8991E0E00AA8CC3B2CE37AF13DCB6CA1939E44",
+    "size": 16424
+  },
+  {
+    "path": "BepInEx/plugins/JLL/JLL.dll",
+    "baseline": null,
+    "candidate": "BBE20F86805F8CB90CF8C88893B27B664D39EA79107EDC826E1089F0AC473F5A",
+    "size": 188928
+  },
+  {
+    "path": "BepInEx/plugins/JLL/JLLItemsModule.dll",
+    "baseline": null,
+    "candidate": "9AC51BDAEA96BA0792FA896940DD0EDE26D1436E912F756C27B21E265BB2FD0D",
+    "size": 39424
+  },
+  {
+    "path": "BepInEx/plugins/JLL/WesleyMoonScripts.dll",
+    "baseline": null,
+    "candidate": "366F4AC03E77DC63BBBA1118F6FBB821064237E3F745B4442B0C9EA7DBFBFCF8",
+    "size": 49152
+  },
+  {
+    "path": "BepInEx/plugins/LethalModDataLib/MaxWasUnavailable.LethalModDataLib.dll",
+    "baseline": null,
+    "candidate": "2D9B35D78DD71A08EC7497DFBD714D19F98B4D9F913E6601B00FD8029CE4875B",
+    "size": 41984
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-CustomStoryLogsFixed/yorimor.customlogs",
+    "baseline": null,
+    "candidate": "0778EF6A35459164F4413E71B9A6AA577B6DE7DD8655609CAF08EE29BE827A4C",
+    "size": 539525
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-CustomStoryLogsFixed/Yorimor.CustomStoryLogs.dll",
+    "baseline": null,
+    "candidate": "8262F502FE865FCAF9BC26F7F3CF5108CBAE0FF8018C15C5E50AD8BF423664B2",
+    "size": 51200
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Decrepit_Store/storeinterior.lethalbundle",
+    "baseline": null,
+    "candidate": "128ACE3B4339DB21243F0D61F4C7A30B586E109CBB7EDBDEEB72190D91ECE699",
+    "size": 32381635
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Facto/facto.lethalbundle",
+    "baseline": null,
+    "candidate": "FF6D5B20B55D07479073331ADEA1495FB65232F902F2CEF27ECDA0835A690D6B",
+    "size": 37909257
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Facto/factoscene.lethalbundle",
+    "baseline": null,
+    "candidate": "0A0809900B280FA6BECDF8AC40B4ECE8CFA51457A5CE5DBC2024D718817C9DC3",
+    "size": 18248336
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/atlanticdungeoninterior.lethalbundle",
+    "baseline": null,
+    "candidate": "10F5DEBC8362334E32602145F1AAE613FA2051D603A8F852242A0FDB5844EA93",
+    "size": 34229271
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/carnivalinterior.lethalbundle",
+    "baseline": null,
+    "candidate": "173F629CBABE9702808828EC03F52B5AFCA63BD2959F850FA974671BEEE22143",
+    "size": 29415590
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/dreadlab.lethalbundle",
+    "baseline": null,
+    "candidate": "0641FD58A328741ABD1F14923691FCB95FCD0F610B79BD4095A6E4A0A88CE73C",
+    "size": 45172360
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/expandedfacility.lethalbundle",
+    "baseline": null,
+    "candidate": "B6A304ABC75F76AAA0595C50EDF568C51E198D50E8DE9135FD08A464D4CC4F60",
+    "size": 40448488
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/extendedmineshaft.lethalbundle",
+    "baseline": null,
+    "candidate": "4C9184D33FBEE00478AB5ECA742D76668E3A5C84A04460D2F01890F01F113462",
+    "size": 38013713
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/fracturedcomplex.lethalbundle",
+    "baseline": null,
+    "candidate": "482AF9647D4BDA65374B595FEB60328D1D4D92B4B848051B09E2E1889E907AF2",
+    "size": 46070315
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/grandarmoryinterior.lethalbundle",
+    "baseline": null,
+    "candidate": "941B61BB1211A1EB4640F732E593DC6528B3022FA804436379BD334788CBC4AA",
+    "size": 57705815
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/greenhouseinterior.lethalbundle",
+    "baseline": null,
+    "candidate": "4F94A758A1A399F1E88E67BDA89A7AAB657E6391199D1AF5E9BFEA00F045BF98",
+    "size": 34762197
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/museuminterior.lethalbundle",
+    "baseline": null,
+    "candidate": "1E9B620D6BFBD6BFB305A4A677629C650F315D5C8B05C2625AA564ACE3CC6828",
+    "size": 65969529
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/sewers.lethalbundle",
+    "baseline": null,
+    "candidate": "AA40559039A5EE5033D22295C4A098D9D83CF52EF5608EC3BEE438B10F5DCFB8",
+    "size": 45622861
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/spookymanor.lethalbundle",
+    "baseline": null,
+    "candidate": "9568314A15C767C4BB6E2E13D28731C3487DAADED576D31F08B9DCED2BD0F140",
+    "size": 73944380
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/therubberrooms.lethalbundle",
+    "baseline": null,
+    "candidate": "A53444D5C282B0B8F9E250607C44D28122FBAFD002419E2EF65AB44FEB2ED84E",
+    "size": 54741149
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/toystoreinterior.lethalbundle",
+    "baseline": null,
+    "candidate": "7A61C9F1D317521A98FF46D77360FD05414685A4FE7DDB6605675E76BCD67CA3",
+    "size": 47612909
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-WesleysInteriors/WesleysInteriorShenanigans.dll",
+    "baseline": null,
+    "candidate": "FB742025DEA576A998AF504F98AB5E7534B3BA43C1024950B50DBDF95B61FA30",
+    "size": 6656
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Ememy_Variants/enemyvariants.lethalbundle",
+    "baseline": null,
+    "candidate": "089F357E2AFC9D4B1786CBF55C09D4E420D2BBFD845D16080B3DADA049C854E6",
+    "size": 45151426
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Ememy_Variants/enemyvariants3.lethalbundle",
+    "baseline": null,
+    "candidate": "5FB68AF6DBAAC4AEEB3C72E37481B6241966B9797734A4B9BDD3736F03332091",
+    "size": 4955250
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Ememy_Variants/enemyvariantsp2.lethalbundle",
+    "baseline": null,
+    "candidate": "96BC39D040B4A9846541FF97C0F2B003B355AFE64621A018496F61BFEE3B026D",
+    "size": 1164161
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Ememy_Variants/enemyvariantspart4.lethalbundle",
+    "baseline": null,
+    "candidate": "D040164692692DE524D4D93F46BD271B0863CB3A2DEA1BF721DCFA6555849E67",
+    "size": 8009227
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/alcatras.lethalbundle",
+    "baseline": null,
+    "candidate": "3695F7539C30611C9B5122960B18FC3E4D037F733B4FA8EED4D1B6FFFDC7572D",
+    "size": 8750808
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/AlcatrasModConfigsJLLMod.json",
+    "baseline": null,
+    "candidate": "8CA75436CAD6F40D9CBEA99022B841DFC61D8072B3EB35A2E6F377AFFA761B44",
+    "size": 285
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/alcatrasscene.lethalbundle",
+    "baseline": null,
+    "candidate": "B4419BAACA55D9002C3B4466EEA38F3712C3A088BFD9687A51DCE830041FA21B",
+    "size": 27277100
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/artmuseum.lethalbundle",
+    "baseline": null,
+    "candidate": "58FEA565F3C7E13638BEC25466860C61861E92D1FED29246A7D943E3A42807D3",
+    "size": 291370574
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/artmuseumart.lethalbundle",
+    "baseline": null,
+    "candidate": "C31A421983F7EED730481741F6FD8EDFA616AE37E3C816F33BBBBD089660CEE7",
+    "size": 1896611
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/artmuseumscene.lethalbundle",
+    "baseline": null,
+    "candidate": "FA487DF2C81707B9A12954A33F2415DF613A043BA61952DD523172F6D515128B",
+    "size": 56514703
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/asteroid13.lethalbundle",
+    "baseline": null,
+    "candidate": "660FECD48B7E089B753D219A36DA5A40552A69F24346D89F8B23584264B0FF7B",
+    "size": 11890999
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/asteroid13scenes.lethalbundle",
+    "baseline": null,
+    "candidate": "D87B172B2F3C012399D8BBCCF5B40D564FE867EA89A397BF7BD483FB951CF489",
+    "size": 23880208
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/asteroid14.lethalbundle",
+    "baseline": null,
+    "candidate": "8F985FD1DE8B61D58E5B002FE17EC266EB67AF185A9974DD14181A59BE839D7D",
+    "size": 7257287
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/asteroid14scene.lethalbundle",
+    "baseline": null,
+    "candidate": "A8B90443099202184D2F2D5FC633F3F29523CEF0386F9628B7A59B8777CAD2CA",
+    "size": 38104820
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/atlantica.lethalbundle",
+    "baseline": null,
+    "candidate": "7CB67ADF02F214C280BCCBC2A1581234D90FAC41AC6231FF9F57A37D4C09DA8B",
+    "size": 6860810
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/atlanticascenes.lethalbundle",
+    "baseline": null,
+    "candidate": "CE8EDCCEC167708129092BC8686559F60CD6F4C0C7FFEF9235422E09A2E9E4AE",
+    "size": 27315170
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/berunah.lethalbundle",
+    "baseline": null,
+    "candidate": "456F4554C879616DC230FD228112440640194BEF64839162257C41656C751922",
+    "size": 6866715
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/berunahscene.lethalbundle",
+    "baseline": null,
+    "candidate": "A97D861DD0508213DA600A0D393791A8DE95F0594D93BE8177969D6B6FF7BC04",
+    "size": 37016084
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/calist.lethalbundle",
+    "baseline": null,
+    "candidate": "738A6A5E33113ED28ED690837E76392F8D5A3AB88977BBCAC1967F5509B6F4A7",
+    "size": 9920296
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/calistscene.lethalbundle",
+    "baseline": null,
+    "candidate": "5E854F0297A9B3333AD08ADD996713D974EEB853660610023E76010350CB2630",
+    "size": 12083621
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/carnate.lethalbundle",
+    "baseline": null,
+    "candidate": "6496FBA61C8231FB0A52BC654EF789AE5E84820923166FF2764F41AAFE543362",
+    "size": 6516754
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/carnatescene.lethalbundle",
+    "baseline": null,
+    "candidate": "E2392D7C6C405AE2764887F5C7E6B13A32E05C9CEE0563861099DBB6271987EC",
+    "size": 37162370
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/centus.lethalbundle",
+    "baseline": null,
+    "candidate": "6AB24EFD2DE9970E61B5F0096E808F977BDEABCB577A5A450406241A169A4647",
+    "size": 5383203
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/centusscene.lethalbundle",
+    "baseline": null,
+    "candidate": "ECBADCF40D0E27C0A170F1F4C56D4612C7BA8AC28B949C586865E0D148C9A9BE",
+    "size": 48225587
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/chasm.lethalbundle",
+    "baseline": null,
+    "candidate": "B385385CE81A5A9A88A7CEF7E0BDA041FA5A735D524C430E1E66B473CF5BED91",
+    "size": 5243641
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/chasmscene.lethalbundle",
+    "baseline": null,
+    "candidate": "D58593A847E5EABDBFA1DB50CF9481B3D4DABB5F0D8A73D777A3A32C31F70F9C",
+    "size": 39036593
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/core.lethalbundle",
+    "baseline": null,
+    "candidate": "98E369DA0B192524F61289496212BE832D6E1DBFC31205EA743CB1E1567F0619",
+    "size": 5535056
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/corescene.lethalbundle",
+    "baseline": null,
+    "candidate": "24C4C6F068CEA66B99A53670094ADEA6EE8643BAFE21C1F25F36A70618979129",
+    "size": 35119374
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/cosmocos.lethalbundle",
+    "baseline": null,
+    "candidate": "5FACAD7E7AA51EA6CE2FC2FA710F594590C6DB5B21A357CD09DA5B5B080549D4",
+    "size": 13974257
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/cosmocosscene.lethalbundle",
+    "baseline": null,
+    "candidate": "F3B39705566EC04CEE32D6B092715F6205C48DF9AEC175796B5BDA558E92EADE",
+    "size": 36386255
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/crowed.lethalbundle",
+    "baseline": null,
+    "candidate": "29097765348245956BD9D80B5B151AE8447764757541E4D7B88E1E55D4CA12D2",
+    "size": 12620503
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/crowedscene.lethalbundle",
+    "baseline": null,
+    "candidate": "8568E964F27B05E91FD116B350E192207D4D63A80B2F978515D7365F053E9871",
+    "size": 32931876
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/cubatres.lethalbundle",
+    "baseline": null,
+    "candidate": "9DC344A16AE402EA2C57A0DA108889368C80DD1A212DA75BA45E9E824E983031",
+    "size": 4847021
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/cubatresscene.lethalbundle",
+    "baseline": null,
+    "candidate": "FEC847E6E51ACCBF4D10A4DBF5CD5AA47F4E7304F077E4A2E58476619BAE4E6E",
+    "size": 32093888
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/demetrica.lethalbundle",
+    "baseline": null,
+    "candidate": "84754A413D0D91F032BE5F92D9533E652CBE1C27C2B53E36A3877FAE2A2CA8C1",
+    "size": 8248297
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/demetricascene.lethalbundle",
+    "baseline": null,
+    "candidate": "F39AA3D359538483A82E14723BA77C2F5241E3EF7F222299A06CA376ABD86B05",
+    "size": 23869128
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/descent.lethalbundle",
+    "baseline": null,
+    "candidate": "EDC9FA39E1EF16974AB9DC797479EFBA955C2806AB47F2EB4CD22375192CDCF8",
+    "size": 18951059
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/descentscene.lethalbundle",
+    "baseline": null,
+    "candidate": "7DA9CE844CD7577E884BB13621A8ECE79973520BA797E3D161898895087D26B5",
+    "size": 18493965
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/desolation.lethalbundle",
+    "baseline": null,
+    "candidate": "87A92D4684EEF32D78738AB24D999B304AB89FBF74444726C7C10CF12A32FE6E",
+    "size": 14185873
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/desolationscenes.lethalbundle",
+    "baseline": null,
+    "candidate": "D25C7D0BFCD8B36509E3775B66F0FF96B17D31F4ACC8C8299F91FB15BE205B1C",
+    "size": 21667008
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/dormant.lethalbundle",
+    "baseline": null,
+    "candidate": "BD599B6AC27FAB74146E00F6FEF0E5CDF8E8378E96B12CA7BF849313F3B20FAC",
+    "size": 8055558
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/dormantscene.lethalbundle",
+    "baseline": null,
+    "candidate": "14CE6C581DB7C72EBC0ED9EC4B56F82874328E53555B5E66E017FF1B9123581A",
+    "size": 24684984
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/dune.lethalbundle",
+    "baseline": null,
+    "candidate": "849FEC72E01FC48B9DCC044BD6848EC785464CA2C85AFEA84C13C76CB54D1AE3",
+    "size": 12026627
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/dunescene.lethalbundle",
+    "baseline": null,
+    "candidate": "AD3D11C32FA121BBE431C57A1BB0CD5BCF3D8BF52B656EDD9721E1BE078DCFEF",
+    "size": 28366369
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/empra.lethalbundle",
+    "baseline": null,
+    "candidate": "6FCAF9957DB0E9B30AA0B45D36689EC6CB54595BB7DA7A42B611684E80D4023F",
+    "size": 6065680
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/emprascene.lethalbundle",
+    "baseline": null,
+    "candidate": "417A9B0E5E68E891B0CF439E8F1E63C78872BAC1DCADCEC920498C8453781ABB",
+    "size": 42444484
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/end.lethalbundle",
+    "baseline": null,
+    "candidate": "FDB56B2CA4A82A816405D23FCE4AF75A7081496C2D59B838E5135DC60CDC6519",
+    "size": 403562
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/endscene.lethalbundle",
+    "baseline": null,
+    "candidate": "9F7622CF9F5020C085FD413E5D8FAAA002465BB7E5832D9F501D70CAB21BE838",
+    "size": 26611956
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/etern.lethalbundle",
+    "baseline": null,
+    "candidate": "CB6E48CABB6FB0BBB7EDFC85C6734CF696B6F44CA8D3409F991F69F25BB19405",
+    "size": 7796058
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/eternscenes.lethalbundle",
+    "baseline": null,
+    "candidate": "7534AF681A0ABE93FD6A0134D8B0B7899D00D02434532DBD57922A13AAE9F264",
+    "size": 41384936
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/extort.lethalbundle",
+    "baseline": null,
+    "candidate": "5D39A9DA3DED4DCBB25D440E637CB21E14DC9A9D65AA2C981B4222B799A831DF",
+    "size": 8665099
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/extortscene.lethalbundle",
+    "baseline": null,
+    "candidate": "C016A96C0430F1994AD13AE2FA5EA1EF4B779B6DA5959B9D0A9416ED3F901F9A",
+    "size": 57966779
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/facilityc.lethalbundle",
+    "baseline": null,
+    "candidate": "919360425D04C8EA945340C175E833586BCD5B7B8A08DED1A9AE0085A529DF6F",
+    "size": 1379036
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/facilitycscene.lethalbundle",
+    "baseline": null,
+    "candidate": "78688E030478B6A5B14A340F6129340A90D6FD15AB62EA693C9D97F60B922D77",
+    "size": 36554448
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/faith.lethalbundle",
+    "baseline": null,
+    "candidate": "B163ABF3F10CB5E187ECB18FCCF5D854C38BFBEED5AD60C7125AC75825870AAE",
+    "size": 5929727
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/faithscene.lethalbundle",
+    "baseline": null,
+    "candidate": "8102BB894F5065B024F4A19FF0635AA4D58E4286F5E5CA67F497554BB7D780FE",
+    "size": 35827987
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/filitrios.lethalbundle",
+    "baseline": null,
+    "candidate": "C8FE806DB51551D2DF468F9D1D929B0BE5BD193708FA3F5EFA0AB363EA6EA894",
+    "size": 10897804
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/filitriosscene.lethalbundle",
+    "baseline": null,
+    "candidate": "F5B4387A43BB3202CC1F4D2107A892D056811A51EBECE29694E919DEFDA36E61",
+    "size": 64150344
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/fission.lethalbundle",
+    "baseline": null,
+    "candidate": "7739EB1057F635664E2CA3B09699E6299D4B4074CA1F3BA30D136CA77723AAFB",
+    "size": 4660023
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/fissionscenes.lethalbundle",
+    "baseline": null,
+    "candidate": "1BD2B9973392F0FECF5E5B9E0B1952F43E31161426BBF50D452C6DE43950978E",
+    "size": 25166970
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/glace.lethalbundle",
+    "baseline": null,
+    "candidate": "650CE04AACE4F961632E225B72B7AC317C0DBE066C035CAD69BAAF1300DC60C3",
+    "size": 5282425
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/glacescene.lethalbundle",
+    "baseline": null,
+    "candidate": "D13E868A55AA3C97C9F5D495A3B4E6583464470EED9BD1F7455A5E10263F72B2",
+    "size": 45929097
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/gloom.lethalbundle",
+    "baseline": null,
+    "candidate": "503DAC4270BF0E69116237628399DC37685291F32F38F7DA5422B1839F88585C",
+    "size": 8293919
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/gloomscenes.lethalbundle",
+    "baseline": null,
+    "candidate": "876BB7CA618FFA17E0761E7441FC515D3E20B797699A949BDCA4681D738A791E",
+    "size": 39800810
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/gratar.lethalbundle",
+    "baseline": null,
+    "candidate": "443FF9E6A75C76EB5575FB35592CE216895D06F46A7BEBCAA06C74ED2FF66064",
+    "size": 10008327
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/gratarscenes.lethalbundle",
+    "baseline": null,
+    "candidate": "FBEC076F03D5F18543FD5ED8C552977B4245C1F7ACB529AF470F415D4778DD7D",
+    "size": 38190998
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/heap.lethalbundle",
+    "baseline": null,
+    "candidate": "7B1FA3147BF8494CB922A20145FBA7AA253FD8FB674E83B486A7B20A4F961057",
+    "size": 11468047
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/heapscene.lethalbundle",
+    "baseline": null,
+    "candidate": "353B73AA1A8CE4EB3DFC867128C435891CB84706E8A5AB6A41E72701FA879C60",
+    "size": 33662367
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/hydrene.lethalbundle",
+    "baseline": null,
+    "candidate": "3DF7B6F678DEC74D19754AEB64351590A1B3AD74067EF980F72A1FCAE4AE5E6B",
+    "size": 4435717
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/hydrenescene.lethalbundle",
+    "baseline": null,
+    "candidate": "D34BC9480025CFCFC0D9AAF90FD42D77663BF882B68E2CFECE3EE083CD383DD5",
+    "size": 31961610
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/infernis.lethalbundle",
+    "baseline": null,
+    "candidate": "1764034127C609FD9096E2F8839A1458EEAADD5446A6AB1C2EA6848A524B5389",
+    "size": 27645269
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/infernisscenes.lethalbundle",
+    "baseline": null,
+    "candidate": "C97D1740C8306C98D34E10EF097367A767B29F3F4EF7AA1C1712CB8F675F52B9",
+    "size": 29061492
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/junic.lethalbundle",
+    "baseline": null,
+    "candidate": "FA54DBA2E8375F263D43EE2592EA70CE66067251C14B8D7065AF50A8CC0F74CF",
+    "size": 8038909
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/junicscenes.lethalbundle",
+    "baseline": null,
+    "candidate": "D5743E4B1C29C49869438EC9904E22C6DA8D59BC982088296354BD4E786058D4",
+    "size": 36548693
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/kryte.lethalbundle",
+    "baseline": null,
+    "candidate": "4789F586FC7945515BDDA2F769A7CF3369CACA772C3AAA756C65740ADB816566",
+    "size": 12264237
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/krytescene.lethalbundle",
+    "baseline": null,
+    "candidate": "F76D89B9214DB5913D1C6ECE09C04D94444F81E3C3523A9D7D772595F706FC47",
+    "size": 31655213
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/lecaro.lethalbundle",
+    "baseline": null,
+    "candidate": "CCBF2899DFF768AD0D44CB0FD80BACFA53DBCDD5410D91FC5E28337D87DB4751",
+    "size": 10778391
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/lecaroscene.lethalbundle",
+    "baseline": null,
+    "candidate": "C03742AC992D7997E520C08B022E51A3ACFB35F8E7436069452F7687605EC5A1",
+    "size": 36242654
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/Moonextras.lethalbundle",
+    "baseline": null,
+    "candidate": "994A1CF0743B2925550523D9A6465CC101DF8D7ECF33B62EB117329960F9B367",
+    "size": 5505790
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/Moonextras2.lethalbundle",
+    "baseline": null,
+    "candidate": "E2B53D406B3D18C62D41331FD92F1BF3C21A4EDD99DA663B30DF9982A7051183",
+    "size": 8643513
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/motra.lethalbundle",
+    "baseline": null,
+    "candidate": "06649C14EFB9C99185CC433D05F2FBB083CAEBF7CC4077D36E1459A31E006455",
+    "size": 7979199
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/motrascene.lethalbundle",
+    "baseline": null,
+    "candidate": "50373559C6CAE91398779F725662DB247D84FF5EE2A740FCBA95DC68C295B899",
+    "size": 35974741
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/narcotic.lethalbundle",
+    "baseline": null,
+    "candidate": "8402670BEDEF9293952E9628DB42F7A022D3325C6A04D3E0CE922B04682E9DD7",
+    "size": 6030221
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/narcoticscene.lethalbundle",
+    "baseline": null,
+    "candidate": "2509B29AA5A7133A8370B5ADDB2C0503961BB61398B15D1A7B91F8ABC9F547CF",
+    "size": 49389095
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/oldred.lethalbundle",
+    "baseline": null,
+    "candidate": "A7E4B2A365FB6E290D10856B37BBBD3697AB9C4EE037A2ECD0AB06BB1C09E183",
+    "size": 6440359
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/oldredscenes.lethalbundle",
+    "baseline": null,
+    "candidate": "6AF4598323B2EA264E062F3D217DCB1A51478101DE67E1A03A9850FDC0BF666F",
+    "size": 27890892
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/polarus.lethalbundle",
+    "baseline": null,
+    "candidate": "C79CB77AEA5E56C62D8D90DEAADFEDDDF2FFF448DE94596EC5F8679F816CAB91",
+    "size": 10373212
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/polarusscenes.lethalbundle",
+    "baseline": null,
+    "candidate": "BD47F439D9CBB4C4F3D35FE273FEC67A1B22726966794AF1CC1E16F315736661",
+    "size": 40363823
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/porcerin.lethalbundle",
+    "baseline": null,
+    "candidate": "B034B9DC3ED94BC7C42C2024431F75792F0D268A58FE49E04E4D43A2938C029E",
+    "size": 10102646
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/porcerinscenes.lethalbundle",
+    "baseline": null,
+    "candidate": "40D47DA616024F735E6476E8811DECE98F3C2932D342F8613D87A8652A1B8E59",
+    "size": 31771284
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/release.lethalbundle",
+    "baseline": null,
+    "candidate": "DF1E71B1C06129E108C8AA1A0E395C8C0F7AEB3A8AF1BFCE2C78040E6C54B799",
+    "size": 11520708
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/releasescene.lethalbundle",
+    "baseline": null,
+    "candidate": "31BACDA8C307B4DB899CE58B73208575EEE8FEF07E93886A5437EC276CCFCFBA",
+    "size": 28732502
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/repress.lethalbundle",
+    "baseline": null,
+    "candidate": "A5D6F242815821E1BA56B26DA5489B9FE67A945818372D03BE9C95202F6C8366",
+    "size": 5230921
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/repressscene.lethalbundle",
+    "baseline": null,
+    "candidate": "B2893D0ECF0D9CF8923DFEB67B4F85A5669646F27529BE0CAFFC2E8A1129CC26",
+    "size": 81016200
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/researcher.lethalbundle",
+    "baseline": null,
+    "candidate": "F96B765339D847B585CD7528B46BE6E0D4957E1A225007103961DA8470F8EF44",
+    "size": 1204809
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/researcherscene.lethalbundle",
+    "baseline": null,
+    "candidate": "2D7F44A1EE4F51E9C0E8D153E932CB603FAE6C8AD4ABCD1719EB574E1B0E6535",
+    "size": 27185759
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/roart.lethalbundle",
+    "baseline": null,
+    "candidate": "273742B57807FE6FDF2D92BBE402D6F40324D18D1C9E54F47FE666E0B22B2203",
+    "size": 7967446
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/roartscene.lethalbundle",
+    "baseline": null,
+    "candidate": "485B70373EE99095432479D1015BF8AF16165BC13927FE957C2CB4D211BB191E",
+    "size": 45080945
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/selector.lethalbundle",
+    "baseline": null,
+    "candidate": "20C2324851BD65DF84F55B495941D26CE1EA8F7DD1B0EB720FA51FE7741C03A7",
+    "size": 6436313
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/selectorscene.lethalbundle",
+    "baseline": null,
+    "candidate": "9CAEAD7DFDD0844965587598DA30E94B5A07853D54D7540BBD5FE05D1FBE88B5",
+    "size": 34489527
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/spine.lethalbundle",
+    "baseline": null,
+    "candidate": "A5CE208A5197AD843F3E54D1CF7A2B88B506528A227C88CA4BEEF334699613DB",
+    "size": 13017538
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/spinescene.lethalbundle",
+    "baseline": null,
+    "candidate": "CBD0EB8A452A3ED332F31443D84D510E2C89440B2B2AC1E71592F0790A3CD407",
+    "size": 25024690
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/trite.lethalbundle",
+    "baseline": null,
+    "candidate": "D95BFF1CC331C959B2180D0129AD7F3F7A461C9B52E4C10AE1F05DF0229524B8",
+    "size": 12221632
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/tritescene.lethalbundle",
+    "baseline": null,
+    "candidate": "3B9C41594E32082E2704934348BB54A6CB97DDCD3ACB325FFAFA947626C40A69",
+    "size": 37128946
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/truth.lethalbundle",
+    "baseline": null,
+    "candidate": "7DE764739B4224C7568E5AA891DAD1CECEF8C5D26EC7A827414A687E1A86E532",
+    "size": 7083408
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/truthscene.lethalbundle",
+    "baseline": null,
+    "candidate": "FCF836F9C32B173E301747F840DEB073B233F18F7610100F3880740878E42879",
+    "size": 33941644
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/utril.lethalbundle",
+    "baseline": null,
+    "candidate": "44BB0355CBCF230627EC70E9EC251CBDA9ABC93EDE531AF4E82FC838E6AB28EC",
+    "size": 12406210
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/utrilscene.lethalbundle",
+    "baseline": null,
+    "candidate": "2432B316516ECED13BE4DC70E35A844ECCE3320D96A52E6171F8A1BD1C57AB77",
+    "size": 35404331
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/vindict.lethalbundle",
+    "baseline": null,
+    "candidate": "BF857F7128DEE59F4D752105B1982E8BD25A832280C5564EE49AB23AEABA1F6D",
+    "size": 13371196
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/vindictscene.lethalbundle",
+    "baseline": null,
+    "candidate": "69806F5A05F3346362DB0C81DCA64C1836B4DCE21AE8C8547BD7E7DE53BFE4BC",
+    "size": 26593659
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/WesleyMoons.dll",
+    "baseline": null,
+    "candidate": "78E07DA8C4978F85DB89E014E98569D21B19BEB4C97163AA627D206BE71DB85D",
+    "size": 18432
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/xenphir.lethalbundle",
+    "baseline": null,
+    "candidate": "F17488A1839F04D92E808BEADEF1D8B44BE85ECD7D9DCA6760B7F2584B683F78",
+    "size": 1291488
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Moons/xenphirscene.lethalbundle",
+    "baseline": null,
+    "candidate": "E06CAA4A177B31F777EC749E89A9C2F211D575049067CFE3B547A7E7EE8AEE77",
+    "size": 15130647
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Shenanigans/DilapidatedManor.dll",
+    "baseline": null,
+    "candidate": "5EB2C8EFEB2FDE3C3D26C8F63952D5B965FA21D5CC790FC790D1AAE40B7F1E9B",
+    "size": 24064
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Shenanigans/WesleysInteriorTools.dll",
+    "baseline": null,
+    "candidate": "41E1224084885644FD4522C1EB544696E10EB52631D21A9A3BE1B5A3B538B3F7",
+    "size": 617984
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Shenanigans/WesleysWeatherStuff.dll",
+    "baseline": null,
+    "candidate": "53F5873426E26C5D1D0839EB8574FD6CEF4C4255C37F79419B00451C77FBD162",
+    "size": 4608
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Weathers/wesleysweathers.weatherbundle",
+    "baseline": null,
+    "candidate": "8C9DC076E7A77EFCA30B39A01A296049CD6E5931F12A1A8F1AFE0D54BA6F1043",
+    "size": 18453678
+  },
+  {
+    "path": "BepInEx/plugins/Magic_Wesley-Wesleys_Weathers/wesleyweathers.lethalbundle",
+    "baseline": null,
+    "candidate": "18CF44173B35BD48389158FD92B9BC55AD8CBCC4637C4774E64D8739DDF9F5BA",
+    "size": 10908216
+  },
+  {
+    "path": "BepInEx/plugins/mrov-MrovLib/MrovLib.dll",
+    "baseline": null,
+    "candidate": "934518549A254AD3D194FBAA065CB2B65B718173AF811CC4368AD47460213A5A",
+    "size": 116224
+  },
+  {
+    "path": "BepInEx/plugins/mrov-WeatherRegistry/WeatherRegistry.dll",
+    "baseline": null,
+    "candidate": "8E3CC1EB9E9E44D3AF85E73FFB7AA08621D0E31ECFBAA50D447E62F01661A396",
+    "size": 179200
+  },
+  {
+    "path": "BepInEx/plugins/NT1Ho-WesleyPackCompatibility/WesleyPackCompatibility.dll",
+    "baseline": null,
+    "candidate": "CF35573B9A32F17CC1C7CCB7A020404259B9E5999CB9CE585DDB32878B0EF74F",
+    "size": 18944
+  },
+  {
+    "path": "BepInEx/plugins/UniversalWrench/UniversalWrench.dll",
+    "baseline": "9A16CE9637796C8AFB3573F5E5C60771C318F6B3E3380B7797FE7CF0E97D37DA",
+    "candidate": "63C9F822F12D6E23E21411B2A968A6A2D19CFDBA01D914FC62215CFDC757B79E",
+    "size": 665088
+  },
+  {
+    "path": "BepInEx/plugins/V81TestChn/translations-clean/cfg/zh-CN/wesley-terminal-01.cfg",
+    "baseline": null,
+    "candidate": "B80F41245868831D5C4B1C0953F38300F96893BE9320D4BED811B737839A536B",
+    "size": 199778
+  },
+  {
+    "path": "BepInEx/plugins/V81TestChn/translations-clean/cfg/zh-CN/wesley-terminal-02.cfg",
+    "baseline": null,
+    "candidate": "7B6C81C98D20E17BDED55C016AEFFC11B50E1983A5850EEE831F85B90A4F3974",
+    "size": 143474
+  }
+]

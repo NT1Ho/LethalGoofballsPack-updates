@@ -1,0 +1,154 @@
+{
+  "lung-native": {
+    "utc": "2026-11-01T06:37:05.0586536Z",
+    "scene": "ExtortScene",
+    "players": 2,
+    "flow": "MuseumInteriorFlow",
+    "ok": true,
+    "message": "item=LungApparatus prefab=LungApparatusTurnedOff target=396 prompt=升级为电源之心: [Hold E] charges=3->2 hearts=0->1 sourceStillSpawned=False"
+  },
+  "lung-wesley": {
+    "utc": "2026-11-01T06:37:15.1688419Z",
+    "scene": "ExtortScene",
+    "players": 2,
+    "flow": "MuseumInteriorFlow",
+    "ok": true,
+    "message": "item=BloodyLungApparatus prefab=BloodyLungApparatusDisable target=399 prompt=拿取：[E] charges=3->3 hearts=1->1 sourceStillSpawned=True"
+  },
+  "extort-enter": {
+    "utc": "2026-11-01T06:37:16.4563791Z",
+    "scene": "ExtortScene",
+    "players": 2,
+    "flow": "MuseumInteriorFlow",
+    "ok": true,
+    "message": "Approached by fixture, then used native entrance teleport and checked paired destination"
+  },
+  "extort-exit": {
+    "utc": "2026-11-01T06:37:17.5624489Z",
+    "scene": "ExtortScene",
+    "players": 2,
+    "flow": "MuseumInteriorFlow",
+    "ok": true,
+    "message": "Approached by fixture, then used native entrance teleport and checked paired destination"
+  },
+  "extort-orbit": {
+    "utc": "2026-11-01T06:37:53.298707Z",
+    "scene": "ExtortScene",
+    "players": 2,
+    "flow": "MuseumInteriorFlow",
+    "ok": true,
+    "message": ""
+  },
+  "duck-land-repro": {
+    "utc": "2026-11-01T06:40:36.7288839Z",
+    "scene": "Level135Duckstroid14",
+    "players": 2,
+    "flow": "Level2Flow",
+    "ok": true,
+    "message": ""
+  },
+  "duck-enter": {
+    "utc": "2026-11-01T06:40:37.9766923Z",
+    "scene": "Level135Duckstroid14",
+    "players": 2,
+    "flow": "Level2Flow",
+    "ok": true,
+    "message": "Approached by fixture, then used native entrance teleport and checked paired destination"
+  },
+  "duck-exit": {
+    "utc": "2026-11-01T06:40:39.0205692Z",
+    "scene": "Level135Duckstroid14",
+    "players": 2,
+    "flow": "Level2Flow",
+    "ok": true,
+    "message": "Approached by fixture, then used native entrance teleport and checked paired destination"
+  },
+  "duck-orbit": {
+    "utc": "2026-11-01T06:41:12.2010648Z",
+    "scene": "Level135Duckstroid14",
+    "players": 2,
+    "flow": "Level2Flow",
+    "ok": true,
+    "message": ""
+  },
+  "story-grab": {
+    "utc": "2026-11-01T06:24:16.4710135Z",
+    "scene": "MusemaScene",
+    "players": 2,
+    "flow": "",
+    "ok": true,
+    "message": "Existing scene item acquired through native BeginGrabObject"
+  },
+  "story-submit": {
+    "utc": "2026-11-01T06:24:17.3159776Z",
+    "scene": "MusemaScene",
+    "players": 2,
+    "flow": "",
+    "ok": true,
+    "message": "Native authored InteractTrigger -> LevelCassetteLoader; observed locked-to-open: Asteroid13Scene|Asteroid-13|False|False"
+  },
+  "story-route": {
+    "utc": "2026-11-01T06:26:00.6090076Z",
+    "scene": "MusemaScene",
+    "players": 2,
+    "flow": "",
+    "ok": true,
+    "message": "\n\n\n前往 57 Asteroid-13 的导航费用为 $0。该卫星当前天气为 earthquakes。\n\n请输入 确认 <color=#A0A0A0>（CONFIRM）</color> 或 取消 <color=#A0A0A0>（DENY）</color>。\n\n"
+  },
+  "story-confirm": {
+    "utc": "2026-11-01T06:26:00.8827288Z",
+    "scene": "Asteroid13Scene",
+    "players": 2,
+    "flow": "",
+    "ok": true,
+    "message": "\n\n\nRouting to the Bio Spheres"
+  },
+  "story-save": {
+    "utc": "2026-11-01T06:26:07.1100355Z",
+    "scene": "Asteroid13Scene",
+    "players": 2,
+    "flow": "",
+    "ok": true,
+    "message": "SaveGame returned; check after process restart."
+  },
+  "samebuild-leave": {
+    "utc": "2026-11-01T07:22:18.4445859Z",
+    "scene": "Level135Duckstroid14",
+    "players": 1,
+    "flow": "",
+    "ok": true,
+    "message": ""
+  },
+  "final-rejoined": {
+    "utc": "2026-11-01T07:24:59.5913959Z",
+    "scene": "Level135Duckstroid14",
+    "players": 2,
+    "flow": "",
+    "ok": true,
+    "message": ""
+  },
+  "final-host-after-rejoin": {
+    "utc": "2026-11-01T07:24:59.7381662Z",
+    "scene": "Level135Duckstroid14",
+    "players": 2,
+    "flow": "",
+    "ok": true,
+    "message": ""
+  },
+  "final-gold-log": {
+    "utc": "2026-11-01T07:25:01.654097Z",
+    "scene": "Level135Duckstroid14",
+    "players": 2,
+    "flow": "",
+    "ok": true,
+    "message": "1Burnt note: Chinese=True; TMP lines=14"
+  },
+  "ui-bestiary": {
+    "utc": "2026-11-01T07:18:50.9880439Z",
+    "scene": "Level135Duckstroid14",
+    "players": 2,
+    "flow": "",
+    "ok": true,
+    "message": "AssimilatedemployeeBestiaryNode | 3270-Regular SDF | lines=4 | \n\n\n[Data not found]"
+  }
+}
