@@ -23,13 +23,48 @@ public class Workspace {
     public static string DefaultRoot { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),".LethalGoofballsPackPublisher"); } }
     public readonly string Root;
     public Draft Current;
-    public Workspace(string root) { Root=root; SafePath.NoLinks(root);Directory.CreateDirectory(root);Directory.CreateDirectory(Path.Combine(root,"objects")); Current=File.Exists(Path.Combine(root,"draft.json"))?Data.Load<Draft>(Path.Combine(root,"draft.json")):new Draft(); }
+    string draftFileHash;
+    public Workspace(string root) {
+        Root=Path.GetFullPath(root);SafePath.NoLinks(Root);Directory.CreateDirectory(Root);Directory.CreateDirectory(Path.Combine(Root,"objects"));
+        string path=Path.Combine(Root,"draft.json");SafePath.NoLinks(path);
+        if(!File.Exists(path)){Current=new Draft();draftFileHash="";return;}
+        using(var lease=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.Read)){
+            draftFileHash=Data.Hash(path);Current=Data.Load<Draft>(path);
+        }
+    }
     public string ObjectPath(string hash) { if(!System.Text.RegularExpressions.Regex.IsMatch(hash??"","^[a-f0-9]{64}$"))throw new InvalidDataException("本地文件索引无效。");return Path.Combine(Root,"objects",hash); }
-    public void Save() { Data.Atomic(Path.Combine(Root,"draft.json"),Data.Json(Current)); }
+    public void Save() { CommitDraft(Current); }
+    public void CommitDraft(Draft next) {
+        string path=Path.Combine(Root,"draft.json"),gate=Path.Combine(Root,"draft-write.lock");
+        SafePath.NoLinks(path);SafePath.NoLinks(gate);
+        using(var lease=new FileStream(gate,FileMode.OpenOrCreate,FileAccess.Write,FileShare.None)){
+            if((File.Exists(path)?Data.Hash(path):"")!=draftFileHash)throw new IOException("另一个程序已经修改草稿，请重新打开工作区。");
+            Data.Atomic(path,Data.Json(next));draftFileHash=Data.Hash(path);Current=next;
+        }
+    }
+    public void RememberBaseline(Manifest manifest) {
+        SafePath.ValidateManifest(manifest);
+        string path=Path.Combine(Root,"baseline-"+Fingerprint(manifest)+".json");
+        SafePath.NoLinks(path);
+        if(!File.Exists(path)||Data.Hash(path)!=Fingerprint(manifest))Data.Atomic(path,Data.Json(manifest));
+    }
+    public Manifest Baseline() {
+        if(String.IsNullOrEmpty(Current.baseVersion))return new Manifest();
+        string hash=Current.baseManifestHash;
+        if(!System.Text.RegularExpressions.Regex.IsMatch(hash??"",@"\A[0-9a-f]{64}\z"))return null;
+        string path=Path.Combine(Root,"baseline-"+hash+".json");SafePath.NoLinks(path);
+        if(File.Exists(path)){
+            if(Data.Hash(path)!=hash)return null; // Keep editing locked until a verified remote snapshot repairs this cache.
+            var stored=Data.Load<Manifest>(path);SafePath.ValidateManifest(stored);return stored;
+        }
+        var baseline=new Manifest{version=Current.baseVersion,files=Current.files,deletes=Current.deletes};
+        return Fingerprint(baseline)==hash?Data.Read<Manifest>(Data.Json(baseline)):null;
+    }
     public void SetRemote(Manifest manifest) {
         if(manifest!=null)SafePath.ValidateManifest(manifest);
         var next=manifest==null?new Draft():Data.Read<Draft>(Data.Json(new Draft {baseVersion=manifest.version,baseManifestHash=Fingerprint(manifest),files=manifest.files,deletes=manifest.deletes}));
-        Data.Atomic(Path.Combine(Root,"draft.json"),Data.Json(next));Current=next;
+        if(manifest!=null)RememberBaseline(manifest);
+        CommitDraft(next);
     }
     public static string Fingerprint(Manifest manifest) {using(var sha=SHA256.Create())return Data.Hex(sha.ComputeHash(Encoding.UTF8.GetBytes(Data.Json(manifest))));}
     public void CheckBase(Manifest remote) {
@@ -46,19 +81,24 @@ public class Workspace {
             finally {if(File.Exists(tmp))File.Delete(tmp);}
         }
     }
-    public void Add(string source,string relative) {
+    public PackFile CacheSource(string source,string relative) {
         SafePath.Validate(relative);SafePath.NoLinks(source);var fi=new FileInfo(source);
         if(fi.Length>2L*1024*1024*1024)throw new IOException("GitHub 单文件上限为 2 GiB。");
         string hash=Data.Hash(source), dest=ObjectPath(hash);
-        if(!File.Exists(dest)) {
+        SafePath.NoLinks(dest);
+        if(!File.Exists(dest)||new FileInfo(dest).Length!=fi.Length||Data.Hash(dest)!=hash) {
             string tmp=dest+".tmp-"+Guid.NewGuid().ToString("N");
-            try { Data.CopyDurable(source,tmp);if(Data.Hash(tmp)!=hash)throw new IOException("拖入的文件正在变化，请关闭占用程序后重试。");File.Move(tmp,dest); }
+            try { Data.CopyDurable(source,tmp);if(Data.Hash(tmp)!=hash)throw new IOException("拖入的文件正在变化，请关闭占用程序后重试。");Data.Replace(tmp,dest); }
             finally { if(File.Exists(tmp))File.Delete(tmp); }
         }
+        return new PackFile{path=relative,sha256=hash,size=new FileInfo(dest).Length};
+    }
+    public void Add(string source,string relative) {
+        var cached=CacheSource(source,relative);string hash=cached.sha256;
         var previous=Current.files.FirstOrDefault(f=>String.Equals(f.path,relative,StringComparison.OrdinalIgnoreCase));
         string url=previous!=null&&previous.sha256==hash?previous.url:null;
         Current.files.RemoveAll(f=>String.Equals(f.path,relative,StringComparison.OrdinalIgnoreCase));
-        Current.files.Add(new PackFile {path=relative,sha256=hash,size=fi.Length,url=url});
+        cached.url=url;Current.files.Add(cached);
         Current.deletes.RemoveAll(p=>String.Equals(p,relative,StringComparison.OrdinalIgnoreCase));Save();
     }
     public void Remove(IEnumerable<string> names) {
@@ -173,6 +213,10 @@ public class GitHubApi : IDisposable {
     public async Task<string> ReadModFeed() {
         var f=await Send<FeedFile>(HttpMethod.Get,"/repos/"+Channel.Repo+"/contents/mod-update.signed.json?ref=main",null,false).ConfigureAwait(false);
         return Encoding.UTF8.GetString(Convert.FromBase64String(f.content));
+    }
+    public async Task<string> OptionalModFeed(){
+        var f=await Send<FeedFile>(HttpMethod.Get,"/repos/"+Channel.Repo+"/contents/mod-update.signed.json?ref=main",null,true).ConfigureAwait(false);
+        return f==null?null:Encoding.UTF8.GetString(Convert.FromBase64String(f.content));
     }
     public async Task<List<ReleaseAsset>> Assets(long id){
         var all=new List<ReleaseAsset>();for(int page=1;;page++){var batch=await Send<List<ReleaseAsset>>(HttpMethod.Get,"/repos/"+Channel.Repo+"/releases/"+id+"/assets?per_page=100&page="+page,null,false).ConfigureAwait(false);all.AddRange(batch);if(batch.Count<100)return all;}

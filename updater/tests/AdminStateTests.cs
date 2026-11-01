@@ -19,8 +19,8 @@ class AdminStateTests {
         using(var window=new PublisherWindow()){
             var actual=(Workspace)typeof(PublisherWindow).GetField("workspace",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(window);
             Check(actual.Root==root,"normal admin constructor uses the same publication folder");
-            var status=(System.Windows.Controls.TextBlock)typeof(PublisherWindow).GetField("status",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(window);
-            Check(status.Text.StartsWith(ws.Current.baseVersion),"admin footer displays the saved current version");
+            var status=(System.Windows.Forms.Label)typeof(PublisherWindow).GetField("header",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(window);
+            Check(status.Text.Contains(ws.Current.baseVersion),"admin footer displays the saved current version");
         }
         Check(before==Data.Hash(Path.Combine(root,"draft.json")),"diagnosis did not rewrite the draft");
         Console.WriteLine("RESULT: existing settings and signed cloud verified; no publication or visible window.");

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -169,9 +169,9 @@ public static class CosPublisher {
     public static PackFile[] BackupUploads(Manifest manifest) {
         return manifest.files.Where(f=>f.url==Channel.Web+"/releases/download/"+manifest.version+"/"+f.sha256+".bin").GroupBy(f=>f.sha256).Select(g=>g.First()).ToArray();
     }
-    public static async Task Backup(Workspace workspace,CosAccount account,Manifest manifest,Action<string> progress) {
+    public static async Task Backup(Workspace workspace,CosAccount account,Manifest manifest,Action<string> progress,Func<HttpMessageHandler> transport=null,string expectedBaseHash=null) {
         string token=workspace.Token();if(String.IsNullOrEmpty(token))throw new IOException("未保存 GitHub 备用发布凭据。");
-        using(var api=new GitHubApi(token))using(var transfer=new Transfer()) {
+        using(var api=transport==null?new GitHubApi(token):new GitHubApi(token,transport()))using(var transfer=transport==null?new Transfer():new Transfer(transport())) {
             await api.ValidateAccount().ConfigureAwait(false);var release=await api.FindTag(manifest.version).ConfigureAwait(false);
             if(release==null)release=await api.Create(manifest.version).ConfigureAwait(false);
             if(release.draft) {
@@ -194,16 +194,24 @@ public static class CosPublisher {
             var published=await transfer.ForRelease(manifest.version).ConfigureAwait(false);
             if(!Equivalent(published,manifest)||published.files.Any(f=>manifest.files.First(p=>p.path==f.path).url!=f.url))throw new IOException("GitHub 同版本备份内容不一致。");
             await api.ValidateReferences(manifest,transfer).ConfigureAwait(false);
-            await api.StoreFeed("mod-update.signed.json",CosSettings.Sign(account,"mods",Data.Json(manifest))).ConfigureAwait(false);
+            string payload=Data.Json(manifest);
+            if(expectedBaseHash!=null){
+                string current=await api.OptionalModFeed().ConfigureAwait(false);
+                if(!String.IsNullOrEmpty(current)){
+                    string old=Cloud.Verify(current,"mods");if(old==payload)return;
+                    if(Workspace.Fingerprint(Data.Read<Manifest>(old))!=expectedBaseHash)throw new IOException("GitHub 备用清单已被其他发布修改，已停止覆盖。");
+                }
+            }
+            await api.StoreFeed("mod-update.signed.json",CosSettings.Sign(account,"mods",payload)).ConfigureAwait(false);
         }
     }
-    public static async Task<Manifest> Publish(Workspace workspace,CosAccount account,CosApi api,Transfer transfer,Action<string> progress) {
+    public static async Task<Manifest> Publish(Workspace workspace,CosAccount account,CosApi api,Transfer transfer,Action<string> progress,Func<HttpMessageHandler> transport=null) {
         using(var publishLock=new FileStream(Path.Combine(workspace.Root,"publish.lock"),FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None)) {
             string pending=System.IO.Path.Combine(workspace.Root,"page-publish.pending.json");
             if(File.Exists(pending)){
                 var job=Data.Load<PagePublishJob>(pending);
                 if(!Equivalent(job.After,new Manifest{files=workspace.Current.files,deletes=workspace.Current.deletes}))throw new IOException("上次展示资料发布未完成，请先恢复该草稿后重试，勿覆盖待恢复记录。");
-                return await PagePublisher.Run(workspace,account,api,transfer,job,progress).ConfigureAwait(false);
+                return await PagePublisher.Run(workspace,account,api,transfer,job,progress,transport==null?null:new GitHubApi(workspace.Token(),transport())).ConfigureAwait(false);
             }
             var remote=await api.Remote().ConfigureAwait(false);
             workspace.CheckBase(remote);
@@ -216,14 +224,14 @@ public static class CosPublisher {
             if(remote!=null&&(tag==remote.version||requested.Length==0)&&PagePublisher.OnlyPages(remote,new Manifest{files=workspace.Current.files,deletes=workspace.Current.deletes})){
                 var next=Data.Read<Manifest>(Data.Json(new Manifest{version=remote.version,files=workspace.Current.files,deletes=workspace.Current.deletes}));
                 foreach(var f in next.files)if(String.IsNullOrEmpty(f.url))f.url=Channel.Web+"/releases/download/"+next.version+"/"+f.sha256+".bin";
-                return await PagePublisher.Run(workspace,account,api,transfer,new PagePublishJob{Before=remote,ReleaseBefore=remote,After=next},progress).ConfigureAwait(false);
+                return await PagePublisher.Run(workspace,account,api,transfer,new PagePublishJob{Before=remote,ReleaseBefore=remote,After=next},progress,transport==null?null:new GitHubApi(workspace.Token(),transport())).ConfigureAwait(false);
             }
             if(remote!=null&&tag==remote.version)throw new IOException("MOD 或配置已变化，请填写新的发布版本名；只有展示资料允许同版本发布。");
             if(requested.Length==0)throw new IOException("请填写明确的整合包版本号，不再自动生成时间戳版本。");
             var manifest=Data.Read<Manifest>(Data.Json(new Manifest{version=tag,files=workspace.Current.files,deletes=workspace.Current.deletes}));
             foreach(var file in manifest.files)if(String.IsNullOrEmpty(file.url))file.url=Channel.Web+"/releases/download/"+tag+"/"+file.sha256+".bin";
             SafePath.ValidateManifest(manifest);
-            if(!String.IsNullOrEmpty(workspace.Token()))using(var github=new GitHubApi(workspace.Token()))await github.ValidateReferences(manifest,transfer,tag).ConfigureAwait(false);
+            if(!String.IsNullOrEmpty(workspace.Token()))using(var github=transport==null?new GitHubApi(workspace.Token()):new GitHubApi(workspace.Token(),transport()))await github.ValidateReferences(manifest,transfer,tag).ConfigureAwait(false);
             string signed=CosSettings.Sign(account,"mods",Data.Json(manifest)),versionKey="versions/"+tag+".json";
             string existing=await api.Read(versionKey).ConfigureAwait(false);if(existing!=null&&existing!=signed)throw new IOException("该版本名已有不同内容，请填写新的版本名。");
             int completed=0;var files=manifest.files.GroupBy(f=>f.sha256).Select(g=>g.First()).ToArray();

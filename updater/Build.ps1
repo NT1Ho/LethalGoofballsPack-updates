@@ -1,12 +1,12 @@
-param([string]$OutputDirectory,[string]$ChannelConfig,[switch]$SkipTests,[string]$GameDir,[string]$Dotnet="dotnet")
+param([string]$OutputDirectory,[string]$ChannelConfig,[switch]$SkipTests,[switch]$AdminOnly,[string]$CompatibilityReceiver,[string]$GameDir,[string]$Dotnet="dotnet")
 $ErrorActionPreference = 'Stop'
 $projectRoot = $PSScriptRoot
 if(-not $ChannelConfig -and (Test-Path (Join-Path $projectRoot 'cos-channel.json'))){$ChannelConfig=Join-Path $projectRoot 'cos-channel.json'}
 $diagnosticProject=Join-Path $projectRoot '..\diagnostics'
 if(!(Test-Path $diagnosticProject)){$diagnosticProject=Join-Path $projectRoot 'diagnostics'}
-if($GameDir){& $Dotnet build "$diagnosticProject/LethalDiagnostics.csproj" -c Release "-p:GameDir=$GameDir" --nologo;if($LASTEXITCODE){throw 'Diagnostic build failed'}}
+if(!$AdminOnly -and $GameDir){& $Dotnet build "$diagnosticProject/LethalDiagnostics.csproj" -c Release "-p:GameDir=$GameDir" --nologo;if($LASTEXITCODE){throw 'Diagnostic build failed'}}
 $diagnosticDll=Join-Path $diagnosticProject 'bin\Release\netstandard2.1\LethalDiagnostics.dll'
-if(!(Test-Path $diagnosticDll)){throw 'First build requires -GameDir <legal V81 game directory> and -Dotnet <SDK path>.'}
+if(!$AdminOnly -and !(Test-Path $diagnosticDll)){throw 'First build requires -GameDir <legal V81 game directory> and -Dotnet <SDK path>.'}
 $compiler = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
 $outputDir = if($OutputDirectory){$OutputDirectory}else{Join-Path $projectRoot 'dist'}
 $channelResource = @(); if($ChannelConfig){$channelResource=@("/resource:$ChannelConfig,cos-channel.json")}
@@ -26,11 +26,17 @@ $inventory += (Join-Path $projectRoot 'src\HistoryWindow.cs'),"/resource:$(Join-
 $cecil=@("/r:$(Join-Path $projectRoot 'lib\Mono.Cecil.dll')","/resource:$(Join-Path $projectRoot 'lib\Mono.Cecil.dll'),Mono.Cecil.dll","/resource:$(Join-Path $projectRoot 'lib\Mono.Cecil.LICENSE.txt'),Mono.Cecil.LICENSE.txt")
 $manifest = Join-Path $projectRoot 'src\app.manifest'
 $publisherCore = @((Join-Path $projectRoot 'src\PublisherCore.cs'),(Join-Path $projectRoot 'src\CosPublisher.cs'))
+$adminModules=@('AdminCatalog','AdminConfig','AdminPackage','AdminControls','AdminInventory','AdminWorkspace','AdminRelease','Publisher') | ForEach-Object {Join-Path $projectRoot ('src\'+$_+'.cs')}
+if(!$AdminOnly){
 & $compiler /nologo /optimize+ /target:winexe /platform:anycpu "/win32manifest:$manifest" "/win32icon:$(Join-Path $projectRoot 'assets\client.ico')" /utf8output @refs @channelResource "/out:$(Join-Path $outputDir 'Lethal company pack Updater.exe')" $common $ui $selfUpdate $clientVersion @diagnostics @inventory @cecil (Join-Path $projectRoot 'src\Client.cs')
 if ($LASTEXITCODE -ne 0) { throw 'Client build failed' }
-& $compiler /nologo /optimize+ /target:winexe /platform:anycpu "/win32manifest:$manifest" "/win32icon:$(Join-Path $projectRoot 'assets\settings.ico')" /utf8output @refs @channelResource "/out:$(Join-Path $outputDir 'Lethal company pack Updater Admin.exe')" $common $ui $publisherCore @inventory @cecil (Join-Path $projectRoot 'src\AdminCatalog.cs') (Join-Path $projectRoot 'src\Publisher.cs')
+}
+& $compiler /nologo /optimize+ /target:winexe /platform:anycpu "/win32manifest:$manifest" "/win32icon:$(Join-Path $projectRoot 'assets\settings.ico')" /utf8output @refs @channelResource "/out:$(Join-Path $outputDir 'Lethal company pack Updater Admin.exe')" $common $ui $publisherCore $selfUpdate @inventory @cecil @adminModules (Join-Path $projectRoot 'src\AdminVersion.cs')
 if ($LASTEXITCODE -ne 0) { throw 'Publisher build failed' }
-if (-not $SkipTests -and (Test-Path (Join-Path $projectRoot 'tests\Tests.cs'))) {
+if ($AdminOnly -and !$SkipTests){
+    & (Join-Path $projectRoot 'tests\Test-Admin.ps1') -AdminExe (Join-Path $outputDir 'Lethal company pack Updater Admin.exe') -ReceiverExe $CompatibilityReceiver
+}
+if (!$AdminOnly -and -not $SkipTests -and (Test-Path (Join-Path $projectRoot 'tests\Tests.cs'))) {
     & $compiler /nologo /target:exe @refs "/out:$(Join-Path $outputDir 'PagePublishTests.exe')" $common $publisherCore (Join-Path $projectRoot 'tests\PagePublishTests.cs')
     if ($LASTEXITCODE -ne 0) { throw 'Page publication test build failed' }
     & (Join-Path $outputDir 'PagePublishTests.exe')
@@ -56,11 +62,8 @@ if (-not $SkipTests -and (Test-Path (Join-Path $projectRoot 'tests\Tests.cs'))) 
     if ($LASTEXITCODE -ne 0) { throw 'Routing test build failed' }
     & (Join-Path $projectRoot 'tests\RoutingTests.exe')
     if ($LASTEXITCODE -ne 0) { throw 'Routing tests failed' }
-    & $compiler /nologo /optimize+ /target:exe /main:UiTests "/win32manifest:$manifest" /platform:anycpu /utf8output @refs "/out:$(Join-Path $projectRoot 'tests\UiTests.exe')" $common $ui $publisherCore @inventory @cecil (Join-Path $projectRoot 'src\AdminCatalog.cs') (Join-Path $projectRoot 'src\Publisher.cs') (Join-Path $projectRoot 'tests\UiTests.cs')
-    if ($LASTEXITCODE -ne 0) { throw 'UI test build failed' }
-    & (Join-Path $projectRoot 'tests\UiTests.exe')
-    if ($LASTEXITCODE -ne 0) { throw 'UI tests failed' }
-    & $compiler /nologo /optimize+ /target:exe /main:DpiTests "/win32manifest:$manifest" /platform:anycpu /utf8output @refs "/out:$(Join-Path $projectRoot 'tests\DpiTests.exe')" $common $ui $publisherCore @inventory @cecil (Join-Path $projectRoot 'src\AdminCatalog.cs') (Join-Path $projectRoot 'src\Publisher.cs') (Join-Path $projectRoot 'src\Client.cs') $selfUpdate $clientVersion @diagnostics (Join-Path $projectRoot 'tests\DpiTests.cs')
+    & (Join-Path $projectRoot 'tests\Test-Admin.ps1') -AdminExe (Join-Path $outputDir 'Lethal company pack Updater Admin.exe') -ReceiverExe (Join-Path $outputDir 'Lethal company pack Updater.exe')
+    & $compiler /nologo /optimize+ /target:exe /main:DpiTests "/win32manifest:$manifest" /platform:anycpu /utf8output @refs "/out:$(Join-Path $projectRoot 'tests\DpiTests.exe')" $common $ui $publisherCore @inventory @cecil @adminModules (Join-Path $projectRoot 'src\Client.cs') $selfUpdate $clientVersion @diagnostics (Join-Path $projectRoot 'tests\DpiTests.cs')
     if ($LASTEXITCODE -ne 0) { throw 'DPI test build failed' }
     & (Join-Path $projectRoot 'tests\DpiTests.exe')
     if ($LASTEXITCODE -ne 0) { throw 'DPI tests failed' }
@@ -74,8 +77,6 @@ if (-not $SkipTests -and (Test-Path (Join-Path $projectRoot 'tests\Tests.cs'))) 
     if ($LASTEXITCODE -ne 0) { throw 'Fixture build failed' }
     & $compiler /nologo /target:exe /utf8output @refs @cecil "/out:$(Join-Path $projectRoot 'tests\InventoryTests.exe')" $common $publisherCore (Join-Path $projectRoot 'src\ModInventory.cs') (Join-Path $projectRoot 'src\ModNames.cs') (Join-Path $projectRoot 'src\AdminCatalog.cs') (Join-Path $projectRoot 'tests\InventoryTests.cs')
     if ($LASTEXITCODE -ne 0) { throw 'Inventory tests build failed' }
-    & $compiler /nologo /target:exe /main:CatalogUiTests "/win32manifest:$manifest" /utf8output @refs @cecil "/out:$(Join-Path $projectRoot 'tests\CatalogUiTests.exe')" $common $ui $publisherCore @inventory (Join-Path $projectRoot 'src\AdminCatalog.cs') (Join-Path $projectRoot 'src\Publisher.cs') (Join-Path $projectRoot 'tests\CatalogUiTests.cs') (Join-Path $projectRoot 'tests\UiTests.cs')
-    if ($LASTEXITCODE -ne 0) { throw 'Catalog UI tests build failed' }
     & $compiler /nologo /target:exe /utf8output @refs "/r:$(Join-Path $outputDir 'Lethal company pack Updater.exe')" "/out:$(Join-Path $outputDir 'HistoryTests.exe')" (Join-Path $projectRoot 'tests\HistoryTests.cs')
     if ($LASTEXITCODE -ne 0) { throw 'History tests build failed' }
     & (Join-Path $outputDir 'HistoryTests.exe') (Join-Path $outputDir 'history-test-renders')
