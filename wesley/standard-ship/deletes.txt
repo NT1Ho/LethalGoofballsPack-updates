@@ -1,0 +1,11 @@
+BepInEx/config/mborsh.WiderShipMod.cfg
+BepInEx/pack-info/mborsh-Wider_Ship_Mod/CHANGELOG.md
+BepInEx/pack-info/mborsh-Wider_Ship_Mod/README.md
+BepInEx/pack-info/mborsh-Wider_Ship_Mod/manifest.json
+BepInEx/plugins/ShipLadderInteractionFix/ShipLadderInteractionFix.dll
+BepInEx/plugins/mborsh-Wider_Ship_Mod/CHANGELOG.md
+BepInEx/plugins/mborsh-Wider_Ship_Mod/README.md
+BepInEx/plugins/mborsh-Wider_Ship_Mod/WiderShipMod.dll
+BepInEx/plugins/mborsh-Wider_Ship_Mod/icon.png
+BepInEx/plugins/mborsh-Wider_Ship_Mod/manifest.json
+BepInEx/plugins/mborsh-Wider_Ship_Mod/newship

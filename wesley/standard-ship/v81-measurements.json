@@ -1,0 +1,72 @@
+{
+  "host": {
+    "from_seed_to_landed_approx_seconds": 26.05,
+    "fps_samples": [
+      109.8,
+      26.9,
+      146.9,
+      124.5,
+      130.7,
+      129.6,
+      134.3,
+      129.3,
+      131.4,
+      133.2,
+      134.9,
+      134.9,
+      151.3
+    ],
+    "minimum_2s_fps": 26.9,
+    "roof_fps": [
+      195.2,
+      195.5,
+      191.0,
+      196.7,
+      195.2,
+      191.5,
+      195.2,
+      190.2
+    ],
+    "interaction": [
+      "ROOF enabled=True mat=GlassNoRefraction,GlassNoRefraction",
+      "ACTOR MaskedPlayerEnemy(Clone) id=382 class=MaskedPlayerEnemy dead=False animator=metarig state=1432961145 hips=1.25 head=missing pos=(-3.76, -199.98, -3.80) boolDead=False cull=AlwaysAnimate enabled=True clips=Idle",
+      "ACTOR MaskedPlayerEnemy(Clone) id=382 class=MaskedPlayerEnemy dead=False animator=metarig state=81563449 hips=1.23 head=missing pos=(-6.97, -199.98, -6.69) boolDead=False cull=AlwaysAnimate enabled=True clips=Idle",
+      "ACTOR MaskedPlayerEnemy(Clone) id=382 class=MaskedPlayerEnemy dead=True animator=metarig state=-1977075139 hips=0.12 head=missing pos=(-6.97, -199.98, -6.69) boolDead=True cull=AlwaysAnimate enabled=True clips=MaskedPlayerDie"
+    ]
+  },
+  "client": {
+    "from_seed_to_landed_approx_seconds": 26.08,
+    "fps_samples": [
+      105.4,
+      130.9,
+      41.8,
+      120.3,
+      138.3,
+      135.5,
+      132.5,
+      133.8,
+      135.3,
+      136.0,
+      137.2,
+      137.3,
+      141.6
+    ],
+    "minimum_2s_fps": 41.8,
+    "roof_fps": [
+      186.2,
+      184.5,
+      187.0,
+      182.2,
+      184.2,
+      183.9,
+      183.2,
+      182.6
+    ],
+    "interaction": [
+      "ROOF enabled=True mat=GlassNoRefraction,GlassNoRefraction",
+      "CLIMB active=True dy=2.116783",
+      "ACTOR MaskedPlayerEnemy(Clone) id=382 class=MaskedPlayerEnemy dead=False animator=metarig state=81563449 hips=1.22 head=missing pos=(-3.68, -199.98, -4.13) boolDead=False cull=AlwaysAnimate enabled=True clips=Walk,WalkSideways,Idle",
+      "ACTOR MaskedPlayerEnemy(Clone) id=382 class=MaskedPlayerEnemy dead=True animator=metarig state=-1977075139 hips=0.12 head=missing pos=(-6.69, -199.98, -6.44) boolDead=True cull=AlwaysAnimate enabled=True clips=MaskedPlayerDie"
+    ]
+  }
+}

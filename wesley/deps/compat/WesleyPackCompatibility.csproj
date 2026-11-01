@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><TargetFramework>netstandard2.1</TargetFramework><AssemblyName>WesleyPackCompatibility</AssemblyName><Version>1.0.2</Version><CandidatePlugins Condition="'$(CandidatePlugins)'==''">../../candidate/BepInEx/plugins</CandidatePlugins><GameRoot Condition="'$(GameRoot)'==''">D:/STEAM/steamapps/common/Lethal Company</GameRoot></PropertyGroup>
+  <PropertyGroup><TargetFramework>netstandard2.1</TargetFramework><AssemblyName>WesleyPackCompatibility</AssemblyName><Version>1.0.3</Version><CandidatePlugins Condition="'$(CandidatePlugins)'==''">../../candidate/BepInEx/plugins</CandidatePlugins><GameRoot Condition="'$(GameRoot)'==''">D:/STEAM/steamapps/common/Lethal Company</GameRoot></PropertyGroup>
   <ItemGroup>
     <Reference Include="$(GameRoot)/Lethal Company_Data/Managed/Unity.AI.Navigation.dll" Private="false"/>
     <Reference Include="$(GameRoot)/Lethal Company_Data/Managed/DunGen.dll" Private="false"/>
@@ -14,4 +14,5 @@
     <Reference Include="$(GameRoot)/Lethal Company_Data/Managed/UnityEngine*.dll" Private="false"/>
   </ItemGroup>
 </Project>
+
 

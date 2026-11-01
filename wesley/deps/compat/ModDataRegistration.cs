@@ -7,7 +7,7 @@ using HarmonyLib;
 
 namespace LethalGoofballsPack.Wesley
 {
-    [BepInPlugin("NT1Ho.WesleyPackCompatibility", "Wesley Pack Compatibility", "1.0.2")]
+    [BepInPlugin("NT1Ho.WesleyPackCompatibility", "Wesley Pack Compatibility", "1.0.3")]
     [BepInDependency("MaxWasUnavailable.LethalModDataLib", "1.2.2")]
     [BepInDependency("Aueser.LCChineseProject", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("JacobG5.WesleyMoonScripts")]
@@ -28,7 +28,7 @@ namespace LethalGoofballsPack.Wesley
             HauntingPlayerSlots.Install(harmony);
             ResultsSprite.Install(harmony);
             LaboratoryNavigation.Install(harmony);
-            ExteriorPlatform.Install(harmony);
+
             ShopPrompts.Install(harmony);
             gameObject.AddComponent<JoinedRoutes>().Initialize(Logger);
         }
@@ -62,5 +62,6 @@ namespace LethalGoofballsPack.Wesley
         }
     }
 }
+
 
 

@@ -1,0 +1,6 @@
+host [Info   :Landing performance probe] DANCE ON 353
+host [Info   :Landing performance probe] STRIKE dance=True id=353
+host [Info   :Landing performance probe] ACTOR MaskedPlayerEnemy(Clone) id=353 class=MaskedPlayerEnemy dead=True animator=metarig state=-1977075139 hips=0.12 head=missing pos=(-3.77, -199.98, -3.91) boolDead=True cull=AlwaysAnimate enabled=True clips=MaskedPlayerDie
+client [Info   :TooManyEmotes-2.3.17] Receiving performing emote update from server for emote controller with id: 353 Emote: springy
+client [Info   :Landing performance probe] DANCE ON 353
+client [Info   :Landing performance probe] ACTOR MaskedPlayerEnemy(Clone) id=353 class=MaskedPlayerEnemy dead=True animator=metarig state=-1977075139 hips=0.12 head=missing pos=(-3.77, -199.98, -3.91) boolDead=True cull=AlwaysAnimate enabled=True clips=MaskedPlayerDie
