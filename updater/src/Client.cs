@@ -54,13 +54,13 @@ public class ClientWindow : Form {
     void OpenMods(){mods.Text="查看 MOD";mods.Enabled=true;using(var window=new ModWindow(root))window.ShowDialog(this);}
     void OpenHistory(){history.Text="历史更新记录";history.Enabled=true;try{var pages=PageContent.ForRoot(root);using(var window=new HistoryWindow(pages.History,pages))window.ShowDialog(this);}catch(Exception e){MessageBox.Show(this,"历史资料无法读取："+e.Message);}}
     async Task Run() {
-        bool success=false;string clientError=null;
+        bool success=false;string clientError=null,diagnosticError=null;
         var progress = new Progress<Tuple<string,int>>(p => { message.Text=p.Item1; bar.Style=p.Item2<0?ProgressBarStyle.Marquee:ProgressBarStyle.Continuous; if(p.Item2>=0)bar.Value=Math.Min(100,p.Item2); });
         var versionProgress=new Progress<Tuple<string,string>>(p=>versions.Text="本地记录："+(String.IsNullOrEmpty(p.Item1)?"尚未确认（首次检查）":p.Item1)+"\n最新版本："+(p.Item2??"正在查询……"));
         try {
             using(var transfer=new Transfer()) {
                 Engine.CheckGameDirectory(root);Engine.CheckGameStopped();
-                DiagnosticsStore.Install(root);DiagnosticsStore.Cleanup(root);
+                try{DiagnosticsStore.Install(root);DiagnosticsStore.Cleanup(root);}catch(Exception e){diagnosticError=e.Message;SelfUpdate.Record(root,e);}
                 if(!restarted) {
                     try {
                         if(await Task.Run(()=>SelfUpdate.Check(root,transfer,(text,value)=>((IProgress<Tuple<string,int>>)progress).Report(Tuple.Create(text,value))))) {busy=false;Close();return;}
@@ -74,6 +74,7 @@ public class ClientWindow : Form {
                 if(result.backupPending)message.Text+="\n备份仍在 pending 文件夹，下次启动会再次归档。";
                 bar.Style=ProgressBarStyle.Continuous;bar.Value=100;success=true;
                 if(clientError!=null){message.Text="MOD 更新完成。接收端更新暂未完成，\n下次启动自动重试。";success=false;}
+                if(diagnosticError!=null){message.Text+="\n诊断维护未完成，请打开故障诊断检查。";keepOpen=true;}
             }
         } catch(TaskCanceledException e) { SelfUpdate.Record(root,e);message.Text="更新失败：网络超时，请稍后重试。"; }
           catch(HttpRequestException e) { SelfUpdate.Record(root,e);message.Text="更新失败：无法连接下载源，请检查网络。"; }

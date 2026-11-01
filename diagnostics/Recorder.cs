@@ -58,7 +58,11 @@ public sealed class Recorder : IDisposable {
                     journal.WriteLine(line);bytes+=size;
                     if(e.Mark!=null){
                         var inc=new Incident{Writer=Open("incident-"+e.Mark+".jsonl"),Until=e.Seconds+30};
-                        foreach(var before in ring){var l=Line(before);inc.Writer.WriteLine(l);inc.Bytes+=Encoding.UTF8.GetByteCount(l)+1;}inc.Writer.WriteLine(line);inc.Bytes+=size;Durable(inc.Writer);incidents.Add(inc);
+                        var history=ring.ToArray();var beforeLines=new List<string>();long remaining=4*1024*1024-size-512;bool truncated=false;
+                        for(int i=history.Length-1;i>=0;i--){string l=Line(history[i]);int n=Encoding.UTF8.GetByteCount(l)+1;if(n>remaining){truncated=true;break;}beforeLines.Add(l);remaining-=n;}
+                        if(truncated){string boundary=Json.Text(Json.Obj("kind","pre_window_truncated","reason","4MB incident budget"));inc.Writer.WriteLine(boundary);inc.Bytes+=Encoding.UTF8.GetByteCount(boundary)+1;}
+                        beforeLines.Reverse();foreach(string l in beforeLines){inc.Writer.WriteLine(l);inc.Bytes+=Encoding.UTF8.GetByteCount(l)+1;}
+                        inc.Writer.WriteLine(line);inc.Bytes+=size;Durable(inc.Writer);incidents.Add(inc);
                         Json.Atomic(Path.Combine(DirectoryPath,"mark-"+e.Mark+".json"),Json.Obj("schema",1,"id",e.Mark,"kind",e.Kind,"utc",e.Utc,"mono",e.Seconds,"data",e.Data));
                     }
                     foreach(var inc in incidents.ToArray()){

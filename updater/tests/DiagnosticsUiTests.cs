@@ -3,7 +3,7 @@ class DiagnosticsUiTests {
  static object Field(object o,string n){return o.GetType().GetField(n,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(o);}
  static void Call(object o,string n){o.GetType().GetMethod(n,BindingFlags.Instance|BindingFlags.NonPublic).Invoke(o,null);}
  [STAThread] static void Main(string[] args){Application.EnableVisualStyles();Application.SetCompatibleTextRenderingDefault(false);using(var w=new DiagnosticsWindow(args[0])){
-  w.CreateControl();Call(w,"RefreshList");var sessions=(ListBox)Field(w,"sessions");for(int i=0;i<sessions.Items.Count;i++)if(((DiagnosticSession)sessions.Items[i]).Status=="正常结束"&&((DiagnosticSession)sessions.Items[i]).Marks>=2){sessions.SelectedIndex=i;break;}
+  w.Opacity=0;w.ShowInTaskbar=false;w.Show();Call(w,"RefreshList");var sessions=(ListBox)Field(w,"sessions");for(int i=0;i<sessions.Items.Count;i++)if(((DiagnosticSession)sessions.Items[i]).Status=="正常结束"&&((DiagnosticSession)sessions.Items[i]).Marks>=2){sessions.SelectedIndex=i;break;}
   var end=DateTime.UtcNow.AddSeconds(4);while(DateTime.UtcNow<end){Application.DoEvents();System.Threading.Thread.Sleep(50);}
   var marks=(ListBox)Field(w,"marks");if(marks.Items.Count<2)throw new Exception("Need a real closed multi-marker session");
   for(int i=0;i<marks.Items.Count;i++){marks.SelectedIndex=i;Application.DoEvents();if(((PictureBox)Field(w,"photo")).Image!=null)break;}

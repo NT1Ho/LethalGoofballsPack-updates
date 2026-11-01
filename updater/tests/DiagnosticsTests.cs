@@ -3,6 +3,10 @@ class DiagnosticsTests {
  static void Check(bool ok,string name){if(!ok)throw new Exception(name);Console.WriteLine("PASS "+name);}
  static void Main(string[] args){
   string root=Path.Combine(Path.GetTempPath(),"lgp-receiver-tests-"+Guid.NewGuid().ToString("N"));string home=DiagnosticsStore.Home(root);Directory.CreateDirectory(home);
+  Directory.CreateDirectory(Path.Combine(root,"Lethal Company_Data/Managed"));File.WriteAllText(Path.Combine(root,"Lethal Company.exe"),"fixture");File.WriteAllText(Path.Combine(root,"UnityPlayer.dll"),"fixture");File.WriteAllText(Path.Combine(root,"Lethal Company_Data/Managed/Assembly-CSharp.dll"),"fixture");
+  DiagnosticsStore.Install(root);string dll=Path.Combine(root,DiagnosticsStore.PluginPath);string hash=Data.Hash(dll);DiagnosticsStore.Install(root);Check(Data.Hash(dll)==hash,"embedded plugin install is idempotent");
+  File.WriteAllText(dll,"old fixture version");string old=Data.Hash(dll);DiagnosticsStore.Install(root);Check(Data.Hash(dll)==hash&&File.Exists(Path.Combine(root,".lcpack-updater/diagnostic-backups/"+old+".dll")),"plugin replacement preserves rollback copy");
+  DiagnosticsStore.Configure(root,false,"F9");Check(File.ReadAllText(Path.Combine(root,"BepInEx/config/nt1ho.lethaldiagnostics.cfg")).Contains("MarkKey = F9"),"monitor toggle and alternate key saved");
   string path=Path.Combine(home,"20200101T000000000-test");Directory.CreateDirectory(path);File.WriteAllText(Path.Combine(path,"session.json"),"{\"utc\":\"2020-01-01\"}");
   File.WriteAllText(Path.Combine(path,"events-000.jsonl"),"{\"kind\":\"state\",\"data\":{\"position\":[1,2,3]}}\n{partial");
   File.WriteAllText(Path.Combine(path,"mark-120000000-001.json"),"{\"id\":\"120000000-001\",\"kind\":\"manual\",\"data\":{\"planet\":\"Experimentation\"}}");
