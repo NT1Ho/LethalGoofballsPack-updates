@@ -1,0 +1,13 @@
+using System;using System.IO;using System.Linq;using System.Collections;using System.Collections.Generic;using BepInEx;using UnityEngine;using UnityEngine.InputSystem;using UnityEngine.InputSystem.LowLevel;
+[BepInPlugin("local.lgp.diagnostics.probe","Diagnostics isolated verification only","1.0.0")]
+public class RuntimeProbe:BaseUnityPlugin {
+ string root;float poll,until;List<double> times=new List<double>();string label;double cpuStart;int gc;long mem;
+ void Awake(){if(!File.Exists(Path.Combine(Paths.GameRootPath,"UNIVERSAL_WRENCH_ISOLATED_TEST"))){enabled=false;return;}root=Path.Combine(Paths.GameRootPath,"diagnostics-test");Directory.CreateDirectory(root);}
+ void Update(){
+  if(until>0){times.Add(Time.unscaledDeltaTime*1000);if(Time.realtimeSinceStartup>=until){until=0;times.Sort();var proc=System.Diagnostics.Process.GetCurrentProcess();File.WriteAllText(Path.Combine(root,label+".json"),"{\"frames\":"+times.Count+",\"meanMs\":"+times.Average().ToString(System.Globalization.CultureInfo.InvariantCulture)+",\"p95Ms\":"+times[(int)(times.Count*.95)].ToString(System.Globalization.CultureInfo.InvariantCulture)+",\"p99Ms\":"+times[(int)(times.Count*.99)].ToString(System.Globalization.CultureInfo.InvariantCulture)+",\"maxMs\":"+times.Last().ToString(System.Globalization.CultureInfo.InvariantCulture)+",\"cpuSeconds\":"+(proc.TotalProcessorTime.TotalSeconds-cpuStart).ToString(System.Globalization.CultureInfo.InvariantCulture)+",\"gc0\":"+(GC.CollectionCount(0)-gc)+",\"managedDelta\":"+(GC.GetTotalMemory(false)-mem)+"}");}}
+  if(Time.realtimeSinceStartup<poll)return;poll=Time.realtimeSinceStartup+.5f;string file=Path.Combine(root,"command.txt");if(!File.Exists(file))return;var cmd=File.ReadAllText(file).Trim();File.Delete(file);
+  if(cmd.StartsWith("bench ")){QualitySettings.vSyncCount=0;Application.targetFrameRate=-1;label=cmd.Substring(6);times.Clear();until=Time.realtimeSinceStartup+45;cpuStart=System.Diagnostics.Process.GetCurrentProcess().TotalProcessorTime.TotalSeconds;gc=GC.CollectionCount(0);mem=GC.GetTotalMemory(false);}
+  if(cmd=="mark")StartCoroutine(Mark());if(cmd=="error")Debug.LogError("LGP_VERIFY synthetic controlled exception evidence, not a gameplay defect");if(cmd=="stall")System.Threading.Thread.Sleep(650);if(cmd=="quit")Application.Quit();
+ }
+ IEnumerator Mark(){var keyboard=InputSystem.AddDevice<Keyboard>();keyboard.MakeCurrent();InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.F8));yield return null;yield return null;InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;InputSystem.RemoveDevice(keyboard);File.AppendAllText(Path.Combine(root,"actions.txt"),DateTime.UtcNow.ToString("O")+" injected F8 through InputSystem\n");}
+}

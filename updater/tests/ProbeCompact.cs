@@ -1,0 +1,1 @@
+using System;using LcPack;class P{static void Main(){try{using(var t=new Transfer()){var r=t.ClientLatest().GetAwaiter().GetResult();Console.WriteLine("Feed="+r.version+" local="+SelfUpdate.Version+" newer="+SelfUpdate.IsNewer(r));}}catch(Exception e){Console.WriteLine(e.GetType().Name+": "+e.Message);}}}

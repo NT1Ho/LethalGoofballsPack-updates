@@ -1,0 +1,89 @@
+using System;
+using System.Drawing;
+using System.Diagnostics;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace LcPack {
+static class ClientProgram {
+    [STAThread] static void Main(string[] args) {UiStartup.Run(()=>RunClient(args));}
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+    static void RunClient(string[] args) {
+        string root=AppDomain.CurrentDomain.BaseDirectory;bool runtime=false,ready=false;
+        try {
+            if(args.Length>=1&&args[0]=="--diagnostics"&&args.Length<=2){if(args.Length==2)root=Path.GetFullPath(args[1]);Engine.CheckGameDirectory(root);Application.Run(new DiagnosticsWindow(root));return;}
+            if(args.Length==4&&args[0]=="--run-client"&&(args[3]=="updated"||args[3]=="check")) {
+                runtime=true;
+                root=System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(args[1]));SelfUpdate.ValidateRuntime(root,Application.ExecutablePath);
+                    using(var window=new ClientWindow(args[3]=="updated",root)) {
+                        var handle=window.Handle;SelfUpdate.Ready(root,args[2]);ready=true;SelfUpdate.WaitForCache(root);
+                        var active=SelfUpdate.State(root).active;
+                        if(active==null||active.file.sha256!=Data.Hash(Application.ExecutablePath))return;
+                        using(var instance=SelfUpdate.Instance(root)){try{Application.Run(window);}finally{instance.ReleaseMutex();}}
+                    }
+            } else {
+                Engine.CheckGameDirectory(root);
+                if(args.Length==2&&args[0]=="--client-updated")SelfUpdate.FinishLegacy(root,args[1]);
+                else if(args.Length!=0)throw new IOException("接收端启动参数无效。");
+                SelfUpdate.Bootstrap(root,Application.ExecutablePath,(path,arguments)=>Process.Start(new ProcessStartInfo(path,arguments){UseShellExecute=false,WorkingDirectory=root}));
+            }
+        }catch(Exception e){string log="";try{log="\n详细记录："+SelfUpdate.Record(root,e);}catch{}if(!runtime||ready)MessageBox.Show("接收端启动失败："+e.Message+log,"Lethal company pack Updater");Environment.ExitCode=1;}
+    }
+}
+public class ClientWindow : Form {
+    readonly Label message = new Label(); readonly Label versions = new Label(); readonly ProgressBar bar = new ProgressBar(); bool busy = true;
+    readonly bool restarted;
+    readonly string root;
+    readonly Button mods=new Button(),history=new Button();bool showMods,showHistory,keepOpen;
+    public ClientWindow(bool restarted=false,string root=null) {
+        this.restarted=restarted;this.root=root??AppDomain.CurrentDomain.BaseDirectory;
+        SuspendLayout();DoubleBuffered=true;AutoScaleMode=AutoScaleMode.Dpi;
+        Text = "Lethal company pack Updater"; ClientSize = new Size(440,192); FormBorderStyle = FormBorderStyle.FixedDialog;
+        Icon=Icon.ExtractAssociatedIcon(typeof(ClientWindow).Assembly.Location);
+        MaximizeBox = false; StartPosition = FormStartPosition.CenterScreen; Font = new Font("Microsoft YaHei UI",10);
+        message.SetBounds(18,14,404,48); message.Text="检查更新中……";versions.SetBounds(18,66,404,44);versions.AutoEllipsis=true;versions.Text="本地版本：正在读取……\n最新版本：正在查询……";bar.SetBounds(18,120,404,10); bar.Style=ProgressBarStyle.Marquee;
+        Controls.Add(message); Controls.Add(versions); Controls.Add(bar); Shown += async (s,e) => await Run();
+        mods.Text="查看 MOD";mods.SetBounds(18,146,104,28);mods.Click+=(s,e)=>{keepOpen=true;showMods=true;if(busy){mods.Text="检查后显示";mods.Enabled=false;}else OpenMods();};Controls.Add(mods);
+        history.Text="历史更新记录";history.SetBounds(130,146,124,28);history.Click+=(s,e)=>{keepOpen=true;showHistory=true;if(busy){history.Text="检查后显示";history.Enabled=false;}else OpenHistory();};Controls.Add(history);
+        var diagnostics=new Button{Text="故障诊断"};diagnostics.SetBounds(270,146,132,28);diagnostics.Click+=(s,e)=>{keepOpen=true;using(var window=new DiagnosticsWindow(this.root))window.ShowDialog(this);};Controls.Add(diagnostics);
+        FormClosing += (s,e) => { if (busy) e.Cancel=true; };
+        AutoScaleDimensions=new SizeF(96,96);ResumeLayout(true);
+    }
+    void OpenMods(){mods.Text="查看 MOD";mods.Enabled=true;using(var window=new ModWindow(root))window.ShowDialog(this);}
+    void OpenHistory(){history.Text="历史更新记录";history.Enabled=true;try{var pages=PageContent.ForRoot(root);using(var window=new HistoryWindow(pages.History,pages))window.ShowDialog(this);}catch(Exception e){MessageBox.Show(this,"历史资料无法读取："+e.Message);}}
+    async Task Run() {
+        bool success=false;string clientError=null;
+        var progress = new Progress<Tuple<string,int>>(p => { message.Text=p.Item1; bar.Style=p.Item2<0?ProgressBarStyle.Marquee:ProgressBarStyle.Continuous; if(p.Item2>=0)bar.Value=Math.Min(100,p.Item2); });
+        var versionProgress=new Progress<Tuple<string,string>>(p=>versions.Text="本地记录："+(String.IsNullOrEmpty(p.Item1)?"尚未确认（首次检查）":p.Item1)+"\n最新版本："+(p.Item2??"正在查询……"));
+        try {
+            using(var transfer=new Transfer()) {
+                Engine.CheckGameDirectory(root);Engine.CheckGameStopped();
+                DiagnosticsStore.Install(root);DiagnosticsStore.Cleanup(root);
+                if(!restarted) {
+                    try {
+                        if(await Task.Run(()=>SelfUpdate.Check(root,transfer,(text,value)=>((IProgress<Tuple<string,int>>)progress).Report(Tuple.Create(text,value))))) {busy=false;Close();return;}
+                    }catch(Exception e){if(e is InvalidDataException||(!(e is IOException)&&!(e is HttpRequestException)&&!(e is TaskCanceledException)&&!(e is System.ComponentModel.Win32Exception)))throw;clientError=e.Message;SelfUpdate.Record(root,e);}
+                }
+                var engine=new Engine(root,Engine.CheckGameStopped);
+                var result=await Task.Run(()=>engine.Run(transfer,(text,value)=>((IProgress<Tuple<string,int>>)progress).Report(Tuple.Create(text,value)),(local,remote)=>((IProgress<Tuple<string,string>>)versionProgress).Report(Tuple.Create(local,remote))));
+                message.Text=result.latest?"已是最新版！":"安装成功！";
+                versions.Text="当前版本："+result.version+"\n最新版本："+result.version;
+                if(result.skipped>0)message.Text+="\n"+result.skipped+" 个未纳管文件未删除。";
+                if(result.backupPending)message.Text+="\n备份仍在 pending 文件夹，下次启动会再次归档。";
+                bar.Style=ProgressBarStyle.Continuous;bar.Value=100;success=true;
+                if(clientError!=null){message.Text="MOD 更新完成。接收端更新暂未完成，\n下次启动自动重试。";success=false;}
+            }
+        } catch(TaskCanceledException e) { SelfUpdate.Record(root,e);message.Text="更新失败：网络超时，请稍后重试。"; }
+          catch(HttpRequestException e) { SelfUpdate.Record(root,e);message.Text="更新失败：无法连接下载源，请检查网络。"; }
+          catch(Exception e) { SelfUpdate.Record(root,e);message.Text="更新失败："+e.Message; }
+        busy=false;bar.Style=ProgressBarStyle.Continuous;
+        if(showMods)OpenMods();
+        if(showHistory)OpenHistory();
+        if(keepOpen)return;
+        if(success) { await Task.Delay(2500);if(!keepOpen)Close(); } else { bar.Visible=false; /* Errors remain readable until the user closes the window. */ }
+    }
+}
+}
+

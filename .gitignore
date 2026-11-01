@@ -1,0 +1,9 @@
+**/bin/
+**/obj/
+updater/dist/
+*.exe
+*.pdb
+*.log
+.lcpack-diagnostics/
+work/
+artifacts/
