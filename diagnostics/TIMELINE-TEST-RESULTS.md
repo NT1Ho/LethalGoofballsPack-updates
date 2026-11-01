@@ -26,3 +26,15 @@
 ## 发布验证
 
 发布使用既有 Publish-Client.ps1 / ClientPublish.cs、COS RSA签名清单与GitHub备用通道；Release目标指向实际源码提交，避免以只有清单的main作为源码标签。发布结果和公网回读记录在后续“发布结果”段补录。未提交玩家或真实隔离诊断原始记录。
+
+## 发布结果（已完成）
+
+- 接收端 1.14.0.0 已通过原 Publish-Client.ps1 发布到 COS 与 GitHub；非独立测试通道，所有原正式接收端用户均可获得。
+- 源码提交/发布标签目标：0061be2174f166a9c3fb3f9fab8c9c3cefd51c0d；Release：https://github.com/NT1Ho/LethalGoofballsPack-updates/releases/tag/updater-v1.14.0.0 。
+- 接收端 EXE：600576 字节；SHA256 dd798ebdb2302890050a6fd8de2043af7aadd3eac80a4d5841f09509ef43f2fc。
+- 2026-11-01 17:25 UTC 公网回读：COS与GitHub client签名分别RSA验证通过，两处二进制实际下载SHA/长度与本地已测文件完全相同。公开清单为1.14.0.0。未将仅成功上传当作验收。
+- main 从410b563到1a03fef只变更 client-update.json / client-update.signed.json；COS整合包manifest逐字节SHA相同；GitHub latest仍为同一V2.0.0 Release ID 430446417。
+- 本机游戏目录接收端入口已独立从1.12.15.0升级至正式1.14.0.0，旧入口按SHA备份，可恢复；未运行MOD更新引擎。现有接收端state、诊断DLL/配置、游戏主程序/程序集、加载器SHA未变，管理端未替换。
+- 额外以真实0.1.0多F8记录的本地副本验证新版界面、2560×1440截图解码、中文备注保存及报告生成，原会话未改动。时间轴、截图和详情的实际控件渲染已检查。截图/玩家证据只存本机，不在Git仓库。
+
+正式文件与测试文件哈希相同，公开下载后采用只读验签/哈希核对，并独立升级本机入口；未额外运行公网下载EXE的模拟游戏进程测试。真实V81运行中启动、缓存激活/回退、退出后更新分别按上述证据层验证；不宣称完整旧GUI公网自动升级流程已端到端运行。首次旧入口升级仍需退出游戏，极端磁盘/权限、朋友异地机器与长期手动使用需玩家反馈。
