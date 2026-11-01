@@ -13,7 +13,7 @@ editor=tsv('editorial.tsv')
 terms=tsv('glossary.tsv')
 title={'Burnt note':'烧焦的便条','Cunningham Travel log':'坎宁安的旅行日志','Desmond note':'德斯蒙德的便条','Explorer note':'探险者便条','Fatality report':'死亡报告','Findings':'调查发现','Forgotten log':'被遗忘的日志','Geoffrey log':'杰弗里的日志','Harrington Log':'哈林顿的日志','Lost note':'遗失的便条','Michael Report':'迈克尔的报告','Plan':'计划','Prisoner note':'囚犯的便条','Research log':'研究日志','Scientist Log':'科学家的日志','Transcript':'文字记录','Translated message':'译出的讯息','Undelivered Letter':'未寄出的信','Wet note':'湿透的便条'}
 reviewed=manual|title
-stable={'A00001','VIII','X','Y','Z','End','Moon','Text','Open','Next','Hide','Use','Exit','Enter','Grab','Item','Position','Rotation','Save to Json','Enter text...','Interact','interact','Go','go','Unresponsive','Goodbye','Locked','Confirm','Play','Press','Rock','Run','Push','Turn','Pull','Previous','Unknown','Disabled','Enabled','Blocked','blocked','Drop','Blank','None','Please','Fun','Visit','Life','Love','Friends','Danger','Leave','Press','press','Move','Search','Reach','Hand','Door','banana'}
+stable={'A00001','VIII','X','Y','Z','End','Moon','Text','Open','Next','Hide','Use','Exit','Enter','Grab','Item','Position','Rotation','Enter text...','Interact','interact','Go','go','Unresponsive','Goodbye','Locked','Confirm','Play','Press','Rock','Run','Push','Turn','Pull','Previous','Unknown','Disabled','Enabled','Blocked','blocked','Drop','Blank','None','Please','Fun','Visit','Life','Love','Friends','Danger','Leave','Press','press','Move','Search','Reach','Hand','Door','banana'}
 parts={}
 if (root/'private/draft.jsonl').is_file():parts=dict(json.loads(l) for l in (root/'private/draft.jsonl').read_text('utf8').splitlines())
 fixed=root/'translations.zh-CN.json'
@@ -46,6 +46,7 @@ def context_review(s,contextual):
   result.append(line.replace(text,q,1))
  return ''.join(result)
 def translate(s):
+ if checked.get(key(s),[None,None])[1]=='proofread':return checked[key(s)]
  if key(s) in bodies:return bodies[key(s)],'review'
  if s in editor:return editor[s],'editor'
  m=re.fullmatch(r'(Insert (?:false article|acid|gore|machine parts)) (\(\d+/\d+\) : \[E\])',s)
@@ -80,6 +81,41 @@ ap=argparse.ArgumentParser();ap.add_argument('candidate',type=pathlib.Path);ap.a
 args=ap.parse_args()
 for f,i,k,s in extra_entries(args.candidate/'BepInEx/plugins'):
  allrows[s].append([f,i,k])
+# WesleyMoonScripts builds the notification from SelectableLevel.PlanetName.
+# Display strings used by the pinned placement tool and campaign configuration.
+for module, phrases in {
+ 'CustomStoryLogsFixed':('Not on a moon!', 'Enable/Disable the in game placement tool','Show/Hide the vanilla story logs','HideVanillaLogs'),
+ 'WesleyMoonScripts':('Locks moons that have progression integration set up to enable playing the campaign.','LockMoons'),
+}.items():
+ for phrase in phrases:allrows[phrase].append((module,'display','settingsOrTool'))
+for planet,refs in list(allrows.items()):
+ if any(k=="PlanetName" and f.startswith(("Magic_Wesley-Wesleys_Moons/","Magic_Wesley-Facto/")) for f,_,k in refs):
+  for notice in ("Route Discovered!", "Location: "+planet):
+   allrows[notice].extend((f,i,"routeNotification") for f,i,k in refs if k=="PlanetName")
+# LethalLevelLoader creates an info page with blank lines between authored lines.
+# Its terminal formatter translates headings independently of the complete LevelDescription.
+def info_pages():
+ for bundle in data:
+  if not bundle['source'].startswith(('Magic_Wesley-Wesleys_Moons/','Magic_Wesley-Facto/')):continue
+  fields=collections.defaultdict(dict)
+  for obj,field,value in bundle['rows']:
+   if field in ('PlanetName','LevelDescription'):fields[obj][field]=value
+  for obj,props in fields.items():
+   if not props.get('PlanetName') or not props.get('LevelDescription'):continue
+   planet,body=props['PlanetName'],props['LevelDescription']
+   source=(planet+'\n----------------------\n'+''.join('\n'+line+'\n' for line in body.split('\n'))).strip()
+   yield bundle['source'],obj,source,planet.strip(),body.strip()
+
+for f,i,s,planet,body in info_pages():
+ allrows[s].append((f,i,'generatedMoonInfo'))
+ if key(body) in checked:
+  heading=checked.get(key(planet),[planet])[0]
+  # LC Chinese expands the bare Asteroid-13 inside aliases a second time on this screen.
+  if planet=='57 Asteroid-13':heading=heading.removesuffix('（Asteroid-13）')
+  translated=heading+'\n----------------------\n\n'+checked[key(body)][0]
+  checked[key(s)]=[translated,'derived-info']
+
+
 for s,ref in list(allrows.items()):
  if any(k=='name' and f.startswith('CustomStoryLogs/')for f,_,k in ref):
   notification="Found journal entry: '"+s+"'"
@@ -90,17 +126,18 @@ custom=args.candidate/'BepInEx/config/V81TestChn/custom-localization/Wesley'
 custom.mkdir(parents=True,exist_ok=True)
 header='# Wesley / 简体中文。仅精确匹配显示文本。\n'
 chunks=[header];termchunks=[header];index={};table=[];details=[]
-terminalKinds={'name','text','InfoNodeDescription','OverrideInfoNodeDescription','storyLogDescription','LevelDescription','OverrideRouteConfirmNodeDescription','OverrideRouteNodeDescription','displayText'}
+terminalKinds={'generatedMoonInfo','name','text','InfoNodeDescription','OverrideInfoNodeDescription','storyLogDescription','LevelDescription','OverrideRouteConfirmNodeDescription','OverrideRouteNodeDescription','displayText'}
 terminalDir=args.candidate/'BepInEx/plugins/V81TestChn/translations-clean/cfg/zh-CN'
 terminalDir.mkdir(parents=True,exist_ok=True)
 for s in sorted(allrows):
  h=key(s)
- if args.author:v,quality=translate(s)
+ if h in checked and checked[h][1]=='derived-info':v,quality=checked[h]
+ elif args.author:v,quality=translate(s)
  elif h in checked:v,quality=checked[h]
  else:v,quality=s,'leave'
  if v!=s and s not in stable:
   if s!='[Data not found]' and not set(tokens(s)).issubset(tokens(v)):v,quality=s,'token-review'
-  elif args.author and s in terms and re.fullmatch(r'[A-Za-z][A-Za-z0-9-]*',s):v=s+'（'+terms[s]+'）'
+  elif args.author and quality!='proofread' and s in terms and re.fullmatch(r'[A-Za-z][A-Za-z0-9-]*',s):v=s+'（'+terms[s]+'）'
  if s in stable:v,quality=s,'scope-skip'
  if h in baseline:v,quality=s,'base-owned'
  if v!=s:

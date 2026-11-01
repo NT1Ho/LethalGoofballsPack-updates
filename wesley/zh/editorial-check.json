@@ -1,0 +1,57 @@
+{
+  "totalSources": 2201,
+  "totalExact": 2037,
+  "oldExactReworded": 392,
+  "newExact": 116,
+  "draftReworded": 317,
+  "reviewedDrafts": 328,
+  "routeNotices": 55,
+  "byPackage": {
+    "Wesleys_Moons": [
+      1756,
+      355,
+      109
+    ],
+    "WesleysInteriors": [
+      373,
+      9,
+      0
+    ],
+    "Ememy_Variants": [
+      66,
+      23,
+      0
+    ],
+    "Wesleys_Weathers": [
+      7,
+      1,
+      0
+    ],
+    "Magic_Wesley-Facto/": [
+      63,
+      2,
+      3
+    ],
+    "Decrepit_Store": [
+      12,
+      1,
+      0
+    ],
+    "CustomStoryLogsFixed": [
+      15,
+      2,
+      4
+    ]
+  },
+  "formatChecked": [
+    "两种实际词库回读",
+    "按键、变量、富文本的数量",
+    "阿拉伯数字",
+    "物品名称与装入提示",
+    "航线通知地名与编号",
+    "排除包共享词条未改动"
+  ],
+  "glossaryTerms": 128,
+  "uniqueSourcesBefore": 2086,
+  "note": "各包共享的文本按包重复归属，不将各列相加；328 项为旧上下文稿，同义微调也计入文字变化。"
+}

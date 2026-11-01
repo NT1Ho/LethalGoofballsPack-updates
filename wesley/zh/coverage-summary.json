@@ -1,12 +1,13 @@
 {
-  "sourceFields": 2086,
-  "candidateDistinct": 1921,
-  "terminalSubset": 438,
+  "sourceFields": 2201,
+  "candidateDistinct": 2037,
+  "terminalSubset": 492,
   "capacity": 4096,
   "translatedQuality": {
-    "context-draft": 328,
-    "review": 503,
-    "editor": 1090
+    "proofread": 465,
+    "review": 492,
+    "derived-info": 54,
+    "editor": 1026
   },
   "byField": {
     "CursedMessagesSpawned[]": {
@@ -99,6 +100,11 @@
       "identified": 74,
       "baseOwned": 30
     },
+    "generatedMoonInfo": {
+      "candidate": 54,
+      "identified": 54,
+      "baseOwned": 0
+    },
     "header": {
       "candidate": 1,
       "identified": 1,
@@ -130,7 +136,7 @@
       "baseOwned": 0
     },
     "m_text": {
-      "candidate": 65,
+      "candidate": 66,
       "identified": 85,
       "baseOwned": 7
     },
@@ -144,9 +150,19 @@
       "identified": 154,
       "baseOwned": 0
     },
+    "routeNotification": {
+      "candidate": 55,
+      "identified": 55,
+      "baseOwned": 0
+    },
     "runtimeLiteral": {
       "candidate": 9,
       "identified": 9,
+      "baseOwned": 0
+    },
+    "settingsOrTool": {
+      "candidate": 6,
+      "identified": 6,
       "baseOwned": 0
     },
     "storyLogDescription": {

@@ -7,14 +7,14 @@
 1Findings	1Findings（调查发现 1）
 1Forgotten log	1Forgotten log（被遗忘的日志 1）
 1Geoffrey log	1Geoffrey log（杰弗里的日志 1）
-1Harrington Log	1Harrington Log（哈灵顿的日志 1）
+1Harrington Log	1Harrington Log（哈林顿的日志 1）
 1Hyxellia Beginning	1Hyxellia Beginning（希克塞利亚 1 · 开端）
 1Lost note	1Lost note（遗失的便条 1）
 1Michael Report	1Michael Report（迈克尔的报告 1）
 1Plan	1Plan（计划 1）
 1Prisoner note	1Prisoner note（囚犯的便条 1）
 1Research log	1Research log（研究日志 1）
-1Researcher Takeoff	1Researcher Takeoff（研究员 1 · 起飞）
+1Researcher Takeoff	1Researcher Takeoff（研究者6号 1 · 起飞）
 1Scientist Log	1Scientist Log（科学家的日志 1）
 1Solover Solover's recording	1Solover Solover's recording（索洛弗 1 · 索洛弗的录音）
 1Stanley The apartment	1Stanley The apartment（斯坦利 1 · 公寓）
@@ -31,14 +31,14 @@
 2Findings	2Findings（调查发现 2）
 2Forgotten log	2Forgotten log（被遗忘的日志 2）
 2Geoffrey log	2Geoffrey log（杰弗里的日志 2）
-2Harrington Log	2Harrington Log（哈灵顿的日志 2）
-2Hyxellia The employee	2Hyxellia The employee（希克塞利亚 2 · 员工）
+2Harrington Log	2Harrington Log（哈林顿的日志 2）
+2Hyxellia The employee	2Hyxellia The employee（希克塞利亚 2 · 店员）
 2Lost note	2Lost note（遗失的便条 2）
 2Michael Report	2Michael Report（迈克尔的报告 2）
 2Plan	2Plan（计划 2）
 2Prisoner note	2Prisoner note（囚犯的便条 2）
 2Research log	2Research log（研究日志 2）
-2Researcher Research	2Researcher Research（研究员 2 · 研究）
+2Researcher Research	2Researcher Research（研究者6号 2 · 研究）
 2Scientist Log	2Scientist Log（科学家的日志 2）
 2Solover The entity	2Solover The entity（索洛弗 2 · 那个存在）
 2Stanley The city	2Stanley The city（斯坦利 2 · 城市）
@@ -54,14 +54,14 @@
 3Fatality report	3Fatality report（死亡报告 3）
 3Forgotten log	3Forgotten log（被遗忘的日志 3）
 3Geoffrey log	3Geoffrey log（杰弗里的日志 3）
-3Harrington Log	3Harrington Log（哈灵顿的日志 3）
-3Hyxellia The officer	3Hyxellia The officer（希克塞利亚 3 · 警官）
+3Harrington Log	3Harrington Log（哈林顿的日志 3）
+3Hyxellia The officer	3Hyxellia The officer（希克塞利亚 3 · 警员）
 3Lost note	3Lost note（遗失的便条 3）
 3Michael Report	3Michael Report（迈克尔的报告 3）
 3Plan	3Plan（计划 3）
 3Prisoner note	3Prisoner note（囚犯的便条 3）
 3Research log	3Research log（研究日志 3）
-3Researcher Success	3Researcher Success（研究员 3 · 成功）
+3Researcher Success	3Researcher Success（研究者6号 3 · 成功）
 3Scientist Log	3Scientist Log（科学家的日志 3）
 3Stanley The metro	3Stanley The metro（斯坦利 3 · 地铁）
 3Transcript	3Transcript（转录稿 3）
@@ -74,12 +74,12 @@
 4Fatality report	4Fatality report（死亡报告 4）
 4Forgotten log	4Forgotten log（被遗忘的日志 4）
 4Geoffrey log	4Geoffrey log（杰弗里的日志 4）
-4Harrington Log	4Harrington Log（哈灵顿的日志 4）
+4Harrington Log	4Harrington Log（哈林顿的日志 4）
 4Hyxellia The I.T.D.A.	4Hyxellia The I.T.D.A.（希克塞利亚 4 · I.T.D.A.）
 4Lost note	4Lost note（遗失的便条 4）
 4Plan	4Plan（计划 4）
 4Research log	4Research log（研究日志 4）
-4Researcher Execution	4Researcher Execution（研究员 4 · 处决）
+4Researcher Execution	4Researcher Execution（研究者6号 4 · 处决）
 4Scientist Log	4Scientist Log（科学家的日志 4）
 4Transcript	4Transcript（转录稿 4）
 4Undelivered Letter	4Undelivered Letter（未寄出的信 4）
@@ -87,8 +87,8 @@
 5Collector Dread	5Collector Dread（收藏家 5 · 恐惧）
 5Geoffrey log	5Geoffrey log（杰弗里的日志 5）
 5Hyxellia The coverup	5Hyxellia The coverup（希克塞利亚 5 · 掩盖真相）
-5Researcher The pod	5Researcher The pod（研究员 5 · 舱体）
-6Researcher Escape pod 1	6Researcher Escape pod 1（研究员 6 · 一号逃生舱）
+5Researcher The pod	5Researcher The pod（研究者6号 5 · 舱体）
+6Researcher Escape pod 1	6Researcher Escape pod 1（研究者6号 6 · 一号逃生舱）
 Accident log 1	事故日志 1
 Accident log 2	事故日志 2
 Accident log 3	事故日志 3
@@ -113,7 +113,7 @@ Apple	苹果
 AquaStingray	水栖魟鱼
 Arachnohead	蛛首怪
 Article shredder	碎纸机
-Assimilated bracken arm	被同化的布莱肯手臂
+Assimilated bracken arm	被同化的布拉肯手臂
 Assimilated bunker spider	被同化的地堡蜘蛛
 Assimilated concrete leg	被同化的混凝土腿
 Assimilated concrete torso	被同化的混凝土躯干
@@ -135,9 +135,9 @@ BIO-HXNV7	BIO-HXNV7
 BIO-JHCF3	BIO-JHCF3
 BIOHXNV7 Experiment	BIOHXNV7 Experiment（BIO-HXNV7 实验）
 Baboon duck	狒狒鸭
-Backoiler Spillfish	油污鱼（Spillfish）
-Backwater Aquafish	回水鱼（Aquafish）
-Backwater Cryofish	回水冰鱼（Cryofish）
+Backoiler Spillfish	油污鱼
+Backwater Aquafish	死水水栖鱼
+Backwater Cryofish	死水冰鱼
 Badge	徽章
 Baduck	巴达克（Baduck）
 Bag of Soil	一袋土
@@ -183,7 +183,7 @@ Bottle	瓶子
 Boulder	巨石
 Box cutter	美工刀
 Box of Crocs	一盒洞洞鞋
-Bracken?	布莱肯？
+Bracken?	布拉肯？
 Brain coral	脑珊瑚
 Brain jar	装着大脑的罐子
 Branch	树枝
@@ -258,8 +258,8 @@ Concrete pillar	混凝土柱
 Concrete slab	混凝土板
 Confetbees	彩纸蜂群
 Construction helmet	施工安全帽
-Contaminated Snare flea	受污染的抱脸虫
-ContaminatedCentipede	受污染的抱脸虫
+Contaminated Snare flea	受污染的绊缚跳蚤
+ContaminatedCentipede	受污染的绊缚跳蚤
 Cookie mold pan	饼干烤模
 Copper gear	铜齿轮
 Copper wiring	铜线
@@ -269,7 +269,7 @@ Corpse crawler	爬行尸怪
 Cosmic Flashlight	宇宙手电筒
 Cosmic Growth	宇宙增生体
 Cosmic Shard	宇宙碎片
-CosmicFlowerman	宇宙布莱肯
+CosmicFlowerman	宇宙布拉肯
 Cosmochad	科斯莫查德（Cosmochad）
 Crankshaft	曲轴
 Creaker	吱响怪
@@ -278,7 +278,7 @@ Criminal Record	犯罪记录
 Croc	洞洞鞋
 Croc Bunker Spider	穿洞洞鞋的地堡蜘蛛
 Croc Crawler	穿洞洞鞋的半身鱼
-Croc Flowerman	穿洞洞鞋的布莱肯
+Croc Flowerman	穿洞洞鞋的布拉肯
 Croc Jester	穿洞洞鞋的小丑盒
 Croc MouthDog	穿洞洞鞋的无眼狗
 Croc Nutcracker	穿洞洞鞋的胡桃夹子
@@ -351,7 +351,7 @@ Dormant floppy disk	休眠软盘
 Dread	恐惧
 Drinking bird	饮水鸟玩具
 Droop	垂首怪
-DroopMan	垂首人
+DroopMan	垂首怪
 Duck	鸭子
 Dune floppy disc	沙丘软盘
 Dune floppy disk	沙丘软盘
@@ -472,7 +472,7 @@ Grind the deluded videotape	碾碎受蒙蔽者录像带
 Grown Petri Dish	长满培养物的培养皿
 Guard note	Guard note（守卫的便条）
 Guard's note	守卫的便条
-Gunkfish plushie	黏液鱼毛绒玩具
+Gunkfish plushie	死水泥鱼毛绒玩具
 Gunpowder barrel	火药桶
 Gutting knife	剖腹刀
 Hailey	Hailey（海莉）
@@ -483,21 +483,21 @@ Hand drill	手钻
 Handcuffs	手铐
 Hanging mine	悬挂地雷
 Harold hammer	哈罗德之锤
-Harrington crash log	哈灵顿的坠毁记录
-Harrington log 1	哈灵顿的日志 1
-Harrington log 2	哈灵顿的日志 2
-Harrington log 3	哈灵顿的日志 3
-Harrington log 4	哈灵顿的日志 4
-Harrington research 1	哈灵顿的研究记录 1
-Harrington research 2	哈灵顿的研究记录 2
-Harrington research 3	哈灵顿的研究记录 3
-Harrington research 4	哈灵顿的研究记录 4
-Harrington's Crash Log	哈灵顿的坠毁记录
-Harrington's research 1	哈灵顿的研究记录 1
-Harrington's research 2	哈灵顿的研究记录 2
-Harrington's research 3	哈灵顿的研究记录 3
-Harrington's research 4	哈灵顿的研究记录 4
-HarringtonCrash	HarringtonCrash（哈灵顿的坠毁记录）
+Harrington crash log	哈林顿的坠毁记录
+Harrington log 1	哈林顿的日志 1
+Harrington log 2	哈林顿的日志 2
+Harrington log 3	哈林顿的日志 3
+Harrington log 4	哈林顿的日志 4
+Harrington research 1	哈林顿的研究记录 1
+Harrington research 2	哈林顿的研究记录 2
+Harrington research 3	哈林顿的研究记录 3
+Harrington research 4	哈林顿的研究记录 4
+Harrington's Crash Log	哈林顿的坠毁记录
+Harrington's research 1	哈林顿的研究记录 1
+Harrington's research 2	哈林顿的研究记录 2
+Harrington's research 3	哈林顿的研究记录 3
+Harrington's research 4	哈林顿的研究记录 4
+HarringtonCrash	HarringtonCrash（哈林顿的坠毁记录）
 Haunted apparatus	闹鬼的设施电源
 Haunted relic	闹鬼的遗物
 Hazmat mask	防化面具

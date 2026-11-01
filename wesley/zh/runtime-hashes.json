@@ -1,7 +1,8 @@
 {
-  "BepInEx/config/V81TestChn/custom-localization/Wesley/wesley-01.cfg": "2547c82d61aa37c48ab6587d49f1d79a2c536fe054f00635abcbc28ba30862ab",
-  "BepInEx/config/V81TestChn/custom-localization/Wesley/wesley-02.cfg": "f6a65fe1884572577a4695bb33ed23e06fe944a3c4174c3fb4dd9d5033aef88f",
-  "BepInEx/config/V81TestChn/custom-localization/Wesley/wesley-03.cfg": "f7ba6cdc908d699b614e7363414bd46b55adbd75d764f9bfc3a5135c5b47fdf7",
-  "BepInEx/plugins/V81TestChn/translations-clean/cfg/zh-CN/wesley-terminal-01.cfg": "b80f41245868831d5c4b1c0953f38300f96893be9320d4bed811b737839a536b",
-  "BepInEx/plugins/V81TestChn/translations-clean/cfg/zh-CN/wesley-terminal-02.cfg": "7b6c81c98d20e17bded55c016aeffc11b50e1983a5850eee831f85b90a4f3974"
+  "BepInEx/config/V81TestChn/custom-localization/Wesley/wesley-01.cfg": "8b9b5497135fb6813534aa6dd225734598b8a19824451e2ae5b7ab47d4516ac9",
+  "BepInEx/config/V81TestChn/custom-localization/Wesley/wesley-02.cfg": "c5eacf50d76fafe1344eadbc7aae3c0435e46c0e3d0d84ae294beada854eba3e",
+  "BepInEx/config/V81TestChn/custom-localization/Wesley/wesley-03.cfg": "1b43cc5e99e1939db583cb3c01090a8a168031e13aa9fd58aac6dca50f22cc24",
+  "BepInEx/plugins/V81TestChn/translations-clean/cfg/zh-CN/wesley-terminal-01.cfg": "93dd9d316edbd94755b9310cdbb8cd0f488b0fe82b180f54d8eefa8721d022d4",
+  "BepInEx/plugins/V81TestChn/translations-clean/cfg/zh-CN/wesley-terminal-02.cfg": "3af8f80d4a25b0932b60372cf22e77a70d3d419acc50102f95335988ca14c137",
+  "BepInEx/plugins/NT1Ho-WesleyZhCN/WesleyDisplayZh.dll": "0b2a4fbb3ef1174ab1bc53320ebe9e39c56d73ca4e3d3a50f944c8deb71be18c"
 }

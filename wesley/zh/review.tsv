@@ -51,7 +51,7 @@ Must be seated	请先坐下
 Not enough resources	资源不足
 Ship not fueled	飞船尚未补充燃料
 Ship not in position	飞船尚未就位
-Shrine of purification is stuck	净化神龛卡住了
+Shrine of purification is stuck	净化圣坛卡住了
 Compactor already jammed	压实机已卡住
 Missing operating panel	缺少操作面板
 Enable security system	启用安保系统
@@ -127,7 +127,7 @@ Climb	攀爬
 Close barrel	盖上桶盖
 Close door	关门
 Collect head	拿起头颅
-Cosmic bracken	宇宙黑影
+Cosmic bracken	宇宙布拉肯
 Crank	摇动曲柄
 Darkness comes...	黑暗降临了……
 Decrepit store	破败商店
@@ -156,7 +156,7 @@ Flick light switch	拨动电灯开关
 Flick switch	拨动开关
 Flip switch	拨动开关
 Forest Elder	森林长者
-Forsaken	被遗弃者
+Forsaken	遗弃之境
 Fragile	易碎
 Fun	好玩
 Genapple	普苹果
@@ -372,7 +372,7 @@ Unresponsive	无响应
 Est mat d im act l cat on:	预 计 撞 击 位 置：
 Irreversible damage approaches	不可逆的损害即将发生
 DOOR POWER:	门控电源：
-Researcher_6_x1753B	研究员（Researcher_6_x1753B）
+Researcher_6_x1753B	研究者6号（Researcher_6_x1753B）
 Routing to the great dune	正在前往大沙丘
 Routing to a Triton city	正在前往特里同的一座城市
 Than a grain of sand on the beach of time	比时间海岸上的一粒沙更微小
@@ -384,10 +384,10 @@ We lay still	我们静静地躺着。
 We pour III extra to each for the warrior but II less for the poor	为了战士，每份多倒 III；为了穷人，再少倒 II。
 We pour I extra to each for our love and remove I for the betrayal	为了我们的爱，每份多倒 I；为了背叛再除去 I。
 Ordered the Battle table! Your new balance is [playerCredits].	已订购对战桌！余额为 [playerCredits]。
-Ordered the Left corner curtain! Your new balance is [playerCredits].	已订购左角窗帘！余额为 [playerCredits]。
+Ordered the Left corner curtain! Your new balance is [playerCredits].	已订购左侧转角窗帘！余额为 [playerCredits]。
 Ordered the Left curtain! Your new balance is [playerCredits].	已订购左侧窗帘！余额为 [playerCredits]。
 Ordered the Magic sphere! Your new balance is [playerCredits].	已订购魔法球！余额为 [playerCredits]。
-Ordered the Right corner curtain! Your new balance is [playerCredits].	已订购右角窗帘！余额为 [playerCredits]。
+Ordered the Right corner curtain! Your new balance is [playerCredits].	已订购右侧转角窗帘！余额为 [playerCredits]。
 Ordered the Right curtain! Your new balance is [playerCredits].	已订购右侧窗帘！余额为 [playerCredits]。
 Value: $3	价值：$3
 Value: 280	价值：280

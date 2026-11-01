@@ -38,6 +38,25 @@ norm={k.replace('\r\n','\n'):v for k,v in custom.items()}
 assert all(k in norm and norm[k]==v for k,v in terminal.items())
 raw=z/'private'/'coverage.tsv'
 e=list(csv.DictReader(raw.open(encoding='utf-8-sig'),delimiter='\t'))
+# Pinned 1.1.0 editorial contract for items that have to be found by the name in the prompt.
+for item,action in [
+ ('Untampered operating panel','Insert Untampered operating panel'),('Manor safe key','Insert Manor safe key'),
+ ('Toy vault key','Insert toy vault key'),('Triangulation device','Place trangulation device'),
+ ('Gutting knife','Insert gutting knife'),('Silver sheet','Insert silver sheet'),
+ ('Bloody apparatus','Insert Bloody apparatus'),('Cosmic apparatus','Insert Cosmic apparatus'),
+ ('Royal apparatus','Insert Royal apparatus'),("Beholder's eye","Place Beholder's eye"),
+ ('Oil barrel','Place oil barrel'),('Crystal cube','Insert crystal cube'),('Hydrogen peroxide','Insert Hydrogen peroxide'),
+ ('Blue key','Insert Blue key'),('Machine parts','Insert machine parts [0/3]')]:
+ assert custom[item] in custom[action+' : [LMB]'],(item,action)
+for source,target in custom.items():
+ assert '参考术语（仅在原文出现时使用）' not in target and '忠实翻译如下' not in target
+ pattern=r'\[(?:E|Q|F|G|R|Z|LMB|RMB|MMB|playerCredits|totalCost|playerName|currentPlanetTime)\]|\{[^{}\n]+\}|</?[^<>\n]+>'
+ assert collections.Counter(re.findall(pattern,source))==collections.Counter(re.findall(pattern,target)),source[:80]
+pages=[r for r in e if 'generatedMoonInfo' in r['uiFields'].split('|')]
+assert len(pages)==54 and all(r['source'] in terminal for r in pages)
+assert all(q!='context-draft' for _,q in expected.values())
+
+
 fieldReport={}
 for k in sorted({a for row in e for a in row['uiFields'].split('|')}):
  rows=[r for r in e if k in r['uiFields'].split('|')]
