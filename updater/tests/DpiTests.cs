@@ -21,7 +21,7 @@ class DpiTests {
         string root=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"dpi-runs",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(root);
         var ws=new Workspace(root);ws.Current.baseVersion="V1.5";for(int i=0;i<40;i++)ws.Current.files.Add(new PackFile {path="BepInEx/plugins/Example-"+i+".dll",size=1024});ws.Save();
         using(var admin=new PreviewAdmin(ws))CheckForm(admin,920,560,"admin",root);
-        using(var client=new PreviewClient())CheckForm(client,440,192,"client",root);
+        using(var client=new PreviewClient())CheckForm(client,440,230,"client",root);
         Console.WriteLine("RENDERS: "+root);
     }
     static void CheckForm(Form f,int width,int height,string name,string root){

@@ -131,10 +131,11 @@ public static class SelfUpdate {
         finally{if(child!=null)child.Dispose();if(File.Exists(ready))File.Delete(ready);}
     }
     public static void Bootstrap(string root,string exe,Func<string,string,Process> launch) {
-        Engine.CheckGameDirectory(root);Engine.CheckGameStopped();
+        // Bootstrap writes only the verified per-user receiver cache, never game resources.
+        Engine.CheckGameDirectory(root);
         using(var cacheLock=Lock(root)) {
             var state=State(root);var seed=Describe(exe);
-            // The game-directory EXE stays fixed. Only verified cache entries and this small pointer change.
+            // Normal bootstrap changes only verified cache entries and this small pointer.
             if(state.active!=null&&new System.Version(state.active.version)>=new System.Version(seed.version)) {
                 try{Activate(root,state.active,state.previous,false,launch);return;}catch(Exception e){Record(root,e);}
                 if(state.previous!=null){try{Activate(root,state.previous,null,false,launch);return;}catch(Exception e){Record(root,e);}}
@@ -154,6 +155,19 @@ public static class SelfUpdate {
             var current=Describe(Assembly.GetExecutingAssembly().Location);
             Activate(root,release,current,true,(path,args)=>Process.Start(new ProcessStartInfo(path,args){UseShellExecute=false,WorkingDirectory=root}));return true;
         }
+    }
+    public static async Task RefreshLegacyLauncher(string root) {
+        Engine.CheckGameDirectory(root);Engine.CheckGameStopped();
+        string target=Path.Combine(root,Channel.ClientName),source=Assembly.GetExecutingAssembly().Location;
+        if(!File.Exists(target)||AssemblyName.GetAssemblyName(target).Version>=new System.Version("1.14.0.0"))return;
+        SafePath.NoLinks(target);var release=Describe(source);Verify(source,release);
+        string backup=Local(root,Path.Combine("launcher-backups",Data.Hash(target)+".exe"));Directory.CreateDirectory(Path.GetDirectoryName(backup));if(!File.Exists(backup))Data.CopyDurable(target,backup);
+        string temporary=target+".new-"+Guid.NewGuid().ToString("N");
+        try{
+            Data.CopyDurable(source,temporary);Verify(temporary,release);
+            // The old bootstrap parent exits just after acknowledging its cache child.
+            for(int i=0;;i++){Engine.CheckGameStopped();try{Data.Replace(temporary,target);break;}catch(IOException){if(i==19)throw;}await Task.Delay(100);}
+        }finally{if(File.Exists(temporary))File.Delete(temporary);}
     }
     public static string Record(string root,Exception error) {
         string log=Local(root,"last-error.txt");

@@ -206,10 +206,13 @@ public class Engine {
             throw new IOException("请把更新器放在 Lethal Company.exe 所在的游戏根目录。");
         SafePath.NoLinks(root);
     }
-    public static void CheckGameStopped() {
+    public static bool GameRunning() {
         var ps = Process.GetProcessesByName("Lethal Company");
         bool running = ps.Length != 0; foreach (var p in ps) p.Dispose();
-        if (running) throw new IOException("请先退出 Lethal Company，再运行更新器。");
+        return running;
+    }
+    public static void CheckGameStopped() {
+        if (GameRunning()) throw new IOException("此操作需要修改游戏文件，请先退出 Lethal Company；仍可浏览故障诊断、MOD 和历史记录。");
     }
     public async Task<UpdateResult> Run(Transfer transfer, Action<string, int> progress, Action<string,string> versions = null) {
         CheckGameDirectory(root); guard(); SafePath.NoLinks(home); Directory.CreateDirectory(home);

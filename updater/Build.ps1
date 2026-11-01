@@ -16,7 +16,7 @@ $wpf = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\WPF'
 foreach($dll in @('WindowsBase.dll','PresentationCore.dll','PresentationFramework.dll','WindowsFormsIntegration.dll')){$refs += "/r:$wpf\$dll"}
 $common = @((Join-Path $projectRoot 'src\Common.cs'),(Join-Path $projectRoot 'src\Cloud.cs'))
 $ui = Join-Path $projectRoot 'src\UiStartup.cs'
-$diagnostics=@((Join-Path $projectRoot 'src\DiagnosticsStore.cs'),(Join-Path $projectRoot 'src\DiagnosticsWindow.cs'),"/resource:$diagnosticDll,LethalDiagnostics.dll")
+$diagnostics=@((Join-Path $projectRoot 'src\DiagnosticsReview.cs'),(Join-Path $projectRoot 'src\DiagnosticsTimeline.cs'),(Join-Path $projectRoot 'src\DiagnosticsStore.cs'),(Join-Path $projectRoot 'src\DiagnosticsWindow.cs'),"/resource:$diagnosticDll,LethalDiagnostics.dll")
 $selfUpdate=Join-Path $projectRoot 'src\SelfUpdate.cs'
 $clientVersion=Join-Path $projectRoot 'src\ClientVersion.cs'
 $inventory=@((Join-Path $projectRoot 'src\ModInventory.cs'),(Join-Path $projectRoot 'src\ModWindow.cs'),(Join-Path $projectRoot 'src\ModNames.cs'))
@@ -60,7 +60,7 @@ if (-not $SkipTests -and (Test-Path (Join-Path $projectRoot 'tests\Tests.cs'))) 
     if ($LASTEXITCODE -ne 0) { throw 'UI test build failed' }
     & (Join-Path $projectRoot 'tests\UiTests.exe')
     if ($LASTEXITCODE -ne 0) { throw 'UI tests failed' }
-    & $compiler /nologo /optimize+ /target:exe /main:DpiTests "/win32manifest:$manifest" /platform:anycpu /utf8output @refs "/out:$(Join-Path $projectRoot 'tests\DpiTests.exe')" $common $ui $publisherCore @inventory @cecil (Join-Path $projectRoot 'src\AdminCatalog.cs') (Join-Path $projectRoot 'src\Publisher.cs') (Join-Path $projectRoot 'src\Client.cs') $selfUpdate $clientVersion (Join-Path $projectRoot 'tests\DpiTests.cs')
+    & $compiler /nologo /optimize+ /target:exe /main:DpiTests "/win32manifest:$manifest" /platform:anycpu /utf8output @refs "/out:$(Join-Path $projectRoot 'tests\DpiTests.exe')" $common $ui $publisherCore @inventory @cecil (Join-Path $projectRoot 'src\AdminCatalog.cs') (Join-Path $projectRoot 'src\Publisher.cs') (Join-Path $projectRoot 'src\Client.cs') $selfUpdate $clientVersion @diagnostics (Join-Path $projectRoot 'tests\DpiTests.cs')
     if ($LASTEXITCODE -ne 0) { throw 'DPI test build failed' }
     & (Join-Path $projectRoot 'tests\DpiTests.exe')
     if ($LASTEXITCODE -ne 0) { throw 'DPI tests failed' }
