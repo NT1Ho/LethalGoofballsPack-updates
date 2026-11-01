@@ -1,44 +1,191 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace LcPack {
 public sealed class DiagnosticsTimeline : ScrollableControl {
-    public DiagnosticReview Review;public string SelectedId;public event Action<string> Selected;
-    readonly Dictionary<string,Rectangle> dots=new Dictionary<string,Rectangle>();
-    readonly ToolTip tip=new ToolTip{OwnerDraw=true,InitialDelay=250,ReshowDelay=100,AutoPopDelay=15000};
-    string hovering,caption;Image thumbnail;
-    public DiagnosticsTimeline(){DoubleBuffered=true;AutoScroll=true;BackColor=Color.FromArgb(245,247,250);TabStop=true;AccessibleName="F8 故障时间轴，亦可使用下方列表选择";
-        tip.Popup+=(s,e)=>e.ToolTipSize=new Size(360,300);
-        tip.Draw+=(s,e)=>{e.DrawBackground();e.DrawBorder();if(thumbnail!=null)e.Graphics.DrawImage(thumbnail,new Rectangle(10,8,340,190));else TextRenderer.DrawText(e.Graphics,"未取得截图；现场状态仍可查看",Font,new Rectangle(10,8,340,190),Color.DimGray,TextFormatFlags.HorizontalCenter|TextFormatFlags.VerticalCenter);TextRenderer.DrawText(e.Graphics,caption??"",Font,new Rectangle(10,205,340,90),Color.Black,TextFormatFlags.WordBreak|TextFormatFlags.EndEllipsis);};
+    public DiagnosticReview Review;
+    public int Mode;
+    public string SelectedId;
+    public event Action<string> Selected;
+    sealed class Node {
+        public DiagnosticMark Mark;
+        public Rectangle Dot, Label, Hit;
     }
-    public void Rebuild(){
-        dots.Clear();if(Review!=null){var lanes=new List<int>();int width=Math.Max(20,ClientSize.Width-52);double duration=Review.Duration;
-            foreach(var m in Review.Marks.Where(m=>m.Manual&&(!Review.Deleted(m.Id)||!Review.SavedDeleted(m.Id)))){
-                int x=24+(int)(Math.Max(0,Math.Min(1,m.Seconds/duration))*width),lane=0;while(lane<lanes.Count&&x-lanes[lane]<20)lane++;
-                if(lane==lanes.Count)lanes.Add(x);else lanes[lane]=x;dots[m.Id]=new Rectangle(x-6,40+lane*24,12,12);
-            }AutoScrollMinSize=new Size(0,Math.Max(90,70+lanes.Count*24));
-        }else AutoScrollMinSize=Size.Empty;Invalidate();
+    readonly List<Node> nodes = new List<Node>();
+    readonly ToolTip tip = new ToolTip { OwnerDraw=true, ShowAlways=true };
+    string hovering, caption;
+    Image thumbnail;
+    double duration;
+    bool arranging;
+    public int NodeCount { get { return nodes.Count; } }
+    public int ContentHeight { get; private set; }
+    // Match the rendered text even during a per-monitor DPI transition.
+    int U(int n) { return (int)Math.Round(n * Font.Height / 17.0); }
+
+    public DiagnosticsTimeline() {
+        DoubleBuffered=true;
+        AutoScroll=true;
+        BackColor=Color.White;
+        TabStop=true;
+        AccessibleName="故障时间轴，左右方向键选择，回车打开";
+        tip.Popup+=(s,e)=>e.ToolTipSize=new Size(U(306),U(236));
+        tip.Draw+=(s,e)=>{
+            e.DrawBackground();
+            e.DrawBorder();
+            Rectangle preview=new Rectangle(U(8),U(8),U(290),U(163));
+            if(thumbnail!=null) e.Graphics.DrawImage(thumbnail,preview);
+            else TextRenderer.DrawText(e.Graphics,"此处没有现场截图",Font,preview,Color.DimGray,TextFormatFlags.HorizontalCenter|TextFormatFlags.VerticalCenter);
+            TextRenderer.DrawText(e.Graphics,caption,Font,new Rectangle(U(8),U(178),U(290),U(52)),ForeColor,TextFormatFlags.WordBreak|TextFormatFlags.EndEllipsis);
+        };
     }
-    public Rectangle NodeBounds(string id){Rectangle r;if(!dots.TryGetValue(id,out r))return Rectangle.Empty;r.Offset(AutoScrollPosition);return r;}
-    public string Hit(Point p){foreach(var d in dots){var r=NodeBounds(d.Key);r.Inflate(3,3);if(r.Contains(p))return d.Key;}return null;}
-    protected override void OnResize(EventArgs e){base.OnResize(e);Rebuild();}
-    protected override void OnPaint(PaintEventArgs e){base.OnPaint(e);var g=e.Graphics;g.TranslateTransform(AutoScrollPosition.X,AutoScrollPosition.Y);
-        TextRenderer.DrawText(g,Review==null?"请选择一局游戏":dots.Count==0?"本局没有保留的 F8 标记；可查看自动异常或最近删除":"F8 时间轴 · 悬停预览 · 点击查看 · 密集节点分行",Font,new Point(10,6),Color.DimGray);
-        if(Review==null)return;using(var pen=new Pen(Color.LightSlateGray))g.DrawLine(pen,24,30,Math.Max(25,ClientSize.Width-28),30);
-        foreach(var d in dots){var r=d.Value;using(var pen=new Pen(Color.LightGray))g.DrawLine(pen,r.X+6,30,r.X+6,r.Y);using(var brush=new SolidBrush(Review.Deleted(d.Key)?Color.IndianRed:Color.SteelBlue))g.FillEllipse(brush,r);if(d.Key==SelectedId){r.Inflate(3,3);using(var pen=new Pen(Color.DarkOrange,2))g.DrawEllipse(pen,r);}}
-        TextRenderer.DrawText(g,"0:00",Font,new Point(10,AutoScrollMinSize.Height-22),Color.DimGray);TextRenderer.DrawText(g,TimeSpan.FromSeconds(Review.Duration).ToString(@"hh\:mm\:ss"),Font,new Point(Math.Max(60,ClientSize.Width-90),AutoScrollMinSize.Height-22),Color.DimGray);
+    public void Bind(DiagnosticReview review,int mode) {
+        Review=review;
+        Mode=mode;
+        SelectedId=null;
+        AutoScrollPosition=Point.Empty;
+        Rebuild();
     }
-    protected override void OnMouseDown(MouseEventArgs e){base.OnMouseDown(e);string id=Hit(e.Location);if(id!=null&&Selected!=null)Selected(id);}
-    protected override void OnMouseMove(MouseEventArgs e){base.OnMouseMove(e);string id=Hit(e.Location);if(id==hovering)return;hovering=id;tip.Hide(this);if(thumbnail!=null){thumbnail.Dispose();thumbnail=null;}if(id==null)return;
-        var m=Review.Marks.First(x=>x.Id==id);caption=m+"\n"+(Review.Deleted(id)?"待删除 · ":"")+Review.Note(id);string path=Path.Combine(Review.Path,"shot-"+id+".png");
-        try{if(File.Exists(path))using(var image=Image.FromFile(path)){var bmp=new Bitmap(340,190);using(var g=Graphics.FromImage(bmp)){g.Clear(Color.FromArgb(30,30,30));float ratio=Math.Min(340f/image.Width,190f/image.Height);int w=(int)(image.Width*ratio),h=(int)(image.Height*ratio);g.DrawImage(image,(340-w)/2,(190-h)/2,w,h);}thumbnail=bmp;}}catch(IOException){}catch(ArgumentException){}
-        tip.Show(caption,this,new Point(Math.Min(e.X,Math.Max(0,Width-360)),e.Y+20),15000);
+    public void Rebuild() {
+        duration=Review==null ? 1 : Review.Duration;
+        ClearPreview();
+        Arrange();
     }
-    protected override void OnMouseLeave(EventArgs e){base.OnMouseLeave(e);tip.Hide(this);hovering=null;}
-    protected override void Dispose(bool disposing){if(disposing){tip.Dispose();if(thumbnail!=null)thumbnail.Dispose();}base.Dispose(disposing);}
+    void Arrange() {
+        if(arranging || nodes==null) return;
+        arranging=true;
+        try {
+            nodes.Clear();
+            var occupied=new List<List<Rectangle>>();
+            int left=U(28), width=Math.Max(1,ClientSize.Width-2*left);
+            if(Review!=null) foreach(var mark in Review.Marks) {
+                bool deleted=Review.Deleted(mark.Id);
+                bool show=Mode==1 ? !mark.Manual : Mode==2 ? mark.Manual&&deleted : mark.Manual&&(!deleted||!Review.SavedDeleted(mark.Id));
+                if(!show) continue;
+                int x=left+(int)Math.Round(width*Math.Max(0,Math.Min(1,mark.Seconds/duration)));
+                int labelWidth=U(deleted||Mode==1?144:88);
+                int labelLeft=x+U(11);
+                if(labelLeft+labelWidth>ClientSize.Width-U(4)) labelLeft=x-U(11)-labelWidth;
+                int lane=0;
+                var span=Rectangle.FromLTRB(Math.Min(labelLeft,x-U(10)),0,Math.Max(x+U(10),labelLeft+labelWidth)+U(4),1);
+                while(lane<occupied.Count && occupied[lane].Any(r=>r.IntersectsWith(span))) lane++;
+                if(lane==occupied.Count) occupied.Add(new List<Rectangle>());
+                occupied[lane].Add(span);
+                int y=U(68+lane*34);
+                var node=new Node { Mark=mark,Dot=new Rectangle(x-U(6),y-U(6),U(12),U(12)),Label=new Rectangle(labelLeft,y-U(12),labelWidth,U(24)) };
+                node.Hit=Rectangle.Union(Rectangle.Inflate(node.Dot,U(5),U(5)),node.Label);
+                nodes.Add(node);
+            }
+            ContentHeight=U(100+Math.Max(0,occupied.Count-1)*34);
+            AutoScrollMinSize=new Size(0,ContentHeight);
+            Invalidate();
+        } finally { arranging=false; }
+    }
+    Rectangle ScreenRect(Rectangle r) { r.Offset(AutoScrollPosition);return r; }
+    public Rectangle NodeBounds(string id) {
+        var node=nodes.FirstOrDefault(n=>n.Mark.Id==id);
+        return node==null?Rectangle.Empty:ScreenRect(node.Dot);
+    }
+    public string Hit(Point point) {
+        var node=nodes.FirstOrDefault(n=>ScreenRect(n.Hit).Contains(point));
+        return node==null?null:node.Mark.Id;
+    }
+    protected override void OnFontChanged(EventArgs e) { base.OnFontChanged(e);Arrange(); }
+    protected override void OnResize(EventArgs e) { base.OnResize(e);Arrange(); }
+    protected override void OnPaint(PaintEventArgs e) {
+        base.OnPaint(e);
+        var g=e.Graphics;
+        int dy=AutoScrollPosition.Y, left=U(28),right=Math.Max(left+1,ClientSize.Width-left),axis=U(36)+dy;
+        if(nodes.Count==0) {
+            string empty=Review==null?"选择游戏记录后可查看时间轴":Mode==1?"本局没有自动异常":Mode==2?"没有已删除的标记":"本局没有手动标记";
+            TextRenderer.DrawText(g,empty,Font,ClientRectangle,Color.DimGray,TextFormatFlags.HorizontalCenter|TextFormatFlags.VerticalCenter);
+            return;
+        }
+        int ticks=right-left>U(390)?4:2;
+        using(var pen=new Pen(Color.FromArgb(185,194,204))) {
+            g.DrawLine(pen,left,axis,right,axis);
+            for(int i=0;i<=ticks;i++){
+                int x=left+(right-left)*i/ticks;
+                g.DrawLine(pen,x,axis-U(3),x,axis+U(3));
+                var label=new Rectangle(x-U(29),axis-U(29),U(58),U(24));
+                TextRenderer.DrawText(g,PlayerText.Elapsed(duration*i/ticks),Font,label,Color.DimGray,TextFormatFlags.HorizontalCenter|TextFormatFlags.VerticalCenter);
+            }
+            foreach(var n in nodes) g.DrawLine(pen,n.Dot.X+n.Dot.Width/2,axis,n.Dot.X+n.Dot.Width/2,n.Dot.Top+dy);
+        }
+        g.SmoothingMode=SmoothingMode.AntiAlias;
+        foreach(var n in nodes) {
+            var dot=ScreenRect(n.Dot);
+            var label=ScreenRect(n.Label);
+            if(!ScreenRect(n.Hit).IntersectsWith(ClientRectangle)) continue;
+            bool deleted=Review.Deleted(n.Mark.Id);
+            var color=deleted?Color.IndianRed:n.Mark.Manual?Color.FromArgb(39,105,161):Color.DarkGoldenrod;
+            using(var brush=new SolidBrush(color))g.FillEllipse(brush,dot);
+            if(n.Mark.Id==SelectedId || n.Mark.Id==hovering) {
+                dot.Inflate(U(3),U(3));
+                using(var outline=new Pen(color,U(2)))g.DrawEllipse(outline,dot);
+            }
+            string name=PlayerText.Time(n.Mark);
+            if(deleted)name+=Review.SavedDeleted(n.Mark.Id)?"  已删除":"  待删除";
+            else if(!n.Mark.Manual)name+="  "+PlayerText.Kind(n.Mark);
+            TextRenderer.DrawText(g,name,Font,label,ForeColor,BackColor,TextFormatFlags.VerticalCenter|TextFormatFlags.EndEllipsis|TextFormatFlags.NoPadding);
+        }
+    }
+    void Open(string id) {
+        if(id==null)return;
+        ClearPreview();
+        SelectedId=id;
+        Invalidate();
+        if(Selected!=null)Selected(id);
+    }
+    protected override void OnMouseDown(MouseEventArgs e) {
+        base.OnMouseDown(e);
+        if(e.Button==MouseButtons.Left){Focus();Open(Hit(e.Location));}
+    }
+    protected override bool IsInputKey(Keys key) {
+        return key==Keys.Left || key==Keys.Right || base.IsInputKey(key);
+    }
+    protected override void OnKeyDown(KeyEventArgs e) {
+        base.OnKeyDown(e);
+        if(nodes.Count==0)return;
+        if(e.KeyCode==Keys.Enter){Open(SelectedId??nodes[0].Mark.Id);e.Handled=true;return;}
+        if(e.KeyCode!=Keys.Left&&e.KeyCode!=Keys.Right)return;
+        int old=nodes.FindIndex(n=>n.Mark.Id==SelectedId);
+        int next=Math.Max(0,Math.Min(nodes.Count-1,old+(e.KeyCode==Keys.Right?1:-1)));
+        var node=nodes[next];SelectedId=node.Mark.Id;
+        if(!ClientRectangle.Contains(ScreenRect(node.Hit)))AutoScrollPosition=new Point(0,Math.Max(0,node.Dot.Top-ClientSize.Height/2));
+        Invalidate();e.Handled=true;
+    }
+    void ClearPreview() {
+        hovering=null;
+        if(IsHandleCreated)tip.Hide(this);
+        if(thumbnail!=null){thumbnail.Dispose();thumbnail=null;}
+    }
+    protected override void OnMouseMove(MouseEventArgs e) {
+        base.OnMouseMove(e);
+        string id=Hit(e.Location);
+        if(id==hovering)return;
+        ClearPreview();
+        hovering=id;Cursor=id==null?Cursors.Default:Cursors.Hand;Invalidate();
+        if(id==null)return;
+        var mark=nodes.First(n=>n.Mark.Id==id).Mark;
+        caption=PlayerText.Time(mark)+"   "+PlayerText.Kind(mark)+"\n"+(String.IsNullOrWhiteSpace(Review.Note(id))?"尚未填写备注":Review.Note(id));
+        using(var source=PlayerText.Screenshot(Review.Path,id)){
+            if(source!=null){
+                thumbnail=new Bitmap(U(290),U(163));
+                using(var g=Graphics.FromImage(thumbnail)){
+                    g.Clear(SystemColors.Info);
+                    double ratio=Math.Min((double)thumbnail.Width/source.Width,(double)thumbnail.Height/source.Height);
+                    int w=Math.Max(1,(int)(source.Width*ratio)),h=Math.Max(1,(int)(source.Height*ratio));
+                    g.DrawImage(source,(thumbnail.Width-w)/2,(thumbnail.Height-h)/2,w,h);
+                }
+            }
+        }
+        tip.Show(caption,this,new Point(Math.Min(e.X,Math.Max(0,Width-U(306))),e.Y+U(18)),15000);
+    }
+    protected override void OnMouseLeave(EventArgs e){base.OnMouseLeave(e);ClearPreview();Invalidate();}
+    protected override void Dispose(bool disposing){if(disposing){ClearPreview();tip.Dispose();}base.Dispose(disposing);}
 }
 }

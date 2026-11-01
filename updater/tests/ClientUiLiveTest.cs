@@ -40,7 +40,8 @@ class ClientUiLiveTest {
                     using(var bitmap=new Bitmap(outer.Right-outer.Left,outer.Bottom-outer.Top)) {using(var graphics=Graphics.FromImage(bitmap))graphics.CopyFromScreen(outer.Left,outer.Top,0,0,bitmap.Size);bitmap.Save(Path.Combine(output,"client-screen.png"));}
                     File.WriteAllText(Path.Combine(output,"geometry.json"),Data.Json(new{version=active.version,dpi=dpi,width=client.Right,height=client.Bottom,controls=items}));
                     double scale=dpi/96.0;var bar=items.Single(item=>item.kind.Contains("msctls_progress32"));var button=items.Single(item=>item.text=="查看 MOD");var history=items.Single(item=>item.text=="历史更新记录");var versions=items.Single(item=>item.text.Contains("当前版本："));
-                    bool ok=Math.Abs(bar.x-18*scale)<=2&&Math.Abs(bar.x+bar.width-(client.Right-18*scale))<=2&&Math.Abs(button.y-146*scale)<=2&&history.y==button.y&&history.x>=button.x+button.width&&history.x+history.width<=client.Right&&versions.y+versions.height<bar.y&&!items.Any(item=>item.text=="查看后保留窗口");
+                    var diagnostics=items.Single(item=>item.text=="故障诊断");
+                    bool ok=bar.y+bar.height<=button.y && button.y==history.y && history.y==diagnostics.y && history.x>=button.x+button.width && diagnostics.x>=history.x+history.width && diagnostics.x+diagnostics.width<=client.Right && client.Bottom-button.y-button.height<24*scale && versions.y+versions.height<=bar.y;
                     Console.WriteLine((ok?"PASS":"FAIL")+" actual cached process "+active.version+" at "+dpi+" DPI; screenshot: "+output);
                     if(!ok)Environment.ExitCode=1;return;
                 }

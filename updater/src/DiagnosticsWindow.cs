@@ -2,57 +2,256 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 namespace LcPack {
 public sealed class DiagnosticsWindow : Form {
-    readonly string root;readonly ListBox sessions=new ListBox(),marks=new ListBox();readonly TextBox note=new TextBox(),group=new TextBox(),details=new TextBox();readonly PictureBox photo=new PictureBox();readonly CheckBox pin=new CheckBox();readonly Label status=new Label(),editStatus=new Label(),photoStatus=new Label();readonly ComboBox key=new ComboBox(),filter=new ComboBox();readonly DiagnosticsTimeline timeline=new DiagnosticsTimeline();
-    readonly Button save=new Button(),export=new Button(),remove=new Button(),restore=new Button();
-    DiagnosticReview review;DiagnosticSession selected;bool loading,busy;string selectedMark;
-    DiagnosticMark CurrentMark {get{return marks.SelectedItem as DiagnosticMark;}}
-    public DiagnosticsWindow(string root){
-        this.root=root;Text="游戏故障诊断 · 本地记录";Size=new Size(1240,850);MinimumSize=new Size(1040,720);StartPosition=FormStartPosition.CenterParent;Font=new Font("Microsoft YaHei UI",9);
-        var layout=new TableLayoutPanel{Dock=DockStyle.Fill,ColumnCount=2,RowCount=5,Padding=new Padding(8)};layout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute,255));layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));foreach(int height in new[]{78,140,0,126,44})layout.RowStyles.Add(height==0?new RowStyle(SizeType.Percent,100):new RowStyle(SizeType.Absolute,height));Controls.Add(layout);
-        var toolbar=new FlowLayoutPanel{Dock=DockStyle.Fill,AutoScroll=true};layout.Controls.Add(toolbar,0,0);layout.SetColumnSpan(toolbar,2);
-        Add(toolbar,"安装／修复插件",()=>{DiagnosticsStore.Install(root);Status();});Add(toolbar,"启用监控",()=>{DiagnosticsStore.Configure(root,true,key.Text);Status();});Add(toolbar,"停用监控",()=>{DiagnosticsStore.Configure(root,false,key.Text);Status();});
-        toolbar.Controls.Add(new Label{Text="标记键",AutoSize=true,Margin=new Padding(8)});key.DropDownStyle=ComboBoxStyle.DropDownList;key.Width=60;key.Items.AddRange(Enumerable.Range(1,12).Select(i=>(object)("F"+i)).ToArray());key.SelectedItem="F8";toolbar.Controls.Add(key);Add(toolbar,"刷新记录",RefreshList);
-        status.AutoSize=true;status.MaximumSize=new Size(1160,0);toolbar.Controls.Add(status);
-        sessions.Dock=DockStyle.Fill;layout.Controls.Add(sessions,0,1);layout.SetRowSpan(sessions,3);sessions.SelectedIndexChanged+=(s,e)=>SelectSession();
-        timeline.Dock=DockStyle.Fill;layout.Controls.Add(timeline,1,1);timeline.Selected+=id=>{filter.SelectedIndex=0;for(int i=0;i<marks.Items.Count;i++)if(((DiagnosticMark)marks.Items[i]).Id==id){marks.SelectedIndex=i;break;}};
-        var body=new TableLayoutPanel{Dock=DockStyle.Fill,ColumnCount=2,RowCount=1};body.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute,235));body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));layout.Controls.Add(body,1,2);
-        var list=new TableLayoutPanel{Dock=DockStyle.Fill,RowCount=3,ColumnCount=1};list.RowStyles.Add(new RowStyle(SizeType.Absolute,30));list.RowStyles.Add(new RowStyle(SizeType.Percent,100));list.RowStyles.Add(new RowStyle(SizeType.Absolute,34));body.Controls.Add(list,0,0);
-        filter.DropDownStyle=ComboBoxStyle.DropDownList;filter.Dock=DockStyle.Fill;filter.Items.AddRange(new object[]{"F8 手动现场（含待删除）","自动异常（保留共享证据）","最近删除（可恢复）"});filter.SelectedIndex=0;list.Controls.Add(filter);filter.SelectedIndexChanged+=(s,e)=>FillMarks();marks.Dock=DockStyle.Fill;list.Controls.Add(marks);marks.SelectedIndexChanged+=(s,e)=>SelectMark();marks.FormattingEnabled=true;marks.Format+=(s,e)=>{var m=e.ListItem as DiagnosticMark;if(m!=null&&review!=null)e.Value=m+(review.Deleted(m.Id)?(review.SavedDeleted(m.Id)?" [已删除]":" [待删除]"):review.SavedDeleted(m.Id)?" [待恢复]":"");};
-        var nodeActions=new FlowLayoutPanel{Dock=DockStyle.Fill};list.Controls.Add(nodeActions);Button(nodeActions,remove,"删除节点",()=>DeleteMark(true));Button(nodeActions,restore,"撤销／恢复",()=>DeleteMark(false));
-        var evidence=new TableLayoutPanel{Dock=DockStyle.Fill,ColumnCount=1,RowCount=3};evidence.RowStyles.Add(new RowStyle(SizeType.Percent,57));evidence.RowStyles.Add(new RowStyle(SizeType.Absolute,24));evidence.RowStyles.Add(new RowStyle(SizeType.Percent,43));body.Controls.Add(evidence,1,0);photo.Dock=DockStyle.Fill;photo.SizeMode=PictureBoxSizeMode.Zoom;photo.BackColor=Color.FromArgb(30,30,30);evidence.Controls.Add(photo);photo.DoubleClick+=(s,e)=>OpenPhoto();photoStatus.AutoSize=true;evidence.Controls.Add(photoStatus);details.Multiline=true;details.ReadOnly=true;details.ScrollBars=ScrollBars.Both;details.Dock=DockStyle.Fill;evidence.Controls.Add(details);
-        var edit=new TableLayoutPanel{Dock=DockStyle.Fill,RowCount=3,ColumnCount=1};edit.RowStyles.Add(new RowStyle(SizeType.Absolute,30));edit.RowStyles.Add(new RowStyle(SizeType.Percent,100));edit.RowStyles.Add(new RowStyle(SizeType.Absolute,25));layout.Controls.Add(edit,1,3);
-        var common=new FlowLayoutPanel{Dock=DockStyle.Fill};common.Controls.Add(new Label{Text="共同联机编号",AutoSize=true,Margin=new Padding(3,7,3,0)});group.Width=200;common.Controls.Add(group);pin.Text="保留此会话";pin.AutoSize=true;common.Controls.Add(pin);edit.Controls.Add(common);note.Multiline=true;note.ScrollBars=ScrollBars.Vertical;note.Dock=DockStyle.Fill;note.MaxLength=8000;edit.Controls.Add(note);editStatus.AutoSize=true;edit.Controls.Add(editStatus);
-        note.TextChanged+=(s,e)=>{if(!loading&&review!=null){review.SetNote(selectedMark??"sessionNote",note.Text);Changed();}};group.TextChanged+=(s,e)=>{if(!loading&&review!=null){review.SetNote("group",group.Text);Changed();}};pin.CheckedChanged+=(s,e)=>{if(!loading&&review!=null){review.Notes["pinned"]=pin.Checked;Changed();}};
-        var actions=new FlowLayoutPanel{Dock=DockStyle.Fill,AutoScroll=true};layout.Controls.Add(actions,0,4);layout.SetColumnSpan(actions,2);Button(actions,save,"保存更改",Save);Button(actions,export,"导出诊断 ZIP",()=>{});export.Click+=async(s,e)=>await Export();Add(actions,"已保存报告",ShowReport);Add(actions,"恢复异常记录",()=>{NeedClean();DiagnosticsStore.Recover(selected.Path);RefreshList();});Add(actions,"清理普通旧记录",()=>{if(!Discard())return;int n=DiagnosticsStore.Cleanup(root);RefreshList();MessageBox.Show(this,"已清理 "+n+" 次普通会话；标记、最近删除、保留及异常记录不会自动删除。");});
-        Add(actions,"整局移至回收站",()=>{NeedClean();if(DiagnosticsStore.Active(selected.Path))throw new IOException("请先退出游戏。");if(MessageBox.Show(this,"将整次会话（包括最近删除、截图及共享日志）移至回收站？","删除整局记录",MessageBoxButtons.YesNo)!=DialogResult.Yes)return;Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(selected.Path,Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);review=null;RefreshList();});
-        Shown+=(s,e)=>RefreshList();FormClosing+=(s,e)=>{if(busy||!Discard())e.Cancel=true;};FormClosed+=(s,e)=>{if(photo.Image!=null)photo.Image.Dispose();};
-    }
-    void Button(Control c,Button b,string text,Action action){b.Text=text;b.AutoSize=true;c.Controls.Add(b);b.Click+=(s,e)=>{try{action();}catch(Exception ex){MessageBox.Show(this,ex.Message);}};}
-    void Add(Control c,string text,Action action){Button(c,new Button(),text,action);}
-    void Need(){if(review==null)throw new IOException("请先选择一次游戏记录。");}
-    void NeedClean(){Need();if(review.Dirty)throw new IOException("存在未保存的修改，请先点击‘保存更改’。");}
-    bool Discard(){return review==null||!review.Dirty||MessageBox.Show(this,"存在未保存的备注、删除或恢复。放弃这些修改？\n选择‘否’返回，然后点击‘保存更改’。","未保存更改",MessageBoxButtons.YesNo,MessageBoxIcon.Warning)==DialogResult.Yes;}
-    void Status(){string plugin=Path.Combine(root,DiagnosticsStore.PluginPath),cfg=Path.Combine(root,"BepInEx/config/nt1ho.lethaldiagnostics.cfg");string content=File.Exists(cfg)?File.ReadAllText(cfg):"";foreach(string line in content.Split('\n'))if(line.Trim().StartsWith("MarkKey = "))key.SelectedItem=line.Trim().Substring(10);status.Text=(File.Exists(plugin)?"插件已安装":"插件未安装")+" · "+(content.Contains("Enabled = false")?"监控已停用":"监控默认启用")+" · 只保存在本机 · 改键后点启用；游戏运行时不可改插件／配置";}
-    void RefreshList(){if(busy||!Discard())return;string id=selected==null?null:selected.Id;loading=true;try{var list=DiagnosticsStore.Sessions(root);sessions.DataSource=list;selected=null;review=null;if(id!=null)for(int i=0;i<list.Count;i++)if(list[i].Id==id)sessions.SelectedIndex=i;Status();status.Text+=" · "+(list.Sum(s=>s.Bytes)/1048576.0).ToString("F0")+" MB";}finally{loading=false;}SelectSession();}
-    void SelectSession(){if(loading)return;var next=sessions.SelectedItem as DiagnosticSession;if(next==selected)return;if(!Discard()){loading=true;sessions.SelectedItem=selected;loading=false;return;}selected=next;
-        try{review=next==null?null:new DiagnosticReview(next.Path);loading=true;group.Text=review==null?"":review.Note("group");pin.Checked=review!=null&&Convert.ToBoolean(DiagnosticsStore.Value(review.Notes,"pinned")??false);loading=false;timeline.Review=review;timeline.Rebuild();FillMarks();}catch(Exception ex){loading=false;review=null;details.Text="记录读取失败："+ex.Message;Changed();}
-    }
-    void FillMarks(){if(loading)return;string id=selectedMark;loading=true;marks.Items.Clear();if(review!=null)foreach(var m in review.Marks.Where(m=>filter.SelectedIndex==1?!m.Manual:filter.SelectedIndex==2?m.Manual&&review.Deleted(m.Id):m.Manual&&(!review.Deleted(m.Id)||!review.SavedDeleted(m.Id))))marks.Items.Add(m);for(int i=0;i<marks.Items.Count;i++)if(((DiagnosticMark)marks.Items[i]).Id==id)marks.SelectedIndex=i;if(marks.SelectedIndex<0&&marks.Items.Count>0)marks.SelectedIndex=0;loading=false;SelectMark();}
-    void SelectMark(){if(loading)return;var m=CurrentMark;selectedMark=m==null?null:m.Id;loading=true;note.Text=review==null?"":review.Note(selectedMark??"sessionNote");loading=false;timeline.SelectedId=selectedMark;timeline.Invalidate();if(photo.Image!=null){photo.Image.Dispose();photo.Image=null;}photoStatus.Text=m==null?"没有选中节点；下方可填写会话备注":"未取得截图；现场状态仍可查看";
-        details.Text=m==null?"选择时间轴圆点或列表中的现场。自动异常独立列出，并始终保留在导出报告中。":m+"\r\nUTC："+m.Utc+"\r\n游戏启动后："+m.Seconds.ToString("F3")+" 秒\r\n";
-        if(m!=null&&review!=null){var state=DiagnosticsStore.Value(m.Data,"data") as System.Collections.Generic.Dictionary<string,object>;if(state!=null){var nested=DiagnosticsStore.Value(state,"state") as System.Collections.Generic.Dictionary<string,object>;if(nested!=null)state=nested;foreach(string field in new[]{"planet","area","position","role","gameTime","aim","held","players","nearby"})details.Text+=Label(field)+"："+Data.Json(DiagnosticsStore.Value(state,field))+"\r\n";}details.Text+="完整现场：\r\n"+Data.Json(m.Data);try{string path=Path.Combine(review.Path,"shot-"+m.Id+".png");if(File.Exists(path)){using(var image=Image.FromFile(path))photo.Image=new Bitmap(image);photoStatus.Text="双击截图查看大图 · "+photo.Image.Width+"×"+photo.Image.Height;}}catch(Exception ex){photoStatus.Text="截图无法读取："+ex.Message;}}
+    readonly string root;
+    readonly ListBox sessions=new ListBox();
+    readonly DiagnosticsTimeline timeline=new DiagnosticsTimeline();
+    readonly ComboBox filter=new ComboBox();
+    readonly Button save=new Button(), export=new Button();
+    readonly Label pluginStatus=new Label(), monitorStatus=new Label(), keyStatus=new Label(), liveStatus=new Label(), editStatus=new Label();
+    readonly ContextMenuStrip settings=new ContextMenuStrip(), tools=new ContextMenuStrip();
+    DiagnosticReview review;
+    GameRecord record;
+    bool syncing,busy,resized,monitorEnabled;
+    string markKey="F8";
+
+    public DiagnosticsWindow(string root) {
+        this.root=root;
+        SuspendLayout();
+        Text="故障诊断";
+        StartPosition=FormStartPosition.CenterParent;
+        AutoScaleMode=AutoScaleMode.Dpi;
+        AutoScaleDimensions=new SizeF(96,96);
+        Font=new Font("Microsoft YaHei UI",9);
+        ClientSize=new Size(840,282);
+        MinimumSize=new Size(680,260);
+        var page=new TableLayoutPanel { Dock=DockStyle.Fill,Padding=new Padding(10),ColumnCount=1,RowCount=3 };
+        page.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));
+        page.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        page.RowStyles.Add(new RowStyle(SizeType.Percent,100));
+        page.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        Controls.Add(page);
+
+        var top=Strip();top.Margin=new Padding(0,0,0,7);
+        page.Controls.Add(top,0,0);
+        foreach(var label in new[]{pluginStatus,monitorStatus,keyStatus,new Label{Text="仅本地保存"},liveStatus}){
+            label.AutoSize=true;label.Margin=new Padding(4,8,10,4);top.Controls.Add(label);
+        }
+        var config=Button("监控设置 ▾");
+        config.Click+=(s,e)=>Guard(()=>OpenSettings(config));
+        top.Controls.Add(config);
+        var refresh=Button("刷新");refresh.Click+=async(s,e)=>await RefreshList();top.Controls.Add(refresh);
+
+        var body=new TableLayoutPanel{Dock=DockStyle.Fill,ColumnCount=2,RowCount=1,Margin=Padding.Empty};
+        body.RowStyles.Add(new RowStyle(SizeType.Percent,100));
+        body.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute,216));body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));page.Controls.Add(body,0,1);
+        var history=Section();
+        history.Controls.Add(Title("游戏记录"),0,0);
+        sessions.Dock=DockStyle.Fill;
+        sessions.IntegralHeight=false;
+        sessions.DrawMode=DrawMode.OwnerDrawFixed;
+        sessions.FontChanged+=(s,e)=>SizeRows();
+        sessions.HandleCreated+=(s,e)=>SizeRows();
+        DpiChanged+=(s,e)=>BeginInvoke(new Action(()=>{SizeRows();timeline.Rebuild();}));
+        sessions.DrawItem+=DrawRecord;
+        sessions.SelectedIndexChanged+=(s,e)=>Guard(SelectRecord);
+        history.Controls.Add(sessions,0,1);body.Controls.Add(history,0,0);
+
+        var panel=Section();panel.Margin=new Padding(8,0,0,0);panel.RowCount=3;
+        panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        var ribbon=new TableLayoutPanel {Dock=DockStyle.Fill,ColumnCount=2,AutoSize=true,Margin=Padding.Empty};
+        ribbon.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));ribbon.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+        ribbon.Controls.Add(Title("故障时间轴"),0,0);
+        filter.DropDownStyle=ComboBoxStyle.DropDownList;filter.Width=122;
+        filter.Items.AddRange(new object[]{"手动标记","自动异常","最近删除"});filter.SelectedIndex=0;
+        filter.SelectedIndexChanged+=(s,e)=>BindTimeline();
+        ribbon.Controls.Add(filter,1,0);panel.Controls.Add(ribbon,0,0);
+        timeline.Dock=DockStyle.Fill;timeline.Margin=new Padding(0,3,0,0);
+        timeline.Selected+=id=>Guard(()=>OpenMark(id));
+        panel.Controls.Add(timeline,0,1);
+        var hint=new Label { Text="悬停预览截图，点击圆点或时间查看现场",AutoSize=true,ForeColor=SystemColors.GrayText,Margin=new Padding(2,4,0,0) };
+        panel.Controls.Add(hint,0,2);body.Controls.Add(panel,1,0);
+
+        var bottom=new TableLayoutPanel{Dock=DockStyle.Fill,ColumnCount=2,AutoSize=true,Margin=new Padding(0,8,0,0)};
+        bottom.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));bottom.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+        editStatus.AutoSize=true;editStatus.Anchor=AnchorStyles.Left;bottom.Controls.Add(editStatus,0,0);
+        var actions=new FlowLayoutPanel { AutoSize=true,AutoSizeMode=AutoSizeMode.GrowAndShrink,WrapContents=false,Anchor=AnchorStyles.Right,Margin=Padding.Empty };
+        var more=Button("记录管理 ▾");more.Click+=(s,e)=>Guard(()=>OpenTools(more));actions.Controls.Add(more);
+        StyleButton(save,"保存更改");save.Click+=(s,e)=>Guard(Save);actions.Controls.Add(save);
+        StyleButton(export,"导出诊断 ZIP");export.Click+=async(s,e)=>await Export();actions.Controls.Add(export);
+        bottom.Controls.Add(actions,1,0);page.Controls.Add(bottom,0,2);
+        ResizeEnd+=(s,e)=>resized=true;
+        Shown+=async(s,e)=>await RefreshList();
+        FormClosing+=(s,e)=>{if(busy||!Discard())e.Cancel=true;};
+        FormClosed+=(s,e)=>{settings.Dispose();tools.Dispose();};
+        ResumeLayout(true);
         Changed();
     }
-    static string Label(string field){switch(field){case "planet":return "星球";case "area":return "所在区域";case "position":return "玩家坐标";case "role":return "房主／客户端";case "gameTime":return "游戏时间";case "aim":return "瞄准对象";case "held":return "持有物品";case "players":return "玩家状态";case "nearby":return "附近对象";default:return field;}}
-    void Changed(){bool live=review!=null&&DiagnosticsStore.Active(review.Path),editable=review!=null&&!live&&!busy;note.ReadOnly=!editable;group.ReadOnly=!editable;pin.Enabled=editable;save.Enabled=editable;export.Enabled=editable&&!review.Dirty&&review.Confirmed;remove.Enabled=editable&&CurrentMark!=null&&CurrentMark.Manual&&!review.Deleted(CurrentMark.Id);restore.Enabled=editable&&CurrentMark!=null&&review.Deleted(CurrentMark.Id);editStatus.ForeColor=review!=null&&review.Dirty?Color.DarkOrange:Color.DimGray;editStatus.Text=live?"游戏正在写入：只读预览；点击刷新获取已落盘内容，退出后才能整理与导出。":review==null?"请选择一局游戏":review.Dirty?"● 有未保存更改：请点击‘保存更改’后导出。":!review.Confirmed?"请先点击‘保存更改’确认时间轴，再导出。":"✓ 与已保存时间轴一致 · 最近删除保留到整局被主动删除";}
-    void DeleteMark(bool deleted){Need();if(DiagnosticsStore.Active(review.Path))throw new IOException("游戏仍在写入，不能编辑。");if(CurrentMark==null)return;review.SetDeleted(CurrentMark.Id,deleted);timeline.Rebuild();FillMarks();}
-    void Save(){Need();review.Save();timeline.Rebuild();FillMarks();}
-    async Task Export(){try{NeedClean();using(var d=new SaveFileDialog{Filter="诊断 ZIP|*.zip",FileName="LGP-diagnostics-"+selected.Id+".zip"})if(d.ShowDialog(this)==DialogResult.OK){busy=true;Enabled=false;await Task.Run(()=>review.Export(d.FileName));MessageBox.Show(this,"已按最后确认保存的时间轴导出。截图与 MOD 日志可能含个人信息，请检查后分享。");}}catch(Exception ex){MessageBox.Show(this,ex.Message);}finally{busy=false;Enabled=true;Changed();}}
-    void ShowReport(){Need();using(var window=new Form{Text="已保存报告（不含未确认修改）",Size=new Size(900,700),StartPosition=FormStartPosition.CenterParent}){window.Controls.Add(new TextBox{Dock=DockStyle.Fill,Multiline=true,ReadOnly=true,ScrollBars=ScrollBars.Both,Text=DiagnosticsStore.Report(review.Path)});window.ShowDialog(this);}}
-    void OpenPhoto(){if(photo.Image==null)return;using(var window=new Form{Text="故障现场截图 · "+selectedMark,Size=new Size(1100,750),StartPosition=FormStartPosition.CenterParent}){window.Controls.Add(new PictureBox{Dock=DockStyle.Fill,SizeMode=PictureBoxSizeMode.Zoom,Image=photo.Image,BackColor=Color.Black});window.ShowDialog(this);}}
+    static TableLayoutPanel Section() {
+        var p=new TableLayoutPanel { Dock=DockStyle.Fill,ColumnCount=1,RowCount=2,Margin=Padding.Empty };
+        p.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));p.RowStyles.Add(new RowStyle(SizeType.AutoSize));p.RowStyles.Add(new RowStyle(SizeType.Percent,100));return p;
+    }
+    static FlowLayoutPanel Strip(){return new FlowLayoutPanel{AutoSize=true,Dock=DockStyle.Fill,Margin=Padding.Empty,WrapContents=true};}
+    static Label Title(string text){return new Label{Text=text,AutoSize=true,Anchor=AnchorStyles.Left,Margin=new Padding(1,4,1,6)};}
+    static void StyleButton(Button b,string text){b.Text=text;b.AutoSize=true;b.Padding=new Padding(4,1,4,1);b.Margin=new Padding(3,1,0,1);}
+    static Button Button(string text){var b=new Button();StyleButton(b,text);return b;}
+    void Guard(Action action){try{action();}catch(Exception ex){MessageBox.Show(this,ex.Message,"故障诊断");}}
+    bool Discard(){
+        return review==null||!review.Dirty||MessageBox.Show(this,"放弃本局尚未保存的更改？","未保存更改",MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button2)==DialogResult.Yes;
+    }
+    void SizeRows(){sessions.ItemHeight=2*(TextRenderer.MeasureText("游戏",sessions.Font).Height+3);}
+    void DrawRecord(object sender,DrawItemEventArgs e){
+        e.DrawBackground();
+        if(e.Index<0||e.Index>=sessions.Items.Count)return;
+        var item=(GameRecord)sessions.Items[e.Index];
+        int pad=6*DeviceDpi/96;
+        var r=Rectangle.Inflate(e.Bounds,-pad,0);
+        r.Height=e.Bounds.Height/2;r.Y+=1;
+        var flags=TextFormatFlags.VerticalCenter|TextFormatFlags.EndEllipsis|TextFormatFlags.NoPrefix;
+        TextRenderer.DrawText(e.Graphics,item.Title,Font,r,e.ForeColor,flags);
+        r.Y+=r.Height-1;
+        TextRenderer.DrawText(e.Graphics,item.Subtitle,Font,r,(e.State&DrawItemState.Selected)!=0?e.ForeColor:Color.DimGray,flags);
+        e.DrawFocusRectangle();
+    }
+    async Task RefreshList() {
+        if(busy||!Discard())return;
+        string id=record==null?null:record.Session.Id;
+        busy=true;Enabled=false;
+        try{
+            var rows=await Task.Run(()=>DiagnosticsStore.Sessions(root).Select(GameRecord.From).ToList());
+            syncing=true;sessions.DataSource=rows;
+            sessions.SelectedItem=rows.FirstOrDefault(r=>r.Session.Id==id)??rows.FirstOrDefault();
+            record=null;review=null;syncing=false;
+            SelectRecord();
+            ReadSettings();
+        }catch(Exception ex){MessageBox.Show(this,"读取游戏记录失败。"+ex.Message);}
+        finally{syncing=false;busy=false;Enabled=true;Changed();}
+    }
+    void SelectRecord(){
+        if(syncing)return;
+        var next=sessions.SelectedItem as GameRecord;
+        if(next!=record&&!Discard()){syncing=true;sessions.SelectedItem=record;syncing=false;return;}
+        record=next;review=null;timeline.Bind(null,filter.SelectedIndex);
+        if(record!=null)review=new DiagnosticReview(record.Session.Path);
+        BindTimeline();Changed();
+    }
+    void BindTimeline(){
+        timeline.Bind(review,filter.SelectedIndex);
+        if(!resized&&WindowState==FormWindowState.Normal&&IsHandleCreated){
+            int dpi=DeviceDpi;
+            int chrome=ClientSize.Height-timeline.Height;
+            int target=Math.Max(250*dpi/96,Math.Min(490*dpi/96,chrome+timeline.ContentHeight+8*dpi/96));
+            int available=Screen.FromControl(this).WorkingArea.Height-SystemInformation.CaptionHeight-24;
+            ClientSize=new Size(ClientSize.Width,Math.Min(target,available));
+        }
+    }
+    void OpenMark(string id) {
+        if(review==null)return;
+        var mark=review.Marks.FirstOrDefault(m=>m.Id==id);
+        if(mark==null)return;
+        DiagnosticDialogs.EditMark(this,review,mark);
+        timeline.Rebuild();Changed();
+    }
+    void Changed(){
+        bool live=review!=null&&DiagnosticsStore.Active(review.Path);
+        bool editable=review!=null&&!live&&!busy;
+        save.Enabled=editable;export.Enabled=editable&&review.Confirmed&&!review.Dirty;
+        if(live)editStatus.Text="本局正在记录 · 只读预览";
+        else if(review==null)editStatus.Text="暂无游戏记录";
+        else if(review.Dirty)editStatus.Text="有未保存的更改";
+        else editStatus.Text=review.Confirmed?"已保存，可以导出":"确认时间轴后请先保存";
+        editStatus.ForeColor=review!=null&&review.Dirty?Color.SaddleBrown:SystemColors.GrayText;
+    }
+    void Save(){
+        if(review==null)return;
+        review.Save();record.Update(review);sessions.Invalidate();BindTimeline();Changed();
+    }
+    async Task Export(){
+        if(review==null||!export.Enabled)return;
+        using(var dialog=new SaveFileDialog{Filter="诊断 ZIP|*.zip",FileName="故障诊断-"+record.Session.Id+".zip"}){
+            if(dialog.ShowDialog(this)!=DialogResult.OK)return;
+            busy=true;Enabled=false;
+            try{await Task.Run(()=>review.Export(dialog.FileName));MessageBox.Show(this,"诊断包已导出。","故障诊断");}
+            catch(Exception ex){MessageBox.Show(this,ex.Message);}
+            finally{busy=false;Enabled=true;Changed();}
+        }
+    }
+    void ReadSettings(){
+        bool installed=File.Exists(Path.Combine(root,DiagnosticsStore.PluginPath));
+        string cfg=Path.Combine(root,"BepInEx/config/nt1ho.lethaldiagnostics.cfg");
+        markKey="F8";monitorEnabled=true;
+        if(File.Exists(cfg))foreach(string line in File.ReadLines(cfg)){
+            string[] pair=line.Split(new[]{'='},2);
+            if(pair.Length!=2)continue;
+            if(pair[0].Trim()=="MarkKey")markKey=pair[1].Trim();
+            if(pair[0].Trim()=="Enabled")Boolean.TryParse(pair[1].Trim(),out monitorEnabled);
+        }
+        pluginStatus.Text=installed?"插件已安装":"插件未安装";
+        monitorStatus.Text=installed?(monitorEnabled?"监控已启用":"监控已停用"):"等待安装";
+        monitorStatus.ForeColor=installed&&monitorEnabled?Color.DarkGreen:Color.DimGray;
+        keyStatus.Text="标记键 "+markKey;liveStatus.Text=Engine.GameRunning()?"游戏运行中":"";
+        liveStatus.Visible=liveStatus.Text.Length>0;
+    }
+    void Add(ToolStripItemCollection items,string text,Action action,bool enabled){
+        var item=items.Add(text);item.Enabled=enabled;item.Click+=(s,e)=>Guard(action);
+    }
+    static void Reset(ContextMenuStrip menu){
+        while(menu.Items.Count>0)menu.Items[0].Dispose();
+    }
+    void OpenSettings(Control anchor){
+        ReadSettings();Reset(settings);
+        bool stopped=!Engine.GameRunning();
+        Add(settings.Items,"安装或修复插件",()=>{DiagnosticsStore.Install(root);ReadSettings();},stopped);
+        Add(settings.Items,monitorEnabled?"停用监控":"启用监控",()=>{DiagnosticsStore.Configure(root,!monitorEnabled,markKey);ReadSettings();},stopped);
+        var keys=new ToolStripMenuItem("标记快捷键"){Enabled=stopped};settings.Items.Add(keys);
+        for(int i=1;i<=12;i++){
+            string key="F"+i;
+            var item=new ToolStripMenuItem(key){Checked=key==markKey};
+            item.Click+=(s,e)=>Guard(()=>{DiagnosticsStore.Configure(root,monitorEnabled,key);ReadSettings();});
+            keys.DropDownItems.Add(item);
+        }
+        if(!stopped)settings.Items.Add("退出游戏后可修改设置").Enabled=false;
+        settings.Show(anchor,0,anchor.Height);
+    }
+    void OpenTools(Control anchor){
+        Reset(tools);
+        bool has=review!=null, closed=has&&!DiagnosticsStore.Active(review.Path), clean=has&&!review.Dirty;
+        Add(tools.Items,"整局备注与联机编号",()=>{DiagnosticDialogs.SessionOptions(this,review);Changed();},has);
+        Add(tools.Items,"查看已保存摘要",SavedSummary,has);
+        tools.Items.Add(new ToolStripSeparator());
+        Add(tools.Items,"恢复异常记录",()=>{int n=DiagnosticsStore.Recover(review.Path);MessageBox.Show(this,"记录已整理。未完整写入的行数为 "+n+"。");},closed&&clean);
+        var cleanup=tools.Items.Add("清理普通旧记录");
+        cleanup.Enabled=clean||!has;
+        cleanup.Click+=async(s,e)=>{try{int n=DiagnosticsStore.Cleanup(root);await RefreshList();MessageBox.Show(this,"已清理 "+n+" 局普通旧记录。");}catch(Exception ex){MessageBox.Show(this,ex.Message);}};
+        var recycle=tools.Items.Add("整局移至回收站");recycle.Enabled=closed&&clean;
+        recycle.Click+=async(s,e)=>{
+            if(MessageBox.Show(this,"将整局记录连同截图移至回收站？","删除游戏记录",MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button2)!=DialogResult.Yes)return;
+            try{
+                if(DiagnosticsStore.Active(review.Path))throw new IOException("本局正在记录。");
+                Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(review.Path,Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
+                await RefreshList();
+            }catch(Exception ex){MessageBox.Show(this,ex.Message);}
+        };
+        tools.Show(anchor,0,anchor.Height);
+    }
+    void SavedSummary(){
+        var saved=new DiagnosticReview(review.Path);
+        var text=new StringBuilder(record.Title).AppendLine().AppendLine(record.Subtitle);
+        if(saved.Note("group").Length>0)text.AppendLine("联机编号　"+saved.Note("group"));
+        if(saved.Note("sessionNote").Length>0)text.AppendLine("整局备注　"+saved.Note("sessionNote"));
+        foreach(var mark in saved.Marks.Where(m=>!saved.Deleted(m.Id))){
+            text.AppendLine().AppendLine(PlayerText.Time(mark)+"   "+PlayerText.Kind(mark));
+            text.AppendLine(PlayerText.Summary(mark));
+            if(saved.Note(mark.Id).Length>0)text.AppendLine("备注　"+saved.Note(mark.Id));
+        }
+        using(var viewer=new Form{Text="已保存的游戏记录",StartPosition=FormStartPosition.CenterParent,Size=new Size(520,360),Font=Font}){
+            viewer.Controls.Add(new TextBox{Multiline=true,ReadOnly=true,Dock=DockStyle.Fill,ScrollBars=ScrollBars.Vertical,Text=text.ToString()});viewer.ShowDialog(this);
+        }
+    }
 }
 }

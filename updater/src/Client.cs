@@ -40,15 +40,37 @@ public class ClientWindow : Form {
     public ClientWindow(bool restarted=false,string root=null) {
         this.restarted=restarted;this.root=root??AppDomain.CurrentDomain.BaseDirectory;
         SuspendLayout();DoubleBuffered=true;AutoScaleMode=AutoScaleMode.Dpi;
-        Text = "Lethal company pack Updater · "+SelfUpdate.Version; ClientSize = new Size(440,230); FormBorderStyle = FormBorderStyle.FixedDialog;
+        Text = "整合包接收端 · "+SelfUpdate.Version;
+        FormBorderStyle=FormBorderStyle.FixedDialog;AutoSize=true;AutoSizeMode=AutoSizeMode.GrowAndShrink;
         Icon=Icon.ExtractAssociatedIcon(typeof(ClientWindow).Assembly.Location);
-        MaximizeBox = false; StartPosition = FormStartPosition.CenterScreen; Font = new Font("Microsoft YaHei UI",10);
-        message.SetBounds(18,14,404,48); message.Text="检查更新中……";versions.SetBounds(18,66,404,44);versions.AutoEllipsis=true;versions.Text="本地版本：正在读取……\n最新版本：正在查询……";bar.SetBounds(18,120,404,10); bar.Style=ProgressBarStyle.Marquee;
-        Controls.Add(message); Controls.Add(versions); Controls.Add(bar); Shown += async (s,e) => await Run();
-        mods.Text="查看 MOD";mods.SetBounds(18,146,104,28);mods.Click+=(s,e)=>{keepOpen=true;showMods=true;if(busy){mods.Text="检查后显示";mods.Enabled=false;}else OpenMods();};Controls.Add(mods);
-        history.Text="历史更新记录";history.SetBounds(130,146,124,28);history.Click+=(s,e)=>{keepOpen=true;showHistory=true;if(busy){history.Text="检查后显示";history.Enabled=false;}else OpenHistory();};Controls.Add(history);
-        var diagnostics=new Button{Text="故障诊断"};diagnostics.SetBounds(270,146,132,28);diagnostics.Click+=(s,e)=>{keepOpen=true;using(var window=new DiagnosticsWindow(this.root))window.ShowDialog(this);};Controls.Add(diagnostics);
-        retry.Text="退出游戏后检查更新";retry.SetBounds(18,184,384,28);retry.Visible=false;retry.Click+=async(s,e)=>{if(!busy)await Run();};Controls.Add(retry);
+        MaximizeBox=false;StartPosition=FormStartPosition.CenterScreen;Font=new Font("Microsoft YaHei UI",10);
+        var page=new TableLayoutPanel { ColumnCount=1,RowCount=5,AutoSize=true,AutoSizeMode=AutoSizeMode.GrowAndShrink,Padding=new Padding(14,12,14,12),Margin=Padding.Empty };
+        page.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute,390));
+        for(int i=0;i<5;i++)page.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        Controls.Add(page);
+        message.AutoSize=true;message.MaximumSize=new Size(390,0);message.Margin=new Padding(0,0,0,5);
+        message.Text="检查更新中……";
+        versions.AutoSize=true;versions.MaximumSize=new Size(390,0);versions.Margin=new Padding(0,0,0,7);
+        versions.Text="本地版本：正在读取……\n最新版本：正在查询……";
+        bar.Dock=DockStyle.Fill;bar.Height=8;bar.Margin=new Padding(0,0,0,10);bar.Style=ProgressBarStyle.Marquee;
+        page.Controls.Add(message,0,0);page.Controls.Add(versions,0,1);page.Controls.Add(bar,0,2);
+        var nav=new TableLayoutPanel{ColumnCount=3,RowCount=1,Dock=DockStyle.Top,Height=32,Margin=Padding.Empty};
+        for(int i=0;i<3;i++)nav.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100f/3));
+        var diagnostics=new Button{Text="故障诊断"};mods.Text="查看 MOD";history.Text="历史更新记录";
+        var buttons=new[]{mods,history,diagnostics};
+        for(int i=0;i<buttons.Length;i++){
+            buttons[i].Dock=DockStyle.Fill;buttons[i].AutoSize=false;buttons[i].Padding=new Padding(2);
+            buttons[i].Margin=new Padding(i==0?0:3,0,i==2?0:3,0);
+            nav.Controls.Add(buttons[i],i,0);
+        }
+        page.Controls.Add(nav,0,3);
+        mods.Click+=(s,e)=>{keepOpen=true;showMods=true;if(busy){mods.Text="检查后显示";mods.Enabled=false;}else OpenMods();};
+        history.Click+=(s,e)=>{keepOpen=true;showHistory=true;if(busy){history.Text="检查后显示";history.Enabled=false;}else OpenHistory();};
+        diagnostics.Click+=(s,e)=>{keepOpen=true;using(var window=new DiagnosticsWindow(this.root))window.ShowDialog(this);};
+        retry.Text="退出游戏后检查更新";retry.AutoSize=true;retry.Dock=DockStyle.Fill;retry.Margin=new Padding(0,6,0,0);retry.Visible=false;
+        retry.Click+=async(s,e)=>{if(!busy)await Run();};page.Controls.Add(retry,0,4);
+        Load+=(s,e)=>{page.ColumnStyles[0].Width=396*DeviceDpi/96f;nav.Height=Math.Max(32*DeviceDpi/96,Font.Height+12);};
+        Shown+=async(s,e)=>await Run();
         FormClosing += (s,e) => { if (busy) e.Cancel=true; };
         AutoScaleDimensions=new SizeF(96,96);ResumeLayout(true);
     }
