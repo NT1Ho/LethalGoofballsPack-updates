@@ -27,7 +27,7 @@ public sealed partial class Probe : BaseUnityPlugin
         var file=Path.Combine(root,"command.txt");
         if(!File.Exists(file)||GameNetworkManager.Instance?.localPlayerController==null)return;
         var c=File.ReadAllText(file).Trim();File.Delete(file);
-        try { if(c=="inspect")Inspect(); else StartCoroutine(Run(Tests(c))); }catch(Exception e){Log("FAIL "+e);}
+        try { if(c=="inspect")Inspect(); else if(c.StartsWith("three-")) StartCoroutine(Run(Three(c))); else StartCoroutine(Run(Tests(c))); }catch(Exception e){Log("FAIL "+e);}
     }
     static string PathOf(Transform t)=>t.parent==null?t.name:PathOf(t.parent)+"/"+t.name;
     void Check(string name,bool pass){Log((pass?"PASS ":"FAIL ")+name);if(!pass)throw new Exception(name);}

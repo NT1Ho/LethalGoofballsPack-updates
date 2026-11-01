@@ -4,10 +4,17 @@ using HarmonyLib;
 
 namespace LethalGoofballsPack.Maintenance
 {
-    [BepInPlugin("NT1Ho.LethalGoofballsPack.Maintenance", "LethalGoofballsPack scoped maintenance", "1.0.0")]
+    [BepInPlugin("NT1Ho.LethalGoofballsPack.Maintenance", "LethalGoofballsPack scoped maintenance", "1.0.1")]
+    [BepInDependency("TestAccount666.DoorBreach", BepInDependency.DependencyFlags.SoftDependency)]
     public sealed class Plugin : BaseUnityPlugin
     {
-        private void Awake() => new Harmony("NT1Ho.LethalGoofballsPack.Maintenance").PatchAll();
+        private void Awake()
+        {
+            var harmony = new Harmony("NT1Ho.LethalGoofballsPack.Maintenance");
+            harmony.PatchAll();
+            if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("TestAccount666.DoorBreach"))
+                LockedDoorRules.Install(harmony);
+        }
         private void LateUpdate()
         {
             var player = GameNetworkManager.Instance?.localPlayerController;
