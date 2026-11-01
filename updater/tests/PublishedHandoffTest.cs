@@ -17,22 +17,22 @@ class PublishedHandoffTest {
     }
     static int Main(string[] args){
         string root=Path.GetFullPath(args[0]),old=Path.Combine(root,Channel.ClientName);
-        var seed=SelfUpdate.Describe(old);var expected=SelfUpdate.Describe(typeof(SelfUpdate).Assembly.Location);
-        if(new Version(seed.version)>=new Version(expected.version)||SelfUpdate.State(root).active!=null)throw new Exception("Use an isolated previous-version root with an empty receiver cache.");
+        var previous=SelfUpdate.State(root).active??SelfUpdate.Describe(old);var expected=SelfUpdate.Describe(typeof(SelfUpdate).Assembly.Location);
+        if(new Version(previous.version)>=new Version(expected.version))throw new Exception("Use an isolated previous-version root with an older active version.");
         using(var launch=Process.Start(new ProcessStartInfo(old){UseShellExecute=false,WindowStyle=ProcessWindowStyle.Hidden,WorkingDirectory=root})){
             if(!launch.WaitForExit(20000)||launch.ExitCode!=0)throw new Exception("Bootstrap failed");
         }
         var watch=Stopwatch.StartNew();
         while(watch.Elapsed.TotalMinutes<3){
             var state=SelfUpdate.State(root);
-            if(state.active!=null&&state.active.file.sha256==expected.file.sha256&&state.previous!=null&&state.previous.file.sha256==seed.file.sha256){
+            if(state.active!=null&&state.active.file.sha256==expected.file.sha256&&state.previous!=null&&state.previous.file.sha256==previous.file.sha256){
                 string path=SelfUpdate.CachedExe(root,state.active);
                 foreach(var p in Process.GetProcessesByName("client"))using(p){
                     if(p.HasExited||!String.Equals(p.MainModule.FileName,path,StringComparison.OrdinalIgnoreCase)||p.MainWindowHandle==IntPtr.Zero||!LatestMessage(p))continue;
                     Thread.Sleep(3400);p.Refresh();
-                    if(p.HasExited||p.MainWindowTitle!="Pack Updater · "+expected.version)throw new Exception("Completed window did not persist");
+                    if(p.HasExited||p.MainWindowTitle!="Pack Updater · "+SelfUpdate.ReleaseLabel(expected.version))throw new Exception("Completed window did not persist");
                     if(!p.CloseMainWindow()||!p.WaitForExit(5000))throw new Exception("Manual window close failed");
-                    Console.WriteLine("PASS official "+seed.version+" launched normally, fetched and handed off to "+expected.version+"; previous hash retained. New window stayed open after the complete pack check and closed on request.");
+                    Console.WriteLine("PASS official "+previous.version+" launched normally, fetched and handed off to "+expected.version+"; previous hash retained. New window stayed open after the complete pack check and closed on request.");
                     return 0;
                 }
             }

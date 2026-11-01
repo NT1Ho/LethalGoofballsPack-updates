@@ -24,7 +24,7 @@ class ClientPublish {
     static async Task Run(string exe,string sourceCommit,string notesPath) {
         if(sourceCommit!="main"&&!System.Text.RegularExpressions.Regex.IsMatch(sourceCommit,@"\A[0-9a-f]{40}\z"))throw new IOException("发布源码必须是完整提交编号。");
         string notes=String.IsNullOrEmpty(notesPath)?"接收端程序更新；不改变 MOD 整合包版本。":File.ReadAllText(notesPath);
-        string version=System.Reflection.AssemblyName.GetAssemblyName(exe).Version.ToString(),tag="updater-v"+version;
+        string version=System.Reflection.AssemblyName.GetAssemblyName(exe).Version.ToString(),label=SelfUpdate.ReleaseLabel(version),tag="updater-v"+label;
         string hash=Data.Hash(exe);long size=new FileInfo(exe).Length;
         var releaseInfo=new ClientRelease {version=version,file=new PackFile{path=Channel.ClientName,sha256=hash,size=size,url=Channel.Web+"/releases/download/"+tag+"/"+hash+".bin"}};SelfUpdate.Validate(releaseInfo);
         var ws=new Workspace(Workspace.DefaultRoot);
@@ -49,7 +49,7 @@ class ClientPublish {
             client.DefaultRequestHeaders.UserAgent.ParseAdd("LethalGoofballsPack-ClientPublisher/1.0");client.DefaultRequestHeaders.Authorization=new AuthenticationHeaderValue("Bearer",token);
             await api.ValidateAccount();var latest=await api.LatestRelease();var repo=await Send<RepoInfo>(HttpMethod.Get,"");if(repo.default_branch!="main")throw new IOException("Expected main branch; channel unchanged.");
             var release=await api.FindTag(tag);
-            if(release==null)release=await Send<Release>(HttpMethod.Post,"/releases",new {tag_name=tag,target_commitish=sourceCommit,name="Lethal company pack Updater "+version,draft=true,prerelease=false,make_latest="false",body=notes});
+            if(release==null)release=await Send<Release>(HttpMethod.Post,"/releases",new {tag_name=tag,target_commitish=sourceCommit,name="Pack Updater "+label,draft=true,prerelease=false,make_latest="false",body=notes});
             release=await api.GetRelease(release.id);
             if(!release.assets.Any(a=>a.name==hash+".bin")) {
                 if(!release.draft)throw new IOException("Published client version cannot be replaced; increase ClientVersion.cs.");

@@ -29,6 +29,11 @@ public class ClientRelease { public int schema=1; public string version; public 
 public class ClientState { public ClientRelease active; public ClientRelease previous; }
 public static class SelfUpdate {
     public static string Version {get{return Assembly.GetExecutingAssembly().GetName().Version.ToString();}}
+    // Earlier releases keep their original four-part GitHub tags.
+    public static string ReleaseLabel(string version) {
+        var v=new System.Version(version);
+        return v>=new System.Version(1,16,0,0) && v.Build==0 && v.Revision==0 ? v.ToString(2) : version;
+    }
     public const string Feed="https://raw.githubusercontent.com/"+Channel.Repo+"/main/client-update.json";
     public static void Validate(ClientRelease release) {
         System.Version parsed;
@@ -50,7 +55,7 @@ public static class SelfUpdate {
     }
     public static ClientRelease Describe(string exe) {
         string version=AssemblyName.GetAssemblyName(exe).Version.ToString(),hash=Data.Hash(exe);
-        return new ClientRelease{version=version,file=new PackFile{path=Channel.ClientName,size=new FileInfo(exe).Length,sha256=hash,url=Channel.Web+"/releases/download/updater-v"+version+"/"+hash+".bin"}};
+        return new ClientRelease{version=version,file=new PackFile{path=Channel.ClientName,size=new FileInfo(exe).Length,sha256=hash,url=Channel.Web+"/releases/download/updater-v"+ReleaseLabel(version)+"/"+hash+".bin"}};
     }
     static FileStream Lock(string root) {
         Directory.CreateDirectory(Home(root));return new FileStream(Local(root,"update.lock"),FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None);

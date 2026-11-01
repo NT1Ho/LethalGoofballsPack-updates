@@ -32,7 +32,7 @@ class WindowPolishTests {
             var message=Controls(home).OfType<Label>().First().Text;
             Check(message.Contains(expected),"actual update outcome "+message);
             Pump(3300);
-            Check(home.Visible&&!home.IsDisposed&&home.Text=="Pack Updater · "+SelfUpdate.Version,"correct live title and window remains after old close deadline");
+            Check(home.Visible&&!home.IsDisposed&&home.Text=="Pack Updater · "+SelfUpdate.ReleaseLabel(SelfUpdate.Version),"correct live title and window remains after old close deadline");
             Check(new[]{"查看 MOD","历史更新记录","故障诊断"}.All(t=>Controls(home).OfType<Button>().Any(b=>b.Text==t&&b.Enabled&&b.Visible)),"all three entrances remain available");
             Render(home,"home.png");
             home.Close();Check(home.IsDisposed,"user close exits completed window");

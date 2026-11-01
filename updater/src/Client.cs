@@ -40,7 +40,7 @@ public class ClientWindow : Form {
     public ClientWindow(bool restarted=false,string root=null) {
         this.restarted=restarted;this.root=root??AppDomain.CurrentDomain.BaseDirectory;
         SuspendLayout();DoubleBuffered=true;AutoScaleMode=AutoScaleMode.Dpi;
-        Text = "Pack Updater · "+SelfUpdate.Version;
+        Text = "Pack Updater · "+SelfUpdate.ReleaseLabel(SelfUpdate.Version);
         FormBorderStyle=FormBorderStyle.FixedDialog;AutoSize=true;AutoSizeMode=AutoSizeMode.GrowAndShrink;
         Icon=Icon.ExtractAssociatedIcon(typeof(ClientWindow).Assembly.Location);
         MaximizeBox=false;StartPosition=FormStartPosition.CenterScreen;Font=new Font("Microsoft YaHei UI",10);
@@ -80,7 +80,7 @@ public class ClientWindow : Form {
         if(Engine.GameRunning()){
             busy=false;bar.Visible=false;retry.Visible=true;retry.Enabled=true;
             message.Text="游戏运行中 · 可以浏览 MOD、历史和故障诊断。\n更新、插件安装及配置修改需退出游戏。";
-            string state=Path.Combine(root,".lcpack-updater/state.json");try{versions.Text="本地记录："+(File.Exists(state)?Data.Load<LocalState>(state).version:"未确认")+"\n接收端："+SelfUpdate.Version+" · 浏览模式";}catch{versions.Text="接收端："+SelfUpdate.Version+" · 本地版本记录无法读取";}return;
+            string state=Path.Combine(root,".lcpack-updater/state.json");try{versions.Text="本地记录："+(File.Exists(state)?Data.Load<LocalState>(state).version:"未确认")+"\n接收端："+SelfUpdate.ReleaseLabel(SelfUpdate.Version)+" · 浏览模式";}catch{versions.Text="接收端："+SelfUpdate.ReleaseLabel(SelfUpdate.Version)+" · 本地版本记录无法读取";}return;
         }
         busy=true;retry.Enabled=false;bar.Visible=true;
         bool success=false;string clientError=null,diagnosticError=null;
