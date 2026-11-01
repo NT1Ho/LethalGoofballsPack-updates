@@ -36,11 +36,11 @@ public class ClientWindow : Form {
     readonly Label message = new Label(); readonly Label versions = new Label(); readonly ProgressBar bar = new ProgressBar(); bool busy = true;
     readonly bool restarted;
     readonly string root;
-    readonly Button mods=new Button(),history=new Button(),retry=new Button();bool showMods,showHistory,keepOpen;
+    readonly Button mods=new Button(),history=new Button(),retry=new Button();bool showMods,showHistory;
     public ClientWindow(bool restarted=false,string root=null) {
         this.restarted=restarted;this.root=root??AppDomain.CurrentDomain.BaseDirectory;
         SuspendLayout();DoubleBuffered=true;AutoScaleMode=AutoScaleMode.Dpi;
-        Text = "整合包接收端 · "+SelfUpdate.Version;
+        Text = "Pack Updater · "+SelfUpdate.Version;
         FormBorderStyle=FormBorderStyle.FixedDialog;AutoSize=true;AutoSizeMode=AutoSizeMode.GrowAndShrink;
         Icon=Icon.ExtractAssociatedIcon(typeof(ClientWindow).Assembly.Location);
         MaximizeBox=false;StartPosition=FormStartPosition.CenterScreen;Font=new Font("Microsoft YaHei UI",10);
@@ -64,9 +64,9 @@ public class ClientWindow : Form {
             nav.Controls.Add(buttons[i],i,0);
         }
         page.Controls.Add(nav,0,3);
-        mods.Click+=(s,e)=>{keepOpen=true;showMods=true;if(busy){mods.Text="检查后显示";mods.Enabled=false;}else OpenMods();};
-        history.Click+=(s,e)=>{keepOpen=true;showHistory=true;if(busy){history.Text="检查后显示";history.Enabled=false;}else OpenHistory();};
-        diagnostics.Click+=(s,e)=>{keepOpen=true;using(var window=new DiagnosticsWindow(this.root))window.ShowDialog(this);};
+        mods.Click+=(s,e)=>{showMods=true;if(busy){mods.Text="检查后显示";mods.Enabled=false;}else OpenMods();};
+        history.Click+=(s,e)=>{showHistory=true;if(busy){history.Text="检查后显示";history.Enabled=false;}else OpenHistory();};
+        diagnostics.Click+=(s,e)=>{using(var window=new DiagnosticsWindow(this.root))window.ShowDialog(this);};
         retry.Text="退出游戏后检查更新";retry.AutoSize=true;retry.Dock=DockStyle.Fill;retry.Margin=new Padding(0,6,0,0);retry.Visible=false;
         retry.Click+=async(s,e)=>{if(!busy)await Run();};page.Controls.Add(retry,0,4);
         Load+=(s,e)=>{page.ColumnStyles[0].Width=396*DeviceDpi/96f;nav.Height=Math.Max(32*DeviceDpi/96,Font.Height+12);};
@@ -78,7 +78,7 @@ public class ClientWindow : Form {
     void OpenHistory(){history.Text="历史更新记录";history.Enabled=true;try{var pages=PageContent.ForRoot(root);using(var window=new HistoryWindow(pages.History,pages))window.ShowDialog(this);}catch(Exception e){MessageBox.Show(this,"历史资料无法读取："+e.Message);}}
     async Task Run() {
         if(Engine.GameRunning()){
-            busy=false;keepOpen=true;bar.Visible=false;retry.Visible=true;retry.Enabled=true;
+            busy=false;bar.Visible=false;retry.Visible=true;retry.Enabled=true;
             message.Text="游戏运行中 · 可以浏览 MOD、历史和故障诊断。\n更新、插件安装及配置修改需退出游戏。";
             string state=Path.Combine(root,".lcpack-updater/state.json");try{versions.Text="本地记录："+(File.Exists(state)?Data.Load<LocalState>(state).version:"未确认")+"\n接收端："+SelfUpdate.Version+" · 浏览模式";}catch{versions.Text="接收端："+SelfUpdate.Version+" · 本地版本记录无法读取";}return;
         }
@@ -89,7 +89,7 @@ public class ClientWindow : Form {
         try {
             using(var transfer=new Transfer()) {
                 Engine.CheckGameDirectory(root);Engine.CheckGameStopped();
-                try{await SelfUpdate.RefreshLegacyLauncher(root);}catch(Exception e){clientError="旧入口升级未完成："+e.Message;SelfUpdate.Record(root,e);keepOpen=true;}
+                try{await SelfUpdate.RefreshLegacyLauncher(root);}catch(Exception e){clientError="旧入口升级未完成："+e.Message;SelfUpdate.Record(root,e);}
                 try{DiagnosticsStore.Install(root);DiagnosticsStore.Cleanup(root);}catch(Exception e){diagnosticError=e.Message;SelfUpdate.Record(root,e);}
                 if(!restarted) {
                     try {
@@ -104,7 +104,7 @@ public class ClientWindow : Form {
                 if(result.backupPending)message.Text+="\n备份仍在 pending 文件夹，下次启动会再次归档。";
                 bar.Style=ProgressBarStyle.Continuous;bar.Value=100;success=true;
                 if(clientError!=null){message.Text="MOD 更新完成。接收端更新暂未完成，\n下次启动自动重试。";success=false;}
-                if(diagnosticError!=null){message.Text+="\n诊断维护未完成，请打开故障诊断检查。";keepOpen=true;}
+                if(diagnosticError!=null){message.Text+="\n诊断维护未完成，请打开故障诊断检查。";}
             }
         } catch(TaskCanceledException e) { SelfUpdate.Record(root,e);message.Text="更新失败：网络超时，请稍后重试。"; }
           catch(HttpRequestException e) { SelfUpdate.Record(root,e);message.Text="更新失败：无法连接下载源，请检查网络。"; }
@@ -112,8 +112,7 @@ public class ClientWindow : Form {
         busy=false;retry.Enabled=true;bar.Style=ProgressBarStyle.Continuous;
         if(showMods)OpenMods();
         if(showHistory)OpenHistory();
-        if(keepOpen)return;
-        if(success) { await Task.Delay(2500);if(!keepOpen)Close(); } else { bar.Visible=false; /* Errors remain readable until the user closes the window. */ }
+        if(!success)bar.Visible=false;
     }
 }
 }

@@ -1,9 +1,50 @@
 using System;
 using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace LcPack {
 internal static class DiagnosticDialogs {
+    [DllImport("shell32.dll", CharSet=CharSet.Unicode, ExactSpelling=true)]
+    static extern uint ExtractIconExW(string file,int index,IntPtr large,out IntPtr small,uint count);
+    [DllImport("user32.dll")]
+    static extern bool DestroyIcon(IntPtr icon);
+
+    internal static Icon ExplorerSearchIcon() {
+        const string searchHome=@"HKEY_CLASSES_ROOT\CLSID\{9343812E-1C37-4A49-A12E-4B2D810D956B}\DefaultIcon";
+        string location=Registry.GetValue(searchHome,"",null) as string;
+        if(String.IsNullOrEmpty(location))return null;
+        int comma=location.LastIndexOf(','),index;
+        if(comma<0 || !Int32.TryParse(location.Substring(comma+1),out index))return null;
+        string file=Environment.ExpandEnvironmentVariables(location.Substring(0,comma).Trim().Trim('"'));
+        if(!String.Equals(Path.GetDirectoryName(file),Environment.SystemDirectory,StringComparison.OrdinalIgnoreCase) || !File.Exists(file))return null;
+        IntPtr handle;
+        ExtractIconExW(file,index,IntPtr.Zero,out handle,1);
+        if(handle==IntPtr.Zero)return null;
+        try{return (Icon)Icon.FromHandle(handle).Clone();}
+        finally{DestroyIcon(handle);}
+    }
+
+    internal static void ExportComplete(Form owner) {
+        using(var form=new Form()) {
+            form.Text="故障诊断";
+            form.FormBorderStyle=FormBorderStyle.FixedDialog;
+            form.StartPosition=FormStartPosition.CenterParent;
+            form.MinimizeBox=false;form.MaximizeBox=false;form.ShowInTaskbar=false;form.ShowIcon=false;
+            form.Font=owner.Font;
+            form.AutoScaleMode=AutoScaleMode.Dpi;form.AutoScaleDimensions=new SizeF(96,96);
+            form.ClientSize=new Size(330,96);
+            var layout=new TableLayoutPanel{Dock=DockStyle.Fill,ColumnCount=1,RowCount=2,Padding=new Padding(16,10,16,10)};
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent,100));layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            layout.Controls.Add(new Label{Text="诊断包已导出。",AutoSize=true,Anchor=AnchorStyles.Left,Margin=Padding.Empty},0,0);
+            var ok=ActionButton("确定",DialogResult.OK);ok.Anchor=AnchorStyles.Right;ok.Margin=Padding.Empty;
+            layout.Controls.Add(ok,0,1);form.Controls.Add(layout);form.AcceptButton=ok;form.CancelButton=ok;
+            form.ShowDialog(owner);
+        }
+    }
     static Form Dialog(string title,Size size) {
         var form=new Form { Text=title, Font=new Font("Microsoft YaHei UI",9), ClientSize=size,
             MinimumSize=new Size(size.Width*3/4,size.Height*3/4),StartPosition=FormStartPosition.CenterParent,

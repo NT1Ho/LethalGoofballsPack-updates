@@ -24,6 +24,9 @@ public sealed class DiagnosticsWindow : Form {
         this.root=root;
         SuspendLayout();
         Text="故障诊断";
+        var searchIcon=DiagnosticDialogs.ExplorerSearchIcon();
+        if(searchIcon!=null){ Icon=searchIcon;Disposed+=(s,e)=>searchIcon.Dispose(); }
+        else ShowIcon=false;
         StartPosition=FormStartPosition.CenterParent;
         AutoScaleMode=AutoScaleMode.Dpi;
         AutoScaleDimensions=new SizeF(96,96);
@@ -176,7 +179,7 @@ public sealed class DiagnosticsWindow : Form {
         using(var dialog=new SaveFileDialog{Filter="诊断 ZIP|*.zip",FileName="故障诊断-"+record.Session.Id+".zip"}){
             if(dialog.ShowDialog(this)!=DialogResult.OK)return;
             busy=true;Enabled=false;
-            try{await Task.Run(()=>review.Export(dialog.FileName));MessageBox.Show(this,"诊断包已导出。","故障诊断");}
+            try{await Task.Run(()=>review.Export(dialog.FileName));DiagnosticDialogs.ExportComplete(this);}
             catch(Exception ex){MessageBox.Show(this,ex.Message);}
             finally{busy=false;Enabled=true;Changed();}
         }
