@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -185,7 +185,7 @@ public static class CosPublisher {
     public static async Task Backup(Workspace workspace,CosAccount account,Manifest manifest,Action<string> progress,Func<HttpMessageHandler> transport=null,string expectedBaseHash=null,string releaseNotes=null) {
         string token=workspace.Token();if(String.IsNullOrEmpty(token))throw new IOException("未保存 GitHub 备用发布凭据。");
         using(var api=transport==null?new GitHubApi(token):new GitHubApi(token,transport()))using(var transfer=transport==null?new Transfer():new Transfer(transport())) {
-            await api.ValidateAccount().ConfigureAwait(false);var release=await api.FindTag(manifest.version).ConfigureAwait(false);
+            await api.ValidateAccount().ConfigureAwait(false);var release=await api.FindPublishTarget(manifest.version).ConfigureAwait(false);
             if(release==null)release=await api.Create(manifest.version,releaseNotes).ConfigureAwait(false);
             if(release.draft) {
                 release=await api.GetRelease(release.id).ConfigureAwait(false);

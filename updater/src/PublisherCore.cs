@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -180,12 +180,22 @@ public class GitHubApi : IDisposable {
     public Task<Release> LatestRelease() {return Send<Release>(HttpMethod.Get,"/repos/"+Channel.Repo+"/releases/latest?check="+Guid.NewGuid().ToString("N"),null,true);}
     public Task<Release> GetRelease(long id) {return Send<Release>(HttpMethod.Get,"/repos/"+Channel.Repo+"/releases/"+id,null,false);}
     public Task<Release> FindTag(string tag) {return Send<Release>(HttpMethod.Get,"/repos/"+Channel.Repo+"/releases/tags/"+Uri.EscapeDataString(tag),null,true);}
+    public async Task<Release> FindPublishTarget(string tag) {
+        var published=await FindTag(tag).ConfigureAwait(false);
+        if(published!=null)return published;
+        // GitHub's by-tag route returns 404 for private drafts, even to the owner.
+        for(int page=1;;page++){
+            var batch=await Send<List<Release>>(HttpMethod.Get,"/repos/"+Channel.Repo+"/releases?per_page=3&page="+page,null,false).ConfigureAwait(false);
+            var draft=batch.SingleOrDefault(r=>r.draft&&r.tag_name==tag);
+            if(draft!=null||batch.Count<3)return draft;
+        }
+    }
     public async Task ValidateReferences(Manifest manifest,Transfer transfer,string pendingTag=null,string allowedDraftTag=null) {
         SafePath.ValidateManifest(manifest);
         // Check every URL, not just every hash: two paths can share bytes but reference different releases.
         foreach(var group in manifest.files.GroupBy(f=>new Uri(f.url).Segments.Reverse().Skip(1).First().TrimEnd('/'))) {
             if(group.Key==pendingTag)continue;
-            var release=await FindTag(group.Key).ConfigureAwait(false);
+            var release=group.Key==allowedDraftTag?await FindPublishTarget(group.Key).ConfigureAwait(false):await FindTag(group.Key).ConfigureAwait(false);
             if(release==null||(release.draft&&group.Key!=allowedDraftTag))throw new IOException("下载引用指向不存在或尚未公开的 Release："+group.Key);
             var assets=new List<ReleaseAsset>();
             for(int page=1;;page++) {

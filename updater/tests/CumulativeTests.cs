@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Collections.Generic;
@@ -44,6 +44,10 @@ class CumulativeTests {
         draft.Import(new[]{Tuple.Create(input,patch),Tuple.Create(input,removed)},s=>{});var baseline=AdminWorkspace.Candidate(ws.Current,"qa-old");ws.SetRemote(baseline);draft.RefreshBase();
         var m=new ModResult{baseHash=ws.Current.baseManifestHash,package="Local-A",kind="修复",revision=1,version="1.1.0",summary="修复并清理",tests="隔离安装",own=true,dependencies=new string[0],files=new List<ResultFile>{new ResultFile{path=patch,before=Data.Hash(input)},new ResultFile{path=removed,before=Data.Hash(input)},new ResultFile{path=cfg}}};
         Register(ws,m,new Dictionary<string,string>{{patch,"v1"},{cfg,"setting"}});
+        var removedInfo=new ModResult{package="Local-A",version="1.0",kind="移除",revision=1,baseHash=m.baseHash,summary="retire",tests="fixture",dependencies=new string[0],files=new List<ResultFile>{new ResultFile{path="BepInEx/pack-info/Local-A/manifest.json",before=Data.Hash(input)}}};
+        Cumulative.ValidateReceipt(Data.Json(removedInfo),m.baseHash);
+        removedInfo.files[0].path="BepInEx/pack-info/Other/manifest.json";Refuse(()=>Cumulative.ValidateReceipt(Data.Json(removedInfo),m.baseHash),"可登记");
+        removedInfo.files[0].path="BepInEx/pack-info/display-pages.json";Refuse(()=>Cumulative.ValidateReceipt(Data.Json(removedInfo),m.baseHash),"可登记");
         m.version="1.2.0";m.revision++;Register(ws,m,new Dictionary<string,string>{{patch,"new verified"},{cfg,"setting"}});
         var other=new ModResult{baseHash=m.baseHash,package="Local-B",kind="新增",revision=1,version="1.0.0",summary="新增资源",tests="通过",dependencies=new[]{"Local-A-1.2.0"},files=new List<ResultFile>{new ResultFile{path=patch,before=Data.Hash(input)}}};
         Register(ws,other,new Dictionary<string,string>{{patch,"conflict"}});Refuse(()=>Cumulative.Build(draft),"相同文件");

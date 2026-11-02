@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -41,11 +41,12 @@ class AdminWorkflowTests {
                         if(r.Method==HttpMethod.Put){var data=Data.Read<Dictionary<string,object>>(Encoding.UTF8.GetString(bytes));state.Feed=Encoding.UTF8.GetString(Convert.FromBase64String((string)data["content"]));json=new{};}
                         else json=new{sha="fixture",content=Convert.ToBase64String(Encoding.UTF8.GetBytes(state.Feed))};
                     }else if(path.EndsWith("/assets"))json=state.Listing;
+                    else if(path.EndsWith("/releases")&&r.Method==HttpMethod.Get)json=state.Creates==0?new Release[0]:new[]{new Release{id=1,tag_name="qa-new",draft=!state.Published,assets=state.Listing}};
                     else if(path.EndsWith("/releases")&&r.Method==HttpMethod.Post){
                         if(state.FailBackup)status=HttpStatusCode.ServiceUnavailable;
                         else {state.Creates++;json=new Release{id=1,tag_name="qa-new",draft=true,assets=state.Listing};}
                     }else if(path.Contains("/releases/")){
-                        if(path.Contains("/tags/")&&state.Creates==0)status=HttpStatusCode.NotFound;
+                        if(path.Contains("/tags/")&&!state.Published)status=HttpStatusCode.NotFound;
                         else {if(r.Method.Method=="PATCH")state.Published=true;json=new Release{id=1,tag_name="qa-new",draft=!state.Published,assets=state.Listing};}
                     }else throw new Exception("unexpected GitHub route "+path);
                 }else if(uri.Host=="uploads.github.com"){

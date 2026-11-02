@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -44,7 +44,8 @@ public static class Cumulative {
         Require(m.files!=null&&m.files.Count>0&&m.files.Count<=10000,m.package+" 缺少文件清单");
         foreach(var f in m.files){
             Require(f!=null,"存在空文件项");SafePath.Validate(f.path);
-            Require(Regex.IsMatch(f.path,@"^BepInEx/(plugins|config|patchers)/",RegexOptions.IgnoreCase)&&!Regex.IsMatch(f.path,@"(?:^|/)(?:\.git|bin|obj|logs?|cache|saves?|diagnostics|tests?)(?:/|$)|\.(?:pdb|log|bak|old|tmp|sav|exe|ps1|cmd|bat|cs|zip)$|LethalDiagnostics\.dll$|nt1ho\.lethaldiagnostics\.cfg$",RegexOptions.IgnoreCase),"此路径不属于可登记的最终 MOD 文件："+f.path);
+            bool removedPackageInfo=m.kind=="移除"&&f.sha256==null&&f.path.StartsWith("BepInEx/pack-info/"+m.package+"/",StringComparison.OrdinalIgnoreCase);
+            Require((removedPackageInfo||Regex.IsMatch(f.path,@"^BepInEx/(plugins|config|patchers)/",RegexOptions.IgnoreCase))&&!Regex.IsMatch(f.path,@"(?:^|/)(?:\.git|bin|obj|logs?|cache|saves?|diagnostics|tests?)(?:/|$)|\.(?:pdb|log|bak|old|tmp|sav|exe|ps1|cmd|bat|cs|zip)$|LethalDiagnostics\.dll$|nt1ho\.lethaldiagnostics\.cfg$",RegexOptions.IgnoreCase),"此路径不属于可登记的最终 MOD 文件："+f.path);
             Require((f.before==null||Hash(f.before))&&(f.sha256==null||Hash(f.sha256))&&f.before!=f.sha256,"文件新旧哈希无效或无变化："+f.path);
         }
     }

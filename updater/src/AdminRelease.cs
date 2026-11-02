@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Linq;
@@ -38,7 +38,7 @@ public static class AdminRelease {
                 progress("接收端正在隔离目录演练安装 "+target.version);
                 await InstallCheck.Run(draft,target,transfer,progress).ConfigureAwait(false);
                 if(target.version!=ws.Current.baseVersion){
-                    var existing=await github.FindTag(target.version).ConfigureAwait(false);
+                    var existing=await github.FindPublishTarget(target.version).ConfigureAwait(false);
                     if(existing!=null&&!existing.draft)throw new IOException("GitHub 已有该正式版本，请核对版本名。");
                     if(existing!=null){
                         var assets=await github.Assets(existing.id).ConfigureAwait(false);

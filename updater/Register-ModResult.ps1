@@ -51,7 +51,8 @@ try{
     if($PSBoundParameters.ContainsKey('Dependencies')){$deps=@($Dependencies|Where-Object {$_})}
     foreach($p in @($Files.Keys)+@($Remove)){
         [void][LcPack.SafePath]::Validate($p)
-        if($p -notmatch '^BepInEx/(config|plugins|patchers)/'){throw "登记范围不允许 $p"}
+        $removedInfo=$Kind -eq '移除' -and $Remove -contains $p -and !$Files.ContainsKey($p) -and $p.StartsWith("BepInEx/pack-info/$Package/",[StringComparison]::OrdinalIgnoreCase)
+        if(!$removedInfo -and $p -notmatch '^BepInEx/(config|plugins|patchers)/'){throw "登记范围不允许 $p"}
         if($Files.ContainsKey($p) -and $Remove -contains $p){throw "同时写入和删除 $p"}
         $before=if($base.ContainsKey($p)){$base[$p].sha256}else{$null}
         $sha=$null
