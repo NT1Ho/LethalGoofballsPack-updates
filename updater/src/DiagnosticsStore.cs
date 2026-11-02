@@ -77,7 +77,7 @@ public static class DiagnosticsStore {
         }
         b.AppendLine().AppendLine("## 疑似异常与证据完整性").AppendLine("保留事件 "+count+"；截断／无效行 "+bad+"；最慢采样帧 "+maxMs.ToString("F2")+" ms；日志限流 "+suppressed+"；队列丢弃 "+dropped+"。");
         foreach(var e in errors.OrderByDescending(x=>x.Value).Take(20))b.AppendLine("- "+e.Value+" 次："+e.Key);
-        b.AppendLine().AppendLine("## 分析边界").AppendLine("程序错误、超过500ms的帧、降落超过120秒是触发条件，不是根因结论。没有错误日志不等于没有玩法故障。持续日志分段轮转最多约32MB；前置环形记录最多1024条；日志突发限流24条/秒。异常原始窗口单个最多4MB，自动标记冷却60秒。崩溃可能损失最后约2秒缓存；磁盘或系统故障可损失更多。JSONL 尾部损坏只在读取时跳过，原证据保留。").AppendLine("同局对比：优先相同哈希 lobby、seed、planet 和 serverTime/networkTick；LAN 或重开局请填相同共同联机编号。UTC依赖各机系统时钟；不要仅凭UTC强行对齐。网络对象编号只在同一局内有意义。").AppendLine("不采集聊天、语音、密码或完整配置值；MOD 自己输出的日志和手动截图仍可能含个人信息。分享前检查。未持续录像，不扫描全世界，不记录每个RPC，不自动归因到MOD。identity.json 的配置哈希可查差异，但不包含配置值；动态内存补丁不能用磁盘SHA完全代表。");
+        b.AppendLine().AppendLine("## 分析边界").AppendLine("程序错误、超过500ms的帧、降落超过120秒，以及诊断插件0.1.1起检测的持续低帧率，均是触发条件，不是根因结论。没有错误日志不等于没有玩法故障。持续日志分段轮转最多约32MB；前置环形记录最多1024条；日志突发限流24条/秒。异常原始窗口单个最多4MB，自动标记冷却60秒。崩溃可能损失最后约2秒缓存；磁盘或系统故障可损失更多。JSONL 尾部损坏只在读取时跳过，原证据保留。").AppendLine("同局对比：优先相同哈希 lobby、seed、planet 和 serverTime/networkTick；LAN 或重开局请填相同共同联机编号。UTC依赖各机系统时钟；不要仅凭UTC强行对齐。网络对象编号只在同一局内有意义。").AppendLine("不采集聊天、语音、密码或完整配置值；MOD 自己输出的日志和手动截图仍可能含个人信息。分享前检查。未持续录像，不扫描全世界，不记录每个RPC，不自动归因到MOD。identity.json 的配置哈希可查差异，但不包含配置值；动态内存补丁不能用磁盘SHA完全代表。");
         b.AppendLine("导出规则：仅含已确认保留的现场；删除节点的专属文件与事件引用不导出，共享性能、日志和自动异常继续保留。原始文件留在本机用于恢复。存在删除时，导出 JSONL 按此规则筛选，无效行不复制；无效行统计见上文。");
         return b.ToString();
     }

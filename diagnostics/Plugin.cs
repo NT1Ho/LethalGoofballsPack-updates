@@ -21,8 +21,9 @@ using LogLevel = BepInEx.Logging.LogLevel;
 using ThreadPriority = System.Threading.ThreadPriority;
 
 namespace LcDiagnostics {
-[BepInPlugin("nt1ho.lethaldiagnostics","LethalGoofballs Diagnostics","0.1.0")]
+[BepInPlugin("nt1ho.lethaldiagnostics","LethalGoofballs Diagnostics","0.1.1")]
 public sealed class Plugin : BaseUnityPlugin, ILogListener {
+    readonly FrameDrop frameDrop=new FrameDrop();float nextDropMark;
     Recorder recorder;ConfigEntry<bool> monitor;ConfigEntry<Key> hotkey;
     float nextSample,nextFrameReport,lastMark=-10,nextAuto;int frames,slowFrames,gc0;double sum,max,ownTicks;long logSecond;int logCount,errorCount;long suppressed;object lastError;
     int pendingError;bool quitting;string lastState="",loadingState="";float loadingSince;bool loadingReported;
@@ -34,7 +35,7 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
         if(!monitor.Value){enabled=false;return;}
         try{
             var process=Process.GetCurrentProcess();
-            recorder=new Recorder(Path.Combine(Paths.GameRootPath,".lcpack-diagnostics"),Json.Obj("schema",1,"plugin","0.1.0","utc",DateTime.UtcNow.ToString("O"),"pid",process.Id,"processStartUtc",process.StartTime.ToUniversalTime().ToString("O"),"unity",Application.unityVersion,"application",Application.version,"cpu",SystemInfo.processorType,"logicalCores",SystemInfo.processorCount,"ramMB",SystemInfo.systemMemorySize,"gpu",SystemInfo.graphicsDeviceName,"vramMB",SystemInfo.graphicsMemorySize,"os",SystemInfo.operatingSystem,"privacy","local only; screenshots/logs may contain names; config values are not collected","preSeconds",60,"postSeconds",30));
+            recorder=new Recorder(Path.Combine(Paths.GameRootPath,".lcpack-diagnostics"),Json.Obj("schema",1,"plugin","0.1.1","utc",DateTime.UtcNow.ToString("O"),"pid",process.Id,"processStartUtc",process.StartTime.ToUniversalTime().ToString("O"),"unity",Application.unityVersion,"application",Application.version,"cpu",SystemInfo.processorType,"logicalCores",SystemInfo.processorCount,"ramMB",SystemInfo.systemMemorySize,"gpu",SystemInfo.graphicsDeviceName,"vramMB",SystemInfo.graphicsMemorySize,"os",SystemInfo.operatingSystem,"privacy","local only; screenshots/logs may contain names; config values are not collected","preSeconds",60,"postSeconds",30));
             BepInEx.Logging.Logger.Listeners.Add(this);Application.logMessageReceivedThreaded+=UnityLog;
             SceneManager.sceneLoaded+=Loaded;SceneManager.sceneUnloaded+=Unloaded;StartCoroutine(IdentityAfterLoad());
         }catch(Exception e){Logger.LogError("Diagnostics unavailable: "+e.Message);enabled=false;}
@@ -67,7 +68,13 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
             }
             if(Interlocked.Exchange(ref pendingError,0)==1&&now>=nextAuto){AutoMark("program_error",Json.Obj("error",lastError,"state",Snapshot(false)));nextAuto=now+60;}
             if(now>=nextFrameReport){
-                recorder.Add("performance",Json.Obj("frames",frames,"meanMs",frames==0?0:sum/frames,"maxMs",max,"over100ms",slowFrames,"monitorMainMs",ownTicks*1000/Stopwatch.Frequency,"gc0",GC.CollectionCount(0)-gc0,"managedBytes",GC.GetTotalMemory(false),"logsSuppressed",Interlocked.Read(ref suppressed),"queueDropped",recorder.Dropped,"writerFailure",recorder.Failure));
+                recorder.Add("performance",Json.Obj("frames",frames,"meanMs",frames==0?0:sum/frames,"maxMs",max,"over100ms",slowFrames,"monitorMainMs",ownTicks*1000/Stopwatch.Frequency,"gc0",GC.CollectionCount(0)-gc0,"managedBytes",GC.GetTotalMemory(false),"logsSuppressed",Interlocked.Read(ref suppressed),"queueDropped",recorder.Dropped,"writerFailure",recorder.Failure,"focused",Application.isFocused,"targetFps",Application.targetFrameRate,"vSync",QualitySettings.vSyncCount));
+                var round=StartOfRound.Instance;
+                if(!round||!round.shipHasLanded||!Application.isFocused)frameDrop.Reset();
+                else if(frameDrop.Observe(frames,sum,max,now>=nextDropMark)){
+                    AutoMark("sustained_frame_drop",Json.Obj("meanMs",sum/frames,"referenceMs",frameDrop.ReferenceMs,"windows",3,"state",Snapshot(false)));
+                    nextDropMark=now+60;
+                }
                 if(now>30&&max>500&&now>=nextAuto){AutoMark("frame_stall",Json.Obj("maxMs",max,"state",Snapshot(false)));nextAuto=now+60;}
                 gc0=GC.CollectionCount(0);frames=slowFrames=0;sum=max=ownTicks=0;nextFrameReport=now+2;
             }
@@ -105,9 +112,25 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
         var r=StartOfRound.Instance;var p=GameNetworkManager.Instance?.localPlayerController;var net=NetworkManager.Singleton;var tm=TimeOfDay.Instance;
         var peers=new List<object>();if(r!=null&&r.allPlayerScripts!=null)foreach(var player in r.allPlayerScripts.Take(32))if(player!=null&&(player.isPlayerControlled||player.isPlayerDead))peers.Add(Json.Obj("clientId",player.actualClientId,"dead",player.isPlayerDead,"inside",player.isInsideFactory,"ship",player.isInHangarShipRoom,"heldId",player.currentlyHeldObjectServer? (object)player.currentlyHeldObjectServer.NetworkObjectId:null));
         var d=Json.Obj("frame",Time.frameCount,"gameVersion",GameNetworkManager.Instance?(object)GameNetworkManager.Instance.gameVersionNum:null,"gameTime",tm?(object)tm.globalTime:null,"serverTime",net&&net.IsListening?(object)net.ServerTime.Time:null,"networkTick",net&&net.IsListening?(object)net.ServerTime.Tick:null,"role",net&&net.IsHost?"host":net&&net.IsClient?"client":"offline","clientId",net&&net.IsListening?(object)net.LocalClientId:null,"connected",net&&net.IsConnectedClient,"planet",r?.currentLevel?.PlanetName,"seed",r?(object)r.randomMapSeed:null,"landed",r?(object)r.shipHasLanded:null,"phase",!r?"menu":r.shipHasLanded?"landed":r.inShipPhase?"orbit":"landing","position",p?Pos(p.transform.position):null,"area",!p?null:p.isInsideFactory?"facility":p.isInHangarShipRoom?"ship":"outside","dead",p?(object)p.isPlayerDead:null,"held",p?Entity(p.currentlyHeldObjectServer):null,"players",peers);
+        if(p){
+            d["audioTrigger"]=p.currentAudioTrigger?p.currentAudioTrigger.name:null;
+            d["viewForward"]=p.gameplayCamera?Pos(p.gameplayCamera.transform.forward):null;
+        }
         // Steam lobby identity is read reflectively so LAN and optional Steam APIs remain supported.
         try{var lobby=GameNetworkManager.Instance?.currentLobby;d["lobby"]=lobby.HasValue?HashText(lobby.Value.Id.ToString()):null;}catch{d["lobby"]=null;}
         if(detail&&p){
+            // F8 only. Bounds intersections are candidates, not evidence that a callback ran.
+            var body=p.GetComponent<CharacterController>();
+            if(body){
+                var bounds=body.bounds;
+                int touches=Physics.OverlapBoxNonAlloc(bounds.center,bounds.extents,nearby,Quaternion.identity,~0,QueryTriggerInteraction.Collide);
+                var zones=new List<object>();
+                for(int i=0;i<touches;i++){
+                    var trigger=nearby[i].GetComponent<AudioReverbTrigger>();
+                    if(trigger)zones.Add(Json.Obj("trigger",trigger.name,"parent",trigger.transform.parent?trigger.transform.parent.name:null,"shipRoom",trigger.isShipRoom));
+                }
+                d["reverbNearBodyBounds"]=zones;d["reverbQueryAtLimit"]=touches==nearby.Length;
+            }
             RaycastHit hit;d["aim"]=p.gameplayCamera&&Physics.Raycast(p.gameplayCamera.transform.position,p.gameplayCamera.transform.forward,out hit,12,~0,QueryTriggerInteraction.Collide)?Entity(hit.collider):null;
             int count=Physics.OverlapSphereNonAlloc(p.transform.position,15,nearby,~0,QueryTriggerInteraction.Collide);var list=new List<object>();var seen=new HashSet<int>();
             for(int i=0;i<count&&list.Count<48;i++){var col=nearby[i];if(!col)continue;Component c=col.GetComponentInParent<EnemyAI>();if(!c)c=col.GetComponentInParent<GrabbableObject>();if(!c)c=col.GetComponentInParent<PlayerControllerB>();if(!c)c=col.GetComponentInParent<InteractTrigger>();if(c&&seen.Add(c.GetInstanceID()))list.Add(Entity(c));}

@@ -45,6 +45,7 @@ internal static class PlayerText {
     public static string Kind(DiagnosticMark mark) {
         switch(mark.Kind) {
             case "manual": return "手动标记";
+            case "sustained_frame_drop": return "持续掉帧";
             case "frame_stall": return "画面卡顿";
             case "program_error": return "程序报错";
             case "loading_timeout": return "加载用时过长";
@@ -91,6 +92,8 @@ internal static class PlayerText {
         }
         double ms;
         if(Double.TryParse(Convert.ToString(Get(data,"maxMs")),out ms)) lines.Add("最慢一帧　"+ms.ToString("0")+" 毫秒");
+        if(mark.Kind=="sustained_frame_drop"&&Double.TryParse(Convert.ToString(Get(data,"meanMs")),out ms)&&ms>0)
+            lines.Add("最近约两秒　"+(1000/ms).ToString("0")+" FPS");
         if(lines.Count==0) lines.Add("这次现场没有更多可读的状态信息。");
         return String.Join(Environment.NewLine,lines);
     }
