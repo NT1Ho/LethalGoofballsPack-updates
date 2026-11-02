@@ -4,7 +4,7 @@ using HarmonyLib;
 
 namespace LethalGoofballsPack.Maintenance
 {
-    [BepInPlugin("NT1Ho.LethalGoofballsPack.Maintenance", "LethalGoofballsPack scoped maintenance", "1.0.1")]
+    [BepInPlugin("NT1Ho.LethalGoofballsPack.Maintenance", "LethalGoofballsPack scoped maintenance", "1.0.2")]
     [BepInDependency("TestAccount666.DoorBreach", BepInDependency.DependencyFlags.SoftDependency)]
     public sealed class Plugin : BaseUnityPlugin
     {
