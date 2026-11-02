@@ -45,7 +45,8 @@ public static class Cumulative {
         foreach(var f in m.files){
             Require(f!=null,"存在空文件项");SafePath.Validate(f.path);
             bool removedPackageInfo=m.kind=="移除"&&f.sha256==null&&f.path.StartsWith("BepInEx/pack-info/"+m.package+"/",StringComparison.OrdinalIgnoreCase);
-            Require((removedPackageInfo||Regex.IsMatch(f.path,@"^BepInEx/(plugins|config|patchers)/",RegexOptions.IgnoreCase))&&!Regex.IsMatch(f.path,@"(?:^|/)(?:\.git|bin|obj|logs?|cache|saves?|diagnostics|tests?)(?:/|$)|\.(?:pdb|log|bak|old|tmp|sav|exe|ps1|cmd|bat|cs|zip)$|LethalDiagnostics\.dll$|nt1ho\.lethaldiagnostics\.cfg$",RegexOptions.IgnoreCase),"此路径不属于可登记的最终 MOD 文件："+f.path);
+            bool restoredInfo=m.kind=="新增"&&f.before==null&&f.sha256!=null&&new[]{"manifest.json","README.md","CHANGELOG.md"}.Any(n=>CI.Equals(f.path,"BepInEx/pack-info/"+m.package+"/"+n));
+            Require((removedPackageInfo||restoredInfo||Regex.IsMatch(f.path,@"^BepInEx/(plugins|config|patchers)/",RegexOptions.IgnoreCase))&&!Regex.IsMatch(f.path,@"(?:^|/)(?:\.git|bin|obj|logs?|cache|saves?|diagnostics|tests?)(?:/|$)|\.(?:pdb|log|bak|old|tmp|sav|exe|ps1|cmd|bat|cs|zip)$|LethalDiagnostics\.dll$|nt1ho\.lethaldiagnostics\.cfg$",RegexOptions.IgnoreCase),"此路径不属于可登记的最终 MOD 文件："+f.path);
             Require((f.before==null||Hash(f.before))&&(f.sha256==null||Hash(f.sha256))&&f.before!=f.sha256,"文件新旧哈希无效或无变化："+f.path);
         }
     }
@@ -55,6 +56,7 @@ public static class Cumulative {
         var ids=new HashSet<string>(CI);var paths=new HashSet<string>(CI);var baseline=w.Base.files.ToDictionary(f=>f.path,CI);
         foreach(var m in b.results){Validate(m,b.baseHash);Require(ids.Add(m.package),"重复登记："+m.package);
             foreach(var f in m.files){PackFile old;baseline.TryGetValue(f.path,out old);
+                if(f.sha256!=null&&f.path.StartsWith("BepInEx/pack-info/",StringComparison.OrdinalIgnoreCase))Require(w.Base.deletes.Contains(f.path,CI),"只可恢复基线已删除的组件说明文件："+f.path);
                 Require(paths.Add(f.path),"多个成果声明相同文件："+f.path);
                 Require((old==null?null:old.sha256)==f.before,"与正式文件身份不符："+f.path);
             }
@@ -149,7 +151,7 @@ public static class Cumulative {
                 PackFile old;current.TryGetValue(f.path,out old);var owner=owners.SingleOrDefault(r=>CI.Equals(Val(r,"path"),f.path));
                 Require(owner==null||CI.Equals(Val(owner,"package"),m.package),"路径属于其他组件："+f.path);
                 Require((old==null?null:old.sha256)==f.before||(old==null?null:old.sha256)==f.sha256,"与未发布草稿冲突："+f.path);
-                if(old==null&&next.deletes.Contains(f.path,CI)&&f.sha256!=null)throw new IOException("草稿已标记删除："+f.path);
+                if(old==null&&next.deletes.Contains(f.path,CI)&&!w.Base.deletes.Contains(f.path,CI)&&f.sha256!=null)throw new IOException("草稿已标记删除："+f.path);
                 if(owner!=null)owners.Remove(owner);
                 next.deletes.RemoveAll(p=>CI.Equals(p,f.path));current.Remove(f.path);
                 if(f.sha256==null){next.deletes.Add(f.path);continue;}

@@ -46,7 +46,7 @@ public partial class PublisherWindow:Form {
     public PublisherWindow(Workspace ws,bool isolated,Func<System.Net.Http.HttpMessageHandler> rehearsal){
         if(rehearsal!=null&&(!isolated||ws.Root==Workspace.DefaultRoot))throw new ArgumentException("演练仅限隔离目录");this.rehearsal=rehearsal;
         workspace=ws;this.isolated=isolated;draft=new AdminWorkspace(ws);
-        Text="Pack Updater 管理端 · 2.2.1";Font=new Font("Microsoft YaHei UI",9);
+        Text="Pack Updater 管理端 · 2.2.2";Font=new Font("Microsoft YaHei UI",9);
         AutoScaleMode=AutoScaleMode.Dpi;AutoScaleDimensions=new SizeF(96,96);StartPosition=FormStartPosition.CenterScreen;
         ClientSize=new Size(946,545);MinimumSize=new Size(760,420);
         Icon=Icon.ExtractAssociatedIcon(typeof(PublisherWindow).Assembly.Location);
