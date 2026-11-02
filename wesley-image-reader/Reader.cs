@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Collections.Generic;
@@ -11,16 +11,17 @@ using UnityEngine.InputSystem;
 namespace WesleyImageReader
 {
     [Serializable] internal class Catalog { public Entry[] entries; }
-    [Serializable] internal class Entry { public string id, texture, title; public int width, height; public Rule[] rules; }
+    [Serializable] internal class Entry { public string id, texture, title; public int width, height, format; public bool native; public Rule[] rules; }
     [Serializable] internal class Rule { public string kind, material, slot, path, scene; }
 
-    [BepInPlugin("NT1Ho.WesleyImageReader","Wesley 图片中文阅读","0.1.0")]
+    [BepInPlugin("NT1Ho.WesleyImageReader","Wesley 图片中文阅读","0.1.1")]
     public sealed class Reader : BaseUnityPlugin
     {
         internal static Reader Active;
         internal readonly Dictionary<string,List<Entry>> ByTexture = new Dictionary<string,List<Entry>>(StringComparer.Ordinal);
         internal readonly Dictionary<string,HashSet<Entry>> ByPrefab=new Dictionary<string,HashSet<Entry>>(StringComparer.Ordinal);
         internal ZipArchive Data;
+        internal NativeArt Art;
         private Harmony patch;
         private InputAction read;
         private ReadPanel panel;
@@ -29,14 +30,16 @@ namespace WesleyImageReader
         {
             try
             {
+                Art=new NativeArt(this);
                 Data=ZipFile.OpenRead(Path.Combine(Path.GetDirectoryName(Info.Location),"Reader.wri"));
                 using (var file=Data.GetEntry("index.json").Open())
                 using (var sr=new StreamReader(file))
                 {
                     foreach(var e in JsonUtility.FromJson<Catalog>(sr.ReadToEnd()).entries)
                     {
-                        if (Data.GetEntry(e.id+".zh.png")==null || Data.GetEntry(e.id+".en.png")==null)
+                        if (Data.GetEntry(e.id+(e.native?".zh.png":".txt"))==null)
                             throw new InvalidDataException(e.id);
+                        if(e.native)Art.Register(e);
                         if (!ByTexture.TryGetValue(e.texture,out var list)) ByTexture[e.texture]=list=new List<Entry>();
                         list.Add(e);
                         foreach(var r in e.rules){
@@ -52,7 +55,10 @@ namespace WesleyImageReader
                 read.performed+=Toggle;
                 patch=new Harmony(Info.Metadata.GUID);
                 patch.PatchAll(typeof(Reader).Assembly);
-                Active=this;read.Enable();
+                var plate=AccessTools.TypeByName("WesleysInteriorTools.Features.MaskStatueManager");
+                var setter=plate==null?null:AccessTools.Method(plate,"SetPlateTexture");
+                if(setter!=null)patch.Patch(setter,postfix:new HarmonyMethod(typeof(NativeArt),nameof(NativeArt.AfterPlate)));
+                Active=this;read.Enable();Art.Start();
             }
             catch(Exception e){Logger.LogError(e);Release();}
         }
@@ -69,19 +75,19 @@ namespace WesleyImageReader
                 if(!Usable(p))return;
                 var held=p.currentlyHeldObjectServer;
                 var entry=held?Targets.Held(held):null;
-                if(entry!=null)panel.Show(entry,held,held.transform);
+                if(entry!=null && !entry.native)panel.Show(entry,held,held.transform);
                 else {
                     entry=Targets.Aimed(p,out var target);
-                    if(entry!=null)panel.Show(entry,null,target);
+                    if(entry!=null && !entry.native)panel.Show(entry,null,target);
                 }
             } catch(Exception e){panel.Close();Logger.LogWarning(e.Message);}
         }
-        private void OnDisable(){if(read!=null)read.Disable();if(panel)panel.Close();}
-        private void OnEnable(){if(Active==this)read?.Enable();}
+        private void OnDisable(){read?.Disable();Art?.Stop();if(panel)panel.Close();}
+        private void OnEnable(){if(Active==this){read?.Enable();Art.Start();}}
         private void OnDestroy()=>Release();
         private void Release()
         {
-            if(Active==this)Active=null;
+            Art?.Stop();if(Active==this)Active=null;
             read?.Dispose();read=null;patch?.UnpatchSelf();patch=null;
             if(panel){panel.Close();Destroy(panel);}Data?.Dispose();Data=null;
         }

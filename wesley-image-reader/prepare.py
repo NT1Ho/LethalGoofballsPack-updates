@@ -1,6 +1,6 @@
 ﻿"""Build the independent runtime data from the user's local handoff; never download content."""
 import hashlib, io, json, pathlib, re, struct, sys, zipfile
-from collections import Counter
+
 
 def build(source, target):
     clips=json.loads(pathlib.Path(__file__).with_name('animation-clips.json').read_text('utf-8-sig'))
@@ -50,10 +50,15 @@ def build(source, target):
                     assert data.startswith(b'\x89PNG\r\n\x1a\n') and max(struct.unpack('>II',data[16:24]))<=16384
                 assert hashlib.sha256(en).hexdigest()==r['png_sha256']
                 assert struct.unpack('>II',en[16:24])==(r['width'],r['height'])
-                entry=dict(id=id,texture=r['name'],width=r['width'],height=r['height'],title=t['title'],rules=[dict(kind=k,material=m,slot=s,path=p,scene=c) for k,m,s,p,c in sorted(rules)])
+                if native:
+                    assert struct.unpack('>II',zh[16:24])==(r['width'],r['height'])
+                assert t['zh'].strip()
+                entry=dict(native=bool(native),format=r['sources'][0]['texture_format'],id=id,texture=r['name'],width=r['width'],height=r['height'],title=t['title'],rules=[dict(kind=k,material=m,slot=s,path=p,scene=c) for k,m,s,p,c in sorted(rules)])
                 entries.append(entry)
-                for suffix,data in [('zh',zh),('en',en)]:dst.writestr(id+'.'+suffix+'.png',data)
+                if native:dst.writestr(id+'.zh.png',zh)
+                else:dst.writestr(id+'.txt',t['zh'].encode('utf-8'))
             index=json.dumps({'entries':entries},ensure_ascii=False,separators=(',',':')).encode()
+            assert len(entries)==278 and sum(e['native'] for e in entries)==34
             dst.writestr('index.json',index)
     pathlib.Path(target).with_suffix('.mapping.json').write_bytes(index)
     pathlib.Path(target).with_suffix('.omitted.tsv').write_text('ID\t资源名\t未接入原因\n'+'\n'.join(omitted)+'\n','utf-8-sig')
