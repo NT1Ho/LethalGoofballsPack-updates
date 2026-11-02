@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using BepInEx;
 using BepInEx.Bootstrap;
 using GameNetcodeStuff;
@@ -5,7 +6,7 @@ using HarmonyLib;
 using UnityEngine;
 
 namespace LethalGoofballsPack {
-    [BepInPlugin(Id, "Ship Edge Reverb", "1.0.0")]
+    [BepInPlugin(Id, "Ship Edge Reverb", "1.0.1")]
     [BepInDependency(Wide, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(Deck, BepInDependency.DependencyFlags.SoftDependency)]
     public sealed class ShipEdgeReverb : BaseUnityPlugin {
@@ -13,6 +14,12 @@ namespace LethalGoofballsPack {
         const string Wide = "mborsh.WiderShipMod", Deck = "MelanieMelicious.2StoryShip";
 
         static Transform shipZones;
+        sealed class DeckContact {
+            public AudioReverbTrigger deck, wind;
+            public double lastStep;
+        }
+        static readonly ConditionalWeakTable<PlayerControllerB, DeckContact> deckContacts =
+            new ConditionalWeakTable<PlayerControllerB, DeckContact>();
 
         void Awake() {
             if (!Chainloader.PluginInfos.ContainsKey(Wide) || !Chainloader.PluginInfos.ContainsKey(Deck)) return;
@@ -29,8 +36,31 @@ namespace LethalGoofballsPack {
             if (!ship || !ship.elevatorTransform) return true;
             if (!shipZones || shipZones.parent != ship.elevatorTransform)
                 shipZones = ship.elevatorTransform.Find("ReverbTriggers");
-            if (!shipZones || !__instance.transform.IsChildOf(shipZones)) return true;
+            if (!shipZones) return true;
+            if (!__instance.transform.IsChildOf(shipZones)) {
+                // A planet's exterior wind must not replace an occupied cabin's authored mix.
+                return !(player.isInHangarShipRoom && active.isShipRoom && active.transform.IsChildOf(shipZones) &&
+                    __instance.transform.parent && __instance.transform.parent.name == "WindTriggers" &&
+                    (!__instance.elevatorTriggerForProps || __instance.setInElevatorTrigger) && !__instance.isShipRoom &&
+                    active.TryGetComponent<BoxCollider>(out var cabin) && cabin.enabled && cabin.isTrigger && Touches(cabin, other));
+            }
             if (!active.transform.IsChildOf(shipZones)) {
+                // Let both authored mixes run on entry. Keep the wind setting while the deck
+                // continues to see the same player on consecutive physics steps.
+                if (player.isInElevator && !player.isInHangarShipRoom && __instance.elevatorTriggerForProps &&
+                    __instance.setInElevatorTrigger && !__instance.isShipRoom && !active.isShipRoom &&
+                    (!active.elevatorTriggerForProps || active.setInElevatorTrigger) &&
+                    active.transform.parent && active.transform.parent.name == "WindTriggers" &&
+                    active.TryGetComponent<BoxCollider>(out var wind) && wind.enabled && wind.isTrigger && Touches(wind, other)) {
+                    var contact = deckContacts.GetOrCreateValue(player);
+                    double now = Time.fixedTimeAsDouble;
+                    bool continuous = contact.deck == __instance && contact.wind == active &&
+                        now - contact.lastStep <= Time.fixedDeltaTime * 1.5;
+                    contact.deck = __instance;
+                    contact.wind = active;
+                    contact.lastStep = now;
+                    return !continuous;
+                }
                 // A level volume can overlap the hull and its disembark strip. Once off board,
                 // neither a redundant exit nor a deck box that cannot board the player should
                 // take ambience back from a still-occupied level zone. Native level callbacks
