@@ -14,7 +14,7 @@ using TalkingHeads.VoiceChatPatch;
 using Unity.Netcode;
 using UnityEngine;
 
-[BepInPlugin("NT1Ho.CrewCompatibility", "Crew Compatibility", "1.0.0")]
+[BepInPlugin("NT1Ho.CrewCompatibility", "Crew Compatibility", "1.0.1")]
 [BepInDependency("OpJosMod.ReviveCompany")]
 [BepInDependency("TalkingHeads")]
 [BepInDependency("mattymatty.LobbyControl")]
@@ -45,6 +45,7 @@ public sealed class CrewCompatibility : BaseUnityPlugin
         Patch("MoreCompany.CosmeticSyncPatch:SyncCosmeticsToOtherClients", il: nameof(CosmeticDelivery));
         joinTimer = (FreeRunningTimer)AccessTools.Field(AccessTools.TypeByName("LobbyControl.Patches.JoinQueuePatches"), "ConnectionTimer").GetValue(null);
         Patch("LobbyControl.API.ConnectionEvents:get_HasCompletedAllCheckpoints", postfix: nameof(OptionalBadge));
+        MaskedAnimation.Install(Logger);
         Logger.LogInfo("V81 crew compatibility ready");
     }
 
