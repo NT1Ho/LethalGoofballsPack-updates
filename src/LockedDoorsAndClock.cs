@@ -6,7 +6,7 @@ namespace LethalGoofballsPack.Maintenance
     [HarmonyPatch(typeof(TimeOfDay), "Awake")]
     internal static class DayClock
     {
-        private static void Postfix(TimeOfDay __instance) => __instance.globalTimeSpeedMultiplier *= .6f;
+        private static void Postfix(TimeOfDay __instance) => __instance.globalTimeSpeedMultiplier *= .4f;
     }
 
     // DoorBreach groups knives, firearms and shovels under PLAYER.
