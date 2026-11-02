@@ -32,7 +32,7 @@ public static class SelfUpdate {
     // Earlier releases keep their original four-part GitHub tags.
     public static string ReleaseLabel(string version) {
         var v=new System.Version(version);
-        return v>=new System.Version(1,16,0,0) && v.Build==0 && v.Revision==0 ? v.ToString(2) : version;
+        return v>=new System.Version(1,16,0,0) && v.Revision==0 ? v.ToString(v.Build==0?2:3) : version;
     }
     public const string Feed="https://raw.githubusercontent.com/"+Channel.Repo+"/main/client-update.json";
     public static void Validate(ClientRelease release) {
