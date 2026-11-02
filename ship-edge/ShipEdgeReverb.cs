@@ -6,7 +6,7 @@ using HarmonyLib;
 using UnityEngine;
 
 namespace LethalGoofballsPack {
-    [BepInPlugin(Id, "Ship Edge Reverb", "1.0.2")]
+    [BepInPlugin(Id, "Ship Edge Reverb", "1.0.3")]
     [BepInDependency(Wide, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(Deck, BepInDependency.DependencyFlags.SoftDependency)]
     public sealed class ShipEdgeReverb : BaseUnityPlugin {
@@ -15,12 +15,12 @@ namespace LethalGoofballsPack {
 
         static Transform shipZones;
         sealed class DeckContact {
-            public AudioReverbTrigger deck, wind;
+            public AudioReverbTrigger wind;
             public double lastStep;
             public bool canSetMembership;
         }
-        static readonly ConditionalWeakTable<PlayerControllerB, DeckContact> deckContacts =
-            new ConditionalWeakTable<PlayerControllerB, DeckContact>();
+        static readonly ConditionalWeakTable<PlayerControllerB, ConditionalWeakTable<AudioReverbTrigger, DeckContact>> deckContacts =
+            new ConditionalWeakTable<PlayerControllerB, ConditionalWeakTable<AudioReverbTrigger, DeckContact>>();
 
         void Awake() {
             if (!Chainloader.PluginInfos.ContainsKey(Wide) || !Chainloader.PluginInfos.ContainsKey(Deck)) return;
@@ -53,15 +53,14 @@ namespace LethalGoofballsPack {
                      player.isInElevator && !player.isInHangarShipRoom)) &&
                     active.transform.parent && active.transform.parent.name == "WindTriggers" &&
                     active.TryGetComponent<BoxCollider>(out var wind) && wind.enabled && wind.isTrigger && Touches(wind, other)) {
-                    var contact = deckContacts.GetOrCreateValue(player);
+                    var contact = deckContacts.GetOrCreateValue(player).GetOrCreateValue(__instance);
                     double now = Time.fixedTimeAsDouble;
                     bool canSetMembership = __instance.setInElevatorTrigger
                         ? ship.shipBounds && ship.shipBounds.bounds.Contains(player.transform.position)
                         : ship.shipDoorsEnabled;
-                    bool continuous = contact.canSetMembership == canSetMembership && contact.deck == __instance && contact.wind == active &&
+                    bool continuous = contact.canSetMembership == canSetMembership && contact.wind == active &&
                         now - contact.lastStep <= Time.fixedDeltaTime * 1.5;
                     contact.canSetMembership = canSetMembership;
-                    contact.deck = __instance;
                     contact.wind = active;
                     contact.lastStep = now;
                     return !continuous;
