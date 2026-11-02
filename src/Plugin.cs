@@ -4,7 +4,8 @@ using HarmonyLib;
 
 namespace LethalGoofballsPack.Maintenance
 {
-    [BepInPlugin("NT1Ho.LethalGoofballsPack.Maintenance", "LethalGoofballsPack scoped maintenance", "1.0.3")]
+    [BepInPlugin("NT1Ho.LethalGoofballsPack.Maintenance", "LethalGoofballsPack scoped maintenance", "1.0.4")]
+    [BepInDependency("Toskan4134.LethalRegeneration", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("TestAccount666.DoorBreach", BepInDependency.DependencyFlags.SoftDependency)]
     public sealed class Plugin : BaseUnityPlugin
     {
@@ -12,6 +13,12 @@ namespace LethalGoofballsPack.Maintenance
         {
             var harmony = new Harmony("NT1Ho.LethalGoofballsPack.Maintenance");
             harmony.PatchAll();
+            var oldHeal = AccessTools.TypeByName("LethalRegeneration.patches.HUDManagerPatch");
+            if (oldHeal != null)
+            {
+                harmony.Unpatch(AccessTools.Method(typeof(HUDManager), "SetClock"), AccessTools.Method(oldHeal, "healingPostfix"));
+                gameObject.AddComponent<BreathingRecovery>();
+            }
             if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("TestAccount666.DoorBreach"))
                 LockedDoorRules.Install(harmony);
         }
