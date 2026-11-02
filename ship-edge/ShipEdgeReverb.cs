@@ -6,7 +6,7 @@ using HarmonyLib;
 using UnityEngine;
 
 namespace LethalGoofballsPack {
-    [BepInPlugin(Id, "Ship Edge Reverb", "1.0.1")]
+    [BepInPlugin(Id, "Ship Edge Reverb", "1.0.2")]
     [BepInDependency(Wide, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(Deck, BepInDependency.DependencyFlags.SoftDependency)]
     public sealed class ShipEdgeReverb : BaseUnityPlugin {
@@ -17,6 +17,7 @@ namespace LethalGoofballsPack {
         sealed class DeckContact {
             public AudioReverbTrigger deck, wind;
             public double lastStep;
+            public bool canSetMembership;
         }
         static readonly ConditionalWeakTable<PlayerControllerB, DeckContact> deckContacts =
             new ConditionalWeakTable<PlayerControllerB, DeckContact>();
@@ -47,15 +48,19 @@ namespace LethalGoofballsPack {
             if (!active.transform.IsChildOf(shipZones)) {
                 // Let both authored mixes run on entry. Keep the wind setting while the deck
                 // continues to see the same player on consecutive physics steps.
-                if (player.isInElevator && !player.isInHangarShipRoom && __instance.elevatorTriggerForProps &&
-                    __instance.setInElevatorTrigger && !__instance.isShipRoom && !active.isShipRoom &&
-                    (!active.elevatorTriggerForProps || active.setInElevatorTrigger) &&
+                if (__instance.elevatorTriggerForProps && !__instance.isShipRoom && !active.isShipRoom &&
+                    (!active.elevatorTriggerForProps || (__instance.setInElevatorTrigger && active.setInElevatorTrigger &&
+                     player.isInElevator && !player.isInHangarShipRoom)) &&
                     active.transform.parent && active.transform.parent.name == "WindTriggers" &&
                     active.TryGetComponent<BoxCollider>(out var wind) && wind.enabled && wind.isTrigger && Touches(wind, other)) {
                     var contact = deckContacts.GetOrCreateValue(player);
                     double now = Time.fixedTimeAsDouble;
-                    bool continuous = contact.deck == __instance && contact.wind == active &&
+                    bool canSetMembership = __instance.setInElevatorTrigger
+                        ? ship.shipBounds && ship.shipBounds.bounds.Contains(player.transform.position)
+                        : ship.shipDoorsEnabled;
+                    bool continuous = contact.canSetMembership == canSetMembership && contact.deck == __instance && contact.wind == active &&
                         now - contact.lastStep <= Time.fixedDeltaTime * 1.5;
+                    contact.canSetMembership = canSetMembership;
                     contact.deck = __instance;
                     contact.wind = active;
                     contact.lastStep = now;
