@@ -21,8 +21,7 @@ namespace WesleyImageReader
         {
             foreach(var rule in e.rules){
                 string material=rule.material, slot=rule.slot;
-                if(rule.kind=="field" && material=="MaskStatueManager"){material="DirectionSignMtl";slot="_BaseColorMap";}
-                else if(rule.kind!="mesh" && rule.kind!="decal")continue;
+                if(rule.kind!="mesh")continue;
                 if(!materials.TryGetValue(material,out var slots))materials[material]=slots=new Dictionary<string,List<Entry>>();
                 if(!slots.TryGetValue(slot,out var entries))slots[slot]=entries=new List<Entry>();
                 if(!entries.Contains(e))entries.Add(e);
@@ -118,11 +117,6 @@ namespace WesleyImageReader
             }
             foreach(var texture in translated.Values)if(texture)Object.Destroy(texture);
             translated.Clear();
-        }
-        // Wesley sets the direction on the local plate after the network has chosen the puzzle values.
-        internal static void AfterPlate(MeshRenderer renderer)
-        {
-            if(renderer && Reader.Active)Reader.Active.Art.Apply(renderer.sharedMaterial);
         }
     }
 }

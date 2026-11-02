@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameNetcodeStuff;
@@ -56,6 +56,8 @@ namespace WesleyImageReader
             if(!m)return;
             foreach(string slot in slots){
                 if(!m.HasProperty(slot))continue;
+                // HDRP may retain an old legacy alias after an in-game screen or direction change.
+                if(slot=="_MainTex" && m.HasProperty("_BaseColorMap") && (overrides?.GetTexture("_BaseColorMap") ?? m.GetTexture("_BaseColorMap")))continue;
                 var texture=overrides?.GetTexture(slot) ?? m.GetTexture(slot);
                 if(!texture || !Reader.Active.ByTexture.TryGetValue(texture.name,out var entries))continue;
                 foreach(var e in entries){
@@ -86,6 +88,8 @@ namespace WesleyImageReader
         internal static int Page(GrabbableObject held) =>
             held && held.GetType().FullName=="WesleysInteriorTools.Features.ClipboardItemButCool" ?
             (int)(AccessTools.Field(held.GetType(),"currentPage")?.GetValue(held) ?? 0):0;
+        internal static bool NativeBook(GrabbableObject held) =>
+            held && held.itemProperties?.spawnPrefab?.name=="BattleGuidePrefab" && Page(held)>0;
         internal static Entry Held(GrabbableObject held)
         {
             var hits=new HashSet<Entry>();
@@ -113,15 +117,39 @@ namespace WesleyImageReader
         }
         static Entry Only(HashSet<Entry> hits){if(hits.Count==1)foreach(var item in hits)return item;return null;}
         static Ray LocalRay(Ray ray,Transform t)=>new Ray(t.InverseTransformPoint(ray.origin),t.worldToLocalMatrix.MultiplyVector(ray.direction));
+        // Resolve an actual visible triangle on a readable multi-material mesh, including its housing.
+        static bool FrontFace(Mesh mesh,Ray ray,out int slot,out float distance)
+        {
+            slot=-1;distance=float.PositiveInfinity;
+            if(!mesh || !mesh.isReadable || mesh.vertexCount>20000)return false;
+            var vertices=mesh.vertices;
+            for(int s=0;s<mesh.subMeshCount;s++){
+                if(mesh.GetTopology(s)!=MeshTopology.Triangles)return false;
+                var indices=mesh.GetTriangles(s);
+                for(int i=0;i<indices.Length;i+=3){
+                    var a=vertices[indices[i]];var u=vertices[indices[i+1]]-a;var v=vertices[indices[i+2]]-a;
+                    var cross=Vector3.Cross(ray.direction,v);float det=Vector3.Dot(u,cross);
+                    if(Mathf.Abs(det)<1e-8f)continue;
+                    var delta=ray.origin-a;float x=Vector3.Dot(delta,cross)/det;
+                    if(x<0 || x>1)continue;
+                    var q=Vector3.Cross(delta,u);float y=Vector3.Dot(ray.direction,q)/det;
+                    if(y<0 || x+y>1)continue;
+                    float depth=Vector3.Dot(v,q)/det;
+                    if(depth>0 && depth<distance){distance=depth;slot=s;}
+                }
+            }
+            return slot>=0;
+        }
         internal static Entry Aimed(PlayerControllerB p,out Transform target)
         {
             target=null;var cam=p.gameplayCamera;var ray=new Ray(cam.transform.position,cam.transform.forward);
-            var limit=reach;Collider surface=null;Vector3 point=default;
-            foreach(var h in Physics.RaycastAll(ray,reach,cam.cullingMask,QueryTriggerInteraction.Ignore)){
+            const float signLimit=45f;var limit=signLimit;Collider surface=null;Vector3 point=default;
+            var solids=Physics.RaycastAll(ray,signLimit,cam.cullingMask,QueryTriggerInteraction.Ignore);
+            foreach(var h in solids){
                 if(h.distance>=limit || h.collider.transform.IsChildOf(p.transform))continue;
                 surface=h.collider;limit=h.distance;point=h.point;
             }
-            var result=new HashSet<Entry>();float nearest=reach+.03f;
+            var result=new HashSet<Entry>();float nearest=signLimit+.03f;
             Transform matched=null;
             void Consider(HashSet<Entry> found,float distance,Transform obj){
                 if(found.Count==0 || distance>nearest+.008f)return;
@@ -133,6 +161,9 @@ namespace WesleyImageReader
                 if(!r.enabled || r.forceRenderingOff || r.shadowCastingMode==ShadowCastingMode.ShadowsOnly ||
                     (cam.cullingMask & (1<<r.gameObject.layer))==0 || !r.bounds.IntersectRay(ray,out float entry) ||
                     entry>limit+.025f || entry>nearest+.025f || r.transform.IsChildOf(p.transform))continue;
+                // Large fixed signs mounted above the player should be readable from the ground.
+                float range=r.GetComponentInParent<GrabbableObject>()?reach:Mathf.Clamp(r.bounds.size.magnitude,reach,signLimit);
+                if(entry>range)continue;
                 var found=new HashSet<Entry>();
                 var b=r.localBounds;
                 var local=LocalRay(ray,r.transform);
@@ -146,11 +177,22 @@ namespace WesleyImageReader
                 bool flat=mesh && (mesh.name.StartsWith("Plane",StringComparison.OrdinalIgnoreCase)||mesh.name.StartsWith("Quad",StringComparison.OrdinalIgnoreCase)) &&
                     Mathf.Min(b.size.x,Mathf.Min(b.size.y,b.size.z)) < .005f;
                 var held=surface?surface.GetComponentInParent<GrabbableObject>():null;
-                if(held && r.transform.IsChildOf(held.transform)){
+                if(held && limit<=reach && r.transform.IsChildOf(held.transform)){
                     var item=Held(held);if(item!=null)found.Add(item);
                     Consider(found,limit,held.transform);continue;
                 }
-                if(r.sharedMaterials.Length!=1)continue; // refuse to guess which material owns an unreadable submesh
+                if(!flat && mesh && mesh.isReadable){
+                    RendererEntries(r,found);
+                    if(found.Count==0 || !FrontFace(mesh,local,out int face,out float depth))continue;
+                    found.Clear();
+                    float at=Vector3.Dot(r.transform.TransformPoint(local.GetPoint(depth))-ray.origin,ray.direction);
+                    if(at<.04f || at>range)continue;
+                    bool blocked=false;
+                    foreach(var h in solids)if(h.distance+.025f<at && h.collider.transform!=r.transform && !h.collider.transform.IsChildOf(p.transform)){blocked=true;break;}
+                    if(blocked)continue;
+                    RendererEntries(r,found,face);Consider(found,at,r.transform);continue;
+                }
+                if(r.sharedMaterials.Length!=1 || dist>range)continue;
                 if(!flat && (!surface || surface.transform!=r.transform || !r.bounds.Contains(point)))continue;
                 RendererEntries(r,found);Consider(found,flat?dist:limit,r.transform);
             }
@@ -159,7 +201,7 @@ namespace WesleyImageReader
                 if(!d.isActiveAndEnabled || d.fadeFactor<=0 || (cam.cullingMask&(1<<d.gameObject.layer))==0)continue;
                 Vector3 q=d.scaleMode==DecalScaleMode.InheritFromHierarchy?d.transform.InverseTransformPoint(point):
                     Quaternion.Inverse(d.transform.rotation)*(point-d.transform.position);
-                if(!(new Bounds(d.pivot,d.size)).Contains(q))continue;
+                if(limit>Mathf.Clamp(d.size.magnitude,reach,signLimit) || !(new Bounds(d.pivot,d.size)).Contains(q))continue;
                 var found=new HashSet<Entry>();MaterialEntries(d.material,d.transform,null,true,found);Consider(found,limit,d.transform);
             }
             var itemFound=Only(result);if(itemFound!=null)target=matched;return itemFound;

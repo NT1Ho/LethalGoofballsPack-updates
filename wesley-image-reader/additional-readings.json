@@ -1,0 +1,920 @@
+[
+  {
+    "id": "W0306",
+    "texture": "RouteDownloadTerminal",
+    "width": 256,
+    "height": 256,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "航线数据已保存\n[插入空白软盘]\n> 写入",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "ChasmScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "DormantScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "EternScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "FissionCScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "SelectorScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "TriteScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "ChasmScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "DormantScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "EternScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "FissionCScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "SelectorScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "TriteScene"
+      }
+    ]
+  },
+  {
+    "id": "W0307",
+    "texture": "RouteDownloadTerminal1",
+    "width": 256,
+    "height": 256,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "航线数据已保存\n[插入空白软盘]\n> 写入\n已检测到软盘",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "ChasmScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "DormantScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "EternScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "FissionCScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "SelectorScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "TriteScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "ChasmScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "DormantScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "EternScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "FissionCScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "SelectorScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 1",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "TriteScene"
+      }
+    ]
+  },
+  {
+    "id": "W0308",
+    "texture": "RouteDownloadTerminal2",
+    "width": 256,
+    "height": 256,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "航线数据已保存\n[插入空白软盘]\n> 写入\n已检测到软盘\n正在写入软盘",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "ChasmScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "DormantScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "EternScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "FissionCScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "SelectorScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "TriteScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "ChasmScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "DormantScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "EternScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "FissionCScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "SelectorScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 2",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "TriteScene"
+      }
+    ]
+  },
+  {
+    "id": "W0309",
+    "texture": "RouteDownloadTerminal3",
+    "width": 256,
+    "height": 256,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "航线数据已保存\n[插入空白软盘]\n> 写入\n已检测到软盘\n正在写入软盘\n正在校验副本",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "ChasmScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "DormantScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "EternScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "FissionCScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "SelectorScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "TriteScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "ChasmScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "DormantScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "EternScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "FissionCScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "SelectorScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 3",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "TriteScene"
+      }
+    ]
+  },
+  {
+    "id": "W0310",
+    "texture": "RouteDownloadTerminal4",
+    "width": 256,
+    "height": 256,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "航线数据已保存\n[插入空白软盘]\n> 写入\n已检测到软盘\n正在写入软盘\n正在校验副本\n完成",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "ChasmScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "DormantScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "EternScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "FissionCScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "SelectorScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_BaseColorMap",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "TriteScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "ChasmScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "DormantScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "EternScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "FissionCScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "SelectorScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "FloppyTerminal 4",
+        "slot": "_MainTex",
+        "path": "FloppyMachineContainer/FloppyMachine",
+        "scene": "TriteScene"
+      }
+    ]
+  },
+  {
+    "id": "W0313",
+    "texture": "rusty_metal_texture_warning",
+    "width": 512,
+    "height": 512,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "当心！切勿打开，内有不稳定的晶体。",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "Rusty1 2",
+        "slot": "_BaseColorMap",
+        "path": "Environment/CrystalContainment",
+        "scene": "CubatresScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "Rusty1 2",
+        "slot": "_MainTex",
+        "path": "Environment/CrystalContainment",
+        "scene": "CubatresScene"
+      }
+    ]
+  },
+  {
+    "id": "W0786",
+    "texture": "Apple peeler",
+    "width": 1024,
+    "height": 128,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "来看看新的进度系统吧！\n去配置里把它打开呀，你这削苹果的。",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "ApplePeelerMtl",
+        "slot": "_BaseColorMap",
+        "path": "Environment/Map/Sprite (6)",
+        "scene": "MusemaScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "ApplePeelerMtl",
+        "slot": "_MainTex",
+        "path": "Environment/Map/Sprite (6)",
+        "scene": "MusemaScene"
+      }
+    ]
+  },
+  {
+    "id": "W0790",
+    "texture": "Article",
+    "width": 512,
+    "height": 512,
+    "format": 29,
+    "native": false,
+    "title": "",
+    "body": "邀请函",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "PaperMtl 1",
+        "slot": "_BaseColorMap",
+        "path": "Environment/ShipInteractions/Ship (56)/SecretCoordinates",
+        "scene": "RepressScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "PaperMtl 1",
+        "slot": "_BaseColorMap",
+        "path": "Environment/ShipInteractions/Ship (56)/VerySecretCoordinates",
+        "scene": "RepressScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "PaperMtl 1",
+        "slot": "_BaseColorMap",
+        "path": "SecretCoordinates/Articles",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "PaperMtl 1",
+        "slot": "_BaseColorMap",
+        "path": "SuperSecretCoordinates/Articles",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "PaperMtl 1",
+        "slot": "_MainTex",
+        "path": "Environment/ShipInteractions/Ship (56)/SecretCoordinates",
+        "scene": "RepressScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "PaperMtl 1",
+        "slot": "_MainTex",
+        "path": "Environment/ShipInteractions/Ship (56)/VerySecretCoordinates",
+        "scene": "RepressScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "PaperMtl 1",
+        "slot": "_MainTex",
+        "path": "SecretCoordinates/Articles",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "PaperMtl 1",
+        "slot": "_MainTex",
+        "path": "SuperSecretCoordinates/Articles",
+        "scene": ""
+      }
+    ]
+  },
+  {
+    "id": "W1224",
+    "texture": "Completethestory",
+    "width": 256,
+    "height": 256,
+    "format": 29,
+    "native": false,
+    "title": "",
+    "body": "把故事走完吧 ☺",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "Story",
+        "slot": "_BaseColorMap",
+        "path": "Environment/Sprite/Sprite (1)",
+        "scene": "EndScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "Story",
+        "slot": "_MainTex",
+        "path": "Environment/Sprite/Sprite (1)",
+        "scene": "EndScene"
+      }
+    ]
+  },
+  {
+    "id": "W1249",
+    "texture": "ControlPanel",
+    "width": 512,
+    "height": 512,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "老式操作面板\n\n这种型号很稀有，没经过第三方改装的更是少见。能找到它的地方屈指可数，主要是在［地名被涂去］这颗卫星上，或是在黄金城内。\n\n这些型号主要在 Kahtera 和格拉塔尔开发。卖给公司的产品通常会根据具体任务改装，软件也只为相应的用途编写。\n\n这是较早的型号，未必符合您的预期。\n售价仅 7,000 信用点。",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "ControlPanelNote",
+        "slot": "_BaseColorMap",
+        "path": "Environment/Giftshop/Itemshop/ItemPos1 (29)/Quad",
+        "scene": "MusemaScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "ControlPanelNote",
+        "slot": "_MainTex",
+        "path": "Environment/Giftshop/Itemshop/ItemPos1 (29)/Quad",
+        "scene": "MusemaScene"
+      }
+    ]
+  },
+  {
+    "id": "W1485",
+    "texture": "duckstroid",
+    "width": 512,
+    "height": 64,
+    "format": 29,
+    "native": false,
+    "title": "",
+    "body": "鸭形小行星-14 在哪里？",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "secrettext2mtl",
+        "slot": "_BaseColorMap",
+        "path": "Environment/TheEntireMap/Plane (2)",
+        "scene": "OldredScene"
+      },
+      {
+        "kind": "mesh",
+        "material": "secrettext2mtl",
+        "slot": "_MainTex",
+        "path": "Environment/TheEntireMap/Plane (2)",
+        "scene": "OldredScene"
+      }
+    ]
+  },
+  {
+    "id": "W3250",
+    "texture": "Ter_1",
+    "width": 256,
+    "height": 256,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "[插入日志]\n> 翻译",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "Terminal1Mtl",
+        "slot": "_BaseColorMap",
+        "path": "TranslationMachineR/TranslationMachine",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "Terminal1Mtl",
+        "slot": "_MainTex",
+        "path": "TranslationMachineR/TranslationMachine",
+        "scene": ""
+      }
+    ]
+  },
+  {
+    "id": "W3253",
+    "texture": "Ter_2",
+    "width": 256,
+    "height": 256,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "[插入日志]\n> 翻译\n发现数据存储（Scavenger_4_x3453f）",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "Terminal2Mtl",
+        "slot": "_BaseColorMap",
+        "path": "TranslationMachineR/TranslationMachine",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "Terminal2Mtl",
+        "slot": "_MainTex",
+        "path": "TranslationMachineR/TranslationMachine",
+        "scene": ""
+      }
+    ]
+  },
+  {
+    "id": "W3254",
+    "texture": "Ter_3",
+    "width": 256,
+    "height": 256,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "[插入日志]\n> 翻译\n发现数据存储（Scavenger_4_x3453f）\n正在上传至存储区",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "Terminal3Mtl",
+        "slot": "_BaseColorMap",
+        "path": "TranslationMachineR/TranslationMachine",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "Terminal3Mtl",
+        "slot": "_MainTex",
+        "path": "TranslationMachineR/TranslationMachine",
+        "scene": ""
+      }
+    ]
+  },
+  {
+    "id": "W3257",
+    "texture": "Ter_4",
+    "width": 256,
+    "height": 256,
+    "format": 28,
+    "native": false,
+    "title": "",
+    "body": "[插入日志]\n> 翻译\n发现数据存储（Scavenger_4_x3453f）\n正在上传至存储区\n上传完成",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "Terminal4Mtl",
+        "slot": "_BaseColorMap",
+        "path": "TranslationMachineR/TranslationMachine",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "Terminal4Mtl",
+        "slot": "_MainTex",
+        "path": "TranslationMachineR/TranslationMachine",
+        "scene": ""
+      }
+    ]
+  },
+  {
+    "id": "W3258",
+    "texture": "Ter_L",
+    "width": 256,
+    "height": 256,
+    "format": 10,
+    "native": false,
+    "title": "",
+    "body": "[灯光]\n> 停用",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "LightTerminal",
+        "slot": "_BaseColorMap",
+        "path": "Environment/LightSystem/LightTerminal",
+        "scene": "Asteroid13Scene"
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal",
+        "slot": "_BaseColorMap",
+        "path": "Environment/LightSystemDead/LightTerminal",
+        "scene": "Asteroid13Scene"
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal",
+        "slot": "_BaseColorMap",
+        "path": "LightSystem/LightTerminal",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal",
+        "slot": "_BaseColorMap",
+        "path": "LightSystemDead/LightTerminal",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal",
+        "slot": "_MainTex",
+        "path": "Environment/LightSystem/LightTerminal",
+        "scene": "Asteroid13Scene"
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal",
+        "slot": "_MainTex",
+        "path": "Environment/LightSystemDead/LightTerminal",
+        "scene": "Asteroid13Scene"
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal",
+        "slot": "_MainTex",
+        "path": "LightSystem/LightTerminal",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal",
+        "slot": "_MainTex",
+        "path": "LightSystemDead/LightTerminal",
+        "scene": ""
+      }
+    ]
+  },
+  {
+    "id": "W3259",
+    "texture": "Ter_L2",
+    "width": 256,
+    "height": 256,
+    "format": 10,
+    "native": false,
+    "title": "",
+    "body": "[灯光]\n> 启用",
+    "rules": [
+      {
+        "kind": "mesh",
+        "material": "LightTerminal 1",
+        "slot": "_BaseColorMap",
+        "path": "Environment/LightSystem/LightTerminal",
+        "scene": "Asteroid13Scene"
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal 1",
+        "slot": "_BaseColorMap",
+        "path": "Environment/LightSystemDead/LightTerminal",
+        "scene": "Asteroid13Scene"
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal 1",
+        "slot": "_BaseColorMap",
+        "path": "LightSystem/LightTerminal",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal 1",
+        "slot": "_BaseColorMap",
+        "path": "LightSystemDead/LightTerminal",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal 1",
+        "slot": "_MainTex",
+        "path": "Environment/LightSystem/LightTerminal",
+        "scene": "Asteroid13Scene"
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal 1",
+        "slot": "_MainTex",
+        "path": "Environment/LightSystemDead/LightTerminal",
+        "scene": "Asteroid13Scene"
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal 1",
+        "slot": "_MainTex",
+        "path": "LightSystem/LightTerminal",
+        "scene": ""
+      },
+      {
+        "kind": "mesh",
+        "material": "LightTerminal 1",
+        "slot": "_MainTex",
+        "path": "LightSystemDead/LightTerminal",
+        "scene": ""
+      }
+    ]
+  }
+]

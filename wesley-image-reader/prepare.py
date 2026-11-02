@@ -1,4 +1,4 @@
-﻿"""Build the independent runtime data from the user's local handoff; never download content."""
+"""Build the independent runtime data from the user's local handoff; never download content."""
 import hashlib, io, json, pathlib, re, struct, sys, zipfile
 
 
@@ -44,7 +44,7 @@ def build(source, target):
                     omitted.append(id+'\t'+r['name']+'\t只有材质依赖，缺少可核实的场景实例或控制器引用。')
                     continue
                 en=checked(t['original_file'])
-                native=t['native_file']
+                native=t['native_file'] if id in {'W0020','W0021','W0022','W0023','W0024'} else None
                 zh=checked(native or t['reading_file'])
                 for data in (zh,en):
                     assert data.startswith(b'\x89PNG\r\n\x1a\n') and max(struct.unpack('>II',data[16:24]))<=16384
@@ -57,8 +57,13 @@ def build(source, target):
                 entries.append(entry)
                 if native:dst.writestr(id+'.zh.png',zh)
                 else:dst.writestr(id+'.txt',t['zh'].encode('utf-8'))
+            extra=json.loads(pathlib.Path(__file__).with_name('additional-readings.json').read_text('utf8'))
+            for e in extra:
+                assert e['id'] not in texts and e['body'].strip() and e['rules'] and not e['native']
+                dst.writestr(e['id']+'.txt',e.pop('body').encode('utf8'))
+                entries.append(e)
             index=json.dumps({'entries':entries},ensure_ascii=False,separators=(',',':')).encode()
-            assert len(entries)==278 and sum(e['native'] for e in entries)==34
+            assert len(set(e['id'] for e in entries))==len(entries)==278+len(extra) and sum(e['native'] for e in entries)==5
             dst.writestr('index.json',index)
     pathlib.Path(target).with_suffix('.mapping.json').write_bytes(index)
     pathlib.Path(target).with_suffix('.omitted.tsv').write_text('ID\t资源名\t未接入原因\n'+'\n'.join(omitted)+'\n','utf-8-sig')

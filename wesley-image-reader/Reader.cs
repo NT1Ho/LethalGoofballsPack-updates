@@ -14,7 +14,7 @@ namespace WesleyImageReader
     [Serializable] internal class Entry { public string id, texture, title; public int width, height, format; public bool native; public Rule[] rules; }
     [Serializable] internal class Rule { public string kind, material, slot, path, scene; }
 
-    [BepInPlugin("NT1Ho.WesleyImageReader","Wesley 图片中文阅读","0.1.1")]
+    [BepInPlugin("NT1Ho.WesleyImageReader","Wesley 图片中文阅读","0.1.2")]
     public sealed class Reader : BaseUnityPlugin
     {
         internal static Reader Active;
@@ -55,9 +55,6 @@ namespace WesleyImageReader
                 read.performed+=Toggle;
                 patch=new Harmony(Info.Metadata.GUID);
                 patch.PatchAll(typeof(Reader).Assembly);
-                var plate=AccessTools.TypeByName("WesleysInteriorTools.Features.MaskStatueManager");
-                var setter=plate==null?null:AccessTools.Method(plate,"SetPlateTexture");
-                if(setter!=null)patch.Patch(setter,postfix:new HarmonyMethod(typeof(NativeArt),nameof(NativeArt.AfterPlate)));
                 Active=this;read.Enable();Art.Start();
             }
             catch(Exception e){Logger.LogError(e);Release();}
@@ -75,7 +72,7 @@ namespace WesleyImageReader
                 if(!Usable(p))return;
                 var held=p.currentlyHeldObjectServer;
                 var entry=held?Targets.Held(held):null;
-                if(entry!=null && !entry.native)panel.Show(entry,held,held.transform);
+                if(entry!=null){if(!entry.native)panel.Show(entry,held,held.transform);}
                 else {
                     entry=Targets.Aimed(p,out var target);
                     if(entry!=null && !entry.native)panel.Show(entry,null,target);
@@ -96,7 +93,8 @@ namespace WesleyImageReader
     [HarmonyPatch(typeof(PlayerControllerB),"InspectItem_performed")]
     internal static class InspectKey
     {
-        private static bool Prefix(InputAction.CallbackContext context) =>
-            !Reader.Active || !Reader.Active.isActiveAndEnabled || !(context.control?.device is Keyboard k) || context.control != k.zKey;
+        private static bool Prefix(PlayerControllerB __instance,InputAction.CallbackContext context) =>
+            !Reader.Active || !Reader.Active.isActiveAndEnabled || !(context.control?.device is Keyboard k) || context.control != k.zKey ||
+            Targets.NativeBook(__instance.currentlyHeldObjectServer);
     }
 }
