@@ -1,0 +1,38 @@
+{
+  "W0190": [
+    "CoffinClosedAutopsy",
+    "CoffinOpenAutopsy"
+  ],
+  "W0191": [
+    "CoffinClosedBlood",
+    "CoffinOpenBlood"
+  ],
+  "W0275": [
+    "ClosedPressure",
+    "ObjectiveCompletedPressure",
+    "ObjectiveOpenPressure"
+  ],
+  "W0276": [
+    "ClosedPlasma",
+    "ObjectiveCompletedPlasma",
+    "ObjectiveOpenPlasma"
+  ],
+  "W1607": [
+    "MonitorCrime"
+  ],
+  "W1738": [
+    "MonitorFuel"
+  ],
+  "W1896": [
+    "MonitorFamily"
+  ],
+  "W2051": [
+    "MonitorGrind"
+  ],
+  "W2586": [
+    "MonitorReshape"
+  ],
+  "W2587": [
+    "MonitorIncapable"
+  ]
+}
