@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><TargetFramework>netstandard2.1</TargetFramework><LangVersion>latest</LangVersion><AssemblyName>LethalDiagnostics</AssemblyName><Version>0.1.1</Version><EnableDefaultCompileItems>false</EnableDefaultCompileItems><Deterministic>true</Deterministic></PropertyGroup>
+  <PropertyGroup><TargetFramework>netstandard2.1</TargetFramework><LangVersion>latest</LangVersion><AssemblyName>LethalDiagnostics</AssemblyName><Version>0.1.2</Version><EnableDefaultCompileItems>false</EnableDefaultCompileItems><Deterministic>true</Deterministic></PropertyGroup>
   <ItemGroup><Compile Include="FrameDrop.cs"/><Compile Include="Recorder.cs"/><Compile Include="Plugin.cs"/>
     <Reference Include="$(GameDir)/Lethal Company_Data/Managed/*.dll" Exclude="$(GameDir)/Lethal Company_Data/Managed/netstandard.dll;$(GameDir)/Lethal Company_Data/Managed/mscorlib.dll;$(GameDir)/Lethal Company_Data/Managed/System*.dll"><Private>false</Private></Reference>
     <Reference Include="$(GameDir)/BepInEx/core/BepInEx.dll"><Private>false</Private></Reference>
+    <Reference Include="$(GameDir)/BepInEx/core/0Harmony.dll"><Private>false</Private></Reference>
     <Reference Include="$(GameDir)/BepInEx/core/Mono.Cecil.dll"><Private>false</Private></Reference>
   </ItemGroup>
 </Project>

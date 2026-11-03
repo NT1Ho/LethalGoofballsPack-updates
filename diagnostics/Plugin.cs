@@ -21,8 +21,60 @@ using LogLevel = BepInEx.Logging.LogLevel;
 using ThreadPriority = System.Threading.ThreadPriority;
 
 namespace LcDiagnostics {
-[BepInPlugin("nt1ho.lethaldiagnostics","LethalGoofballs Diagnostics","0.1.1")]
+[BepInPlugin("nt1ho.lethaldiagnostics","LethalGoofballs Diagnostics","0.1.2")]
 public sealed class Plugin : BaseUnityPlugin, ILogListener {
+    readonly FrameTiming[] timing = new FrameTiming[1];
+    Process cpu;
+    double lastCpuMs, lastWall;
+    float nextStallEvidence;
+    static Plugin current;
+    static void BeforeControllerSet(Animator __instance, RuntimeAnimatorController __0) {
+        if (__0 || !__instance || !current || current.quitting || __instance.name!="metarig") return;
+        var m=__instance.GetComponentInParent<MaskedPlayerEnemy>();
+        if (!m || m.creatureAnimator!=__instance || !__instance.runtimeAnimatorController) return;
+        current.recorder.Add("masked_controller_clear",Json.Obj("netId",m.NetworkObjectId,"dead",m.isEnemyDead,
+            "previous",__instance.runtimeAnimatorController.name,"caller",Cut(new StackTrace(1,false).ToString(),1800)));
+    }
+    static void StageStart(out long __state){__state=Stopwatch.GetTimestamp();}
+    static void StageEnd(long __state,MethodBase __originalMethod){
+        double ms=(Stopwatch.GetTimestamp()-__state)*1000.0/Stopwatch.Frequency;
+        if(ms>=30 && current && !current.quitting) current.recorder.Add("slow_generation_stage",Json.Obj("method",__originalMethod.Name,"wallMs",ms,"frame",Time.frameCount));
+    }
+    static void MaskEvent(Component __instance, MethodBase __originalMethod){
+        if(!current || current.quitting || !__instance)return;
+        var m=__instance.GetComponentInParent<MaskedPlayerEnemy>();if(!m)return;
+        var rig=m.creatureAnimator;
+        current.recorder.Add("masked_animation_event",Json.Obj("event",__originalMethod.Name,"frame",Time.frameCount,"netId",m.NetworkObjectId,"dead",m.isEnemyDead,"enemyState",m.currentBehaviourStateIndex,"position",Pos(m.transform.position),"animator",rig?rig.name:null,"controller",rig&&rig.runtimeAnimatorController?rig.runtimeAnimatorController.name:null,"stateHash",rig&&rig.runtimeAnimatorController?(object)rig.GetCurrentAnimatorStateInfo(0).fullPathHash:null));
+    }
+    sealed class MaskBinding { public int id; public string name; public bool sampled; }
+    readonly System.Runtime.CompilerServices.ConditionalWeakTable<MaskedPlayerEnemy,MaskBinding> masks =
+        new System.Runtime.CompilerServices.ConditionalWeakTable<MaskedPlayerEnemy,MaskBinding>();
+    void SampleMaskBindings(){
+        var enemies=RoundManager.Instance?.SpawnedEnemies;
+        if(enemies==null)return;
+        for(int i=0;i<enemies.Count && i<64;i++){
+            var m=enemies[i] as MaskedPlayerEnemy;if(!m)continue;
+            var rig=m.creatureAnimator;var ctrl=rig?rig.runtimeAnimatorController:null;
+            int id=ctrl?ctrl.GetInstanceID():0;var prev=masks.GetOrCreateValue(m);
+            if(prev.sampled && prev.id==id)continue;
+            recorder.Add("masked_binding",Json.Obj("netId",m.NetworkObjectId,"frame",Time.frameCount,"first",!prev.sampled,"previous",prev.name,
+                "current",ctrl?ctrl.name:null,"animator",rig?rig.name:null,"dead",m.isEnemyDead,"position",Pos(m.transform.position)));
+            prev.sampled=true;prev.id=id;prev.name=ctrl?ctrl.name:null;
+        }
+    }
+    void ObserveStages(){
+        var hooks=new HarmonyLib.Harmony("nt1ho.diagnostics.masked");
+        foreach(var name in new[]{"SpawnScrapInLevel","SpawnSyncedProps","GenerateNewFloor","SetLevelObjectVariables","FinishGeneratingNewLevelClientRpc"}){
+            var method=HarmonyLib.AccessTools.DeclaredMethod(typeof(RoundManager),name);
+            if(method!=null)hooks.Patch(method,new HarmonyLib.HarmonyMethod(typeof(Plugin),nameof(StageStart)),new HarmonyLib.HarmonyMethod(typeof(Plugin),nameof(StageEnd)));
+        }
+        var emote=HarmonyLib.AccessTools.TypeByName("TooManyEmotes.EmoteControllerMaskedEnemy");
+        foreach(var name in new[]{"Start","HitEnemy","KillEnemy","PerformEmote","StopPerformingEmote"}){
+            var type=name.EndsWith("Emote")?emote:typeof(MaskedPlayerEnemy);
+            var method=type==null?null:HarmonyLib.AccessTools.DeclaredMethod(type,name);
+            if(method!=null)hooks.Patch(method,postfix:new HarmonyLib.HarmonyMethod(typeof(Plugin),nameof(MaskEvent)));
+        }
+    }
     readonly FrameDrop frameDrop=new FrameDrop();float nextDropMark;
     Recorder recorder;ConfigEntry<bool> monitor;ConfigEntry<Key> hotkey;
     float nextSample,nextFrameReport,lastMark=-10,nextAuto;int frames,slowFrames,gc0;double sum,max,ownTicks;long logSecond;int logCount,errorCount;long suppressed;object lastError;
@@ -34,9 +86,12 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
         hotkey=Config.Bind("General","MarkKey",Key.F8,"Manual incident and screenshot. Change if another MOD uses F8.");
         if(!monitor.Value){enabled=false;return;}
         try{
-            var process=Process.GetCurrentProcess();
-            recorder=new Recorder(Path.Combine(Paths.GameRootPath,".lcpack-diagnostics"),Json.Obj("schema",1,"plugin","0.1.1","utc",DateTime.UtcNow.ToString("O"),"pid",process.Id,"processStartUtc",process.StartTime.ToUniversalTime().ToString("O"),"unity",Application.unityVersion,"application",Application.version,"cpu",SystemInfo.processorType,"logicalCores",SystemInfo.processorCount,"ramMB",SystemInfo.systemMemorySize,"gpu",SystemInfo.graphicsDeviceName,"vramMB",SystemInfo.graphicsMemorySize,"os",SystemInfo.operatingSystem,"privacy","local only; screenshots/logs may contain names; config values are not collected","preSeconds",60,"postSeconds",30));
+            var process=cpu=Process.GetCurrentProcess(); lastCpuMs=cpu.TotalProcessorTime.TotalMilliseconds;lastWall=Time.realtimeSinceStartupAsDouble;
+            recorder=new Recorder(Path.Combine(Paths.GameRootPath,".lcpack-diagnostics"),Json.Obj("schema",1,"plugin","0.1.2","utc",DateTime.UtcNow.ToString("O"),"pid",process.Id,"processStartUtc",process.StartTime.ToUniversalTime().ToString("O"),"unity",Application.unityVersion,"application",Application.version,"cpu",SystemInfo.processorType,"logicalCores",SystemInfo.processorCount,"ramMB",SystemInfo.systemMemorySize,"gpu",SystemInfo.graphicsDeviceName,"vramMB",SystemInfo.graphicsMemorySize,"os",SystemInfo.operatingSystem,"privacy","local only; screenshots/logs may contain names; config values are not collected","preSeconds",60,"postSeconds",30));
             BepInEx.Logging.Logger.Listeners.Add(this);Application.logMessageReceivedThreaded+=UnityLog;
+            current=this;
+            try{new HarmonyLib.Harmony("nt1ho.diagnostics.masked").Patch(HarmonyLib.AccessTools.PropertySetter(typeof(Animator),"runtimeAnimatorController"),prefix:new HarmonyLib.HarmonyMethod(typeof(Plugin),nameof(BeforeControllerSet)));}catch(Exception ex){Logger.LogWarning("Masked controller write observer unavailable: "+ex.GetType().Name);}
+            try{ObserveStages();}catch(Exception ex){Logger.LogWarning("Stage observer unavailable: "+ex.Message);}
             SceneManager.sceneLoaded+=Loaded;SceneManager.sceneUnloaded+=Unloaded;StartCoroutine(IdentityAfterLoad());
         }catch(Exception e){Logger.LogError("Diagnostics unavailable: "+e.Message);enabled=false;}
     }
@@ -60,15 +115,19 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
         try{
             float now=Time.realtimeSinceStartup;double dt=Time.unscaledDeltaTime*1000;frames++;sum+=dt;max=Math.Max(max,dt);if(dt>100)slowFrames++;
             if(Keyboard.current!=null&&Keyboard.current[hotkey.Value].wasPressedThisFrame&&now-lastMark>=2){lastMark=now;ManualMark();}
-            if(now>=nextSample){nextSample=now+1;var state=Snapshot(false);recorder.Add("state",state);
+            if(now>=nextSample){nextSample=now+1;SampleMaskBindings();var state=Snapshot(false);recorder.Add("state",state);
                 var signature=Json.Text(Json.Obj("planet",state["planet"],"landed",state["landed"],"players",state["players"],"connected",state["connected"],"held",state["held"],"dead",state["dead"]));
                 if(signature!=lastState){recorder.Add("state_change",state);lastState=signature;}
                 string loading=Convert.ToString(state["phase"]);if(loading!=loadingState){loadingState=loading;loadingSince=now;loadingReported=false;}
                 if(loading=="landing"&&now-loadingSince>120&&!loadingReported){loadingReported=true;AutoMark("loading_timeout",state);}
             }
             if(Interlocked.Exchange(ref pendingError,0)==1&&now>=nextAuto){AutoMark("program_error",Json.Obj("error",lastError,"state",Snapshot(false)));nextAuto=now+60;}
+            if(dt>=500 && now>=nextStallEvidence){nextStallEvidence=now+10;recorder.Add("long_frame",Json.Obj("frameMs",dt,"secondsSinceManual",lastMark>=0?(object)(now-lastMark):null,"state",Snapshot(false)));}
             if(now>=nextFrameReport){
-                recorder.Add("performance",Json.Obj("frames",frames,"meanMs",frames==0?0:sum/frames,"maxMs",max,"over100ms",slowFrames,"monitorMainMs",ownTicks*1000/Stopwatch.Frequency,"gc0",GC.CollectionCount(0)-gc0,"managedBytes",GC.GetTotalMemory(false),"logsSuppressed",Interlocked.Read(ref suppressed),"queueDropped",recorder.Dropped,"writerFailure",recorder.Failure,"focused",Application.isFocused,"targetFps",Application.targetFrameRate,"vSync",QualitySettings.vSyncCount));
+                double cpuMs=cpu.TotalProcessorTime.TotalMilliseconds, wall=Time.realtimeSinceStartupAsDouble;
+                var n=FrameTimingManager.GetLatestTimings(1,timing);FrameTimingManager.CaptureFrameTimings();
+                recorder.Add("performance",Json.Obj("cpuCores",(cpuMs-lastCpuMs)/Math.Max(1,(wall-lastWall)*1000),"unityGpuMs",n>0 && timing[0].gpuFrameTime>0?(object)timing[0].gpuFrameTime:null,"unityCpuMs",n>0 && timing[0].cpuFrameTime>0?(object)timing[0].cpuFrameTime:null,"frames",frames,"meanMs",frames==0?0:sum/frames,"maxMs",max,"over100ms",slowFrames,"monitorMainMs",ownTicks*1000/Stopwatch.Frequency,"gc0",GC.CollectionCount(0)-gc0,"managedBytes",GC.GetTotalMemory(false),"logsSuppressed",Interlocked.Read(ref suppressed),"queueDropped",recorder.Dropped,"writerFailure",recorder.Failure,"focused",Application.isFocused,"targetFps",Application.targetFrameRate,"vSync",QualitySettings.vSyncCount));
+                lastCpuMs=cpuMs;lastWall=wall;
                 var round=StartOfRound.Instance;
                 if(!round||!round.shipHasLanded||!Application.isFocused)frameDrop.Reset();
                 else if(frameDrop.Observe(frames,sum,max,now>=nextDropMark)){
@@ -106,7 +165,7 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
     static object Pos(Vector3 p){return new[]{Math.Round(p.x,3),Math.Round(p.y,3),Math.Round(p.z,3)};}
     static object Entity(Component c){
         if(c==null)return null;var n=c.GetComponentInParent<NetworkObject>();var g=c.GetComponentInParent<GrabbableObject>();var e=c.GetComponentInParent<EnemyAI>();var p=c.GetComponentInParent<PlayerControllerB>();var t=c.GetComponentInParent<InteractTrigger>();
-        return Json.Obj("name",c.name,"type",c.GetType().FullName,"position",Pos(c.transform.position),"netId",n&&n.IsSpawned?(object)n.NetworkObjectId:null,"owner",n&&n.IsSpawned?(object)n.OwnerClientId:null,"item",g?g.itemProperties?.itemName:null,"held",g?(object)g.isHeld:null,"inShip",g?(object)g.isInShipRoom:null,"scrapValue",g?(object)g.scrapValue:null,"enemyType",e?e.GetType().FullName:null,"enemyDead",e?(object)e.isEnemyDead:null,"enemyState",e?(object)e.currentBehaviourStateIndex:null,"animState",e&&e.creatureAnimator&&e.creatureAnimator.runtimeAnimatorController?(object)e.creatureAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash:null,"playerDead",p?(object)p.isPlayerDead:null,"interactable",t?(object)t.interactable:null);
+        return Json.Obj("name",c.name,"type",c.GetType().FullName,"position",Pos(c.transform.position),"netId",n&&n.IsSpawned?(object)n.NetworkObjectId:null,"owner",n&&n.IsSpawned?(object)n.OwnerClientId:null,"item",g?g.itemProperties?.itemName:null,"held",g?(object)g.isHeld:null,"inShip",g?(object)g.isInShipRoom:null,"scrapValue",g?(object)g.scrapValue:null,"enemyType",e?e.GetType().FullName:null,"enemyDead",e?(object)e.isEnemyDead:null,"enemyState",e?(object)e.currentBehaviourStateIndex:null,"animator",e&&e.creatureAnimator?e.creatureAnimator.name:null,"controller",e&&e.creatureAnimator&&e.creatureAnimator.runtimeAnimatorController?e.creatureAnimator.runtimeAnimatorController.name:null,"animState",e&&e.creatureAnimator&&e.creatureAnimator.runtimeAnimatorController?(object)e.creatureAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash:null,"playerDead",p?(object)p.isPlayerDead:null,"interactable",t?(object)t.interactable:null);
     }
     Dictionary<string,object> Snapshot(bool detail){
         var r=StartOfRound.Instance;var p=GameNetworkManager.Instance?.localPlayerController;var net=NetworkManager.Singleton;var tm=TimeOfDay.Instance;
@@ -173,7 +232,7 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
     }
     void OnApplicationQuit(){Close();}
     void OnDestroy(){if(!quitting)Close();}
-    void Close(){if(quitting)return;quitting=true;if(recorder==null)return;BepInEx.Logging.Logger.Listeners.Remove(this);Application.logMessageReceivedThreaded-=UnityLog;SceneManager.sceneLoaded-=Loaded;SceneManager.sceneUnloaded-=Unloaded;recorder.Add("session_end",Json.Obj("utc",DateTime.UtcNow.ToString("O")));recorder.Dispose();}
+    void Close(){if(quitting)return;quitting=true;if(current==this){new HarmonyLib.Harmony("nt1ho.diagnostics.masked").UnpatchSelf();current=null;}cpu?.Dispose();if(recorder==null)return;BepInEx.Logging.Logger.Listeners.Remove(this);Application.logMessageReceivedThreaded-=UnityLog;SceneManager.sceneLoaded-=Loaded;SceneManager.sceneUnloaded-=Unloaded;recorder.Add("session_end",Json.Obj("utc",DateTime.UtcNow.ToString("O")));recorder.Dispose();}
     void IDisposable.Dispose(){}
 }
 }

@@ -6,7 +6,7 @@ using HarmonyLib;
 using UnityEngine;
 
 namespace LethalGoofballsPack {
-    [BepInPlugin(Id, "Ship Edge Reverb", "1.0.3")]
+    [BepInPlugin(Id, "Ship Edge Reverb", "1.0.4")]
     [BepInDependency(Wide, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(Deck, BepInDependency.DependencyFlags.SoftDependency)]
     public sealed class ShipEdgeReverb : BaseUnityPlugin {
@@ -14,6 +14,13 @@ namespace LethalGoofballsPack {
         const string Wide = "mborsh.WiderShipMod", Deck = "MelanieMelicious.2StoryShip";
 
         static Transform shipZones;
+        static AudioReverbPresets presets;
+        sealed class WindPresetContact {
+            public AudioReverbTrigger volume, applied;
+            public double step;
+        }
+        static readonly ConditionalWeakTable<PlayerControllerB, WindPresetContact> presetContacts =
+            new ConditionalWeakTable<PlayerControllerB, WindPresetContact>();
         sealed class DeckContact {
             public AudioReverbTrigger wind;
             public double lastStep;
@@ -31,8 +38,28 @@ namespace LethalGoofballsPack {
         static bool AllowPlayerStay(AudioReverbTrigger __instance, Collider other) {
             if (!other.CompareTag("Player") || !other.TryGetComponent<PlayerControllerB>(out var player)) return true;
             var active = player.currentAudioTrigger;
+            // V81 stores the resolved preset on the player, not the actual collider that invoked it.
+            bool resolvedWind = false, activeWindPreset = false;
+            double step = Time.fixedTimeAsDouble;
+            if (__instance.usePreset >= 0 && !__instance.elevatorTriggerForProps) {
+                if (!presets) presets = Object.FindObjectOfType<AudioReverbPresets>();
+                int index = __instance.usePreset;
+                var effect = presets && index < presets.audioPresets.Length ? presets.audioPresets[index] : null;
+                if (effect && effect.usePreset < 0 && effect.name == "OutsideShipAmbience") {
+                    var contact = presetContacts.GetOrCreateValue(player);
+                    bool repeat = active == effect && contact.volume == __instance && contact.applied == effect &&
+                        step - contact.step <= Time.fixedDeltaTime * 1.5;
+                    contact.volume = __instance; contact.applied = effect; contact.step = step;
+                    if (repeat) return false;
+                    resolvedWind = true;
+                }
+            } else if (active && presetContacts.TryGetValue(player, out var last) && last.applied == active &&
+                       last.volume && step - last.step <= Time.fixedDeltaTime * 1.5) {
+                active = last.volume;
+                activeWindPreset = true;
+            }
             if (!active || active == __instance || !active.isActiveAndEnabled ||
-                active.usePreset >= 0 || __instance.usePreset >= 0) return true;
+                (__instance.usePreset >= 0 && !resolvedWind)) return true;
             var ship = StartOfRound.Instance;
             if (!ship || !ship.elevatorTransform) return true;
             if (!shipZones || shipZones.parent != ship.elevatorTransform)
@@ -41,7 +68,7 @@ namespace LethalGoofballsPack {
             if (!__instance.transform.IsChildOf(shipZones)) {
                 // A planet's exterior wind must not replace an occupied cabin's authored mix.
                 return !(player.isInHangarShipRoom && active.isShipRoom && active.transform.IsChildOf(shipZones) &&
-                    __instance.transform.parent && __instance.transform.parent.name == "WindTriggers" &&
+                    (resolvedWind || (__instance.transform.parent && __instance.transform.parent.name == "WindTriggers")) &&
                     (!__instance.elevatorTriggerForProps || __instance.setInElevatorTrigger) && !__instance.isShipRoom &&
                     active.TryGetComponent<BoxCollider>(out var cabin) && cabin.enabled && cabin.isTrigger && Touches(cabin, other));
             }
@@ -51,7 +78,7 @@ namespace LethalGoofballsPack {
                 if (__instance.elevatorTriggerForProps && !__instance.isShipRoom && !active.isShipRoom &&
                     (!active.elevatorTriggerForProps || (__instance.setInElevatorTrigger && active.setInElevatorTrigger &&
                      player.isInElevator && !player.isInHangarShipRoom)) &&
-                    active.transform.parent && active.transform.parent.name == "WindTriggers" &&
+                    (activeWindPreset || (active.transform.parent && active.transform.parent.name == "WindTriggers")) &&
                     active.TryGetComponent<BoxCollider>(out var wind) && wind.enabled && wind.isTrigger && Touches(wind, other)) {
                     var contact = deckContacts.GetOrCreateValue(player).GetOrCreateValue(__instance);
                     double now = Time.fixedTimeAsDouble;

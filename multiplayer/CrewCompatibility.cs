@@ -14,7 +14,7 @@ using TalkingHeads.VoiceChatPatch;
 using Unity.Netcode;
 using UnityEngine;
 
-[BepInPlugin("NT1Ho.CrewCompatibility", "Crew Compatibility", "1.0.1")]
+[BepInPlugin("NT1Ho.CrewCompatibility", "Crew Compatibility", "1.0.2")]
 [BepInDependency("OpJosMod.ReviveCompany")]
 [BepInDependency("TalkingHeads")]
 [BepInDependency("mattymatty.LobbyControl")]
@@ -22,7 +22,6 @@ using UnityEngine;
 public sealed class CrewCompatibility : BaseUnityPlugin
 {
     static CrewCompatibility instance;
-    static FreeRunningTimer joinTimer;
     void Awake()
     {
         instance = this;
@@ -43,7 +42,6 @@ public sealed class CrewCompatibility : BaseUnityPlugin
         Patch("TalkingHeads.VoiceChatPatch.VoicePatchPatch:LateUpdate", il: nameof(RemoveStale));
         Patch("MoreCompany.CosmeticSyncPatch:SV_ReceiveCosmetics", il: nameof(CosmeticDelivery));
         Patch("MoreCompany.CosmeticSyncPatch:SyncCosmeticsToOtherClients", il: nameof(CosmeticDelivery));
-        joinTimer = (FreeRunningTimer)AccessTools.Field(AccessTools.TypeByName("LobbyControl.Patches.JoinQueuePatches"), "ConnectionTimer").GetValue(null);
         Patch("LobbyControl.API.ConnectionEvents:get_HasCompletedAllCheckpoints", postfix: nameof(OptionalBadge));
         MaskedAnimation.Install(Logger);
         Logger.LogInfo("V81 crew compatibility ready");
@@ -219,7 +217,7 @@ public sealed class CrewCompatibility : BaseUnityPlugin
     }
     static void OptionalBadge(ref bool __result)
     {
-        if (__result || !ConnectionEvents.ConnectingClientId.HasValue || !joinTimer.TimedOut) return;
+        if (__result || !ConnectionEvents.ConnectingClientId.HasValue) return;
         ulong peer = ConnectionEvents.ConnectingClientId.Value;
         var missing = ConnectionEvents.MissingCheckpoints;
         if (missing.Length != 1 || missing[0].Name != "SyncAllPlayerLevels" ||
@@ -228,6 +226,6 @@ public sealed class CrewCompatibility : BaseUnityPlugin
             !StartOfRound.Instance.allPlayerScripts.Any(p => p && p.actualClientId == peer && p.isPlayerControlled)) return;
         // V81 explicitly skips level sync when local badge data cannot load. No other checkpoint is waived.
         __result = true;
-        instance.Logger.LogInfo("Connected player admitted after optional HUD level sync timed out");
+        instance.Logger.LogInfo("Connected player admitted after essential checkpoints; only optional HUD level sync pending");
     }
 }

@@ -1,5 +1,8 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
+
+using System.Linq;
 using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
@@ -15,6 +18,7 @@ internal static class MaskedAnimation
     {
         log = logger;
         var patch = new Harmony("NT1Ho.CrewCompatibility.MaskedAnimation");
+        patch.Patch(AccessTools.PropertySetter(typeof(Animator), "runtimeAnimatorController"), prefix: Hook(nameof(GuardMirageController)));
         var emote = AccessTools.TypeByName("TooManyEmotes.EmoteControllerMaskedEnemy");
         if (emote != null)
         {
@@ -25,7 +29,20 @@ internal static class MaskedAnimation
         patch.Patch(AccessTools.DeclaredMethod(typeof(MaskedPlayerEnemy), "HitEnemy"), prefix: Hook(nameof(BeforeHit)));
         patch.Patch(AccessTools.DeclaredMethod(typeof(MaskedPlayerEnemy), "KillEnemy"), prefix: Hook(nameof(BeforeDeath)));
     }
-    static HarmonyMethod Hook(string name) => new HarmonyMethod(typeof(MaskedAnimation), name);
+    // Mirage registers its hook after PreInit and can retain a destroyed Unity asset.
+    // Only intercept a destructive write by that hook to the live Masked rig.
+    static bool GuardMirageController(Animator __instance, ref RuntimeAnimatorController __0)
+    {
+        if (__0 || !__instance || __instance.name != "metarig") return true;
+        var m = __instance.GetComponentInParent<MaskedPlayerEnemy>();
+        if (!m || m.creatureAnimator != __instance) return true;
+        var frames = new StackTrace(false).GetFrames();
+        if (frames == null || !frames.Any(f => (f.GetMethod()?.DeclaringType?.FullName ?? "").StartsWith("Mirage.Hook.MaskedPlayerEnemy+", StringComparison.Ordinal))) return true;
+        var bundle = AssetBundle.GetAllLoadedAssetBundles().FirstOrDefault(b => b.name.IndexOf("mirage", StringComparison.OrdinalIgnoreCase) >= 0 && b.Contains("metarig_0.controller"));
+        if (bundle) __0 = bundle.LoadAsset<RuntimeAnimatorController>("metarig_0.controller");
+        log.LogWarning("Prevented Mirage clearing Masked controller at spawn; reloaded=" + (bool)__0 + " id=" + m.NetworkObjectId);
+        return __0;
+    }    static HarmonyMethod Hook(string name) => new HarmonyMethod(typeof(MaskedAnimation), name);
     static readonly int Moving = Animator.StringToHash("IsMoving");
 
     // V81 writes IsMoving on the creature rig. The auxiliary humanoid plays emotes only.
