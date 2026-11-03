@@ -8,7 +8,7 @@ using WesleyMoonScripts.Components;
 
 namespace LethalGoofballsPack.WesleyZh
 {
-    [BepInPlugin("NT1Ho.WesleyDisplayZh", "Wesley 简中显示补充", "1.1.0")]
+    [BepInPlugin("NT1Ho.WesleyDisplayZh", "Wesley 简中显示补充", "1.2.0")]
     [BepInDependency("JacobG5.WesleyMoonScripts")]
     [BepInDependency("Yorimor.CustomStoryLogs")]
     [BepInDependency("Aueser.LCChineseProject")]
