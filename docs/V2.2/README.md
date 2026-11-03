@@ -2,6 +2,16 @@
 
 正式基线 V2.1.2，清单身份 932ae811aacc3f9a7e963c1384cfb348be1612a70eb5cde5c26a7157e8d79c7f。标准累计 ZIP 由管理端读回验证。候选清单共 1323 个路径，相对基线替换八个文件，其中四个 MOD DLL、一份 BetterStamina 配置及三份接收端展示／归属／来源资料。没有新增删除指令。
 
+## 当前候选 · 电源之心 0.2.1-dev
+
+已安装到本机 Steam，实际 V81 启动到主菜单并加载 Universal Wrench 0.2.1。相对上一份候选仅替换扳手 DLL 和三份对应的展示、来源及归属资料。管理端标准累计 ZIP 的 SHA-256 为 72e201ba253126876b9d2548e49ef2a487a3ae65387b9b17cbfaae45cada71d2，Steam DLL 的 SHA-256 为 4383c0d84a81e679c79b008220b3fc2715b6f0eaaccc1536a219ccff08b93902。上一份候选已备份，正式渠道仍为 V2.1.2。
+
+- 恢复 V2.2 前专业手电的原生灯色和色温。保留 1.2 倍亮度、1.5 倍射程及 1.5 倍光斑直径。
+- 原先近距不足 2.5 秒的物种提高至 2.5 秒，仍随距离衰减。囤积虫近、中、远实测为 2.500、1.739、0.981 秒。
+- March 原色雾天的同机独立房主、客户端均可分辨 37.13 米处的参照物，光束外对照保持一致。Cosmocos 也已完成视角与持灯者的交叉对照。详见[扳手实机验收记录](https://github.com/NT1Ho/UniversalWrench/blob/ecda0b6aa3622f7618bdc504fd16d245f0011ee3/docs/HEART_021.md)。
+
+## 上一份候选的开发与验收记录（0.2.0-dev）
+
 - Crew Compatibility 1.0.2 和 Ship Edge Reverb 1.0.4 复用已验证登记，见同目录上一级 NOV3-V81-QA.md。
 - Universal Wrench 0.2.0-dev 从 0.1.33 继续，保留便携地雷姿势修复。参数、同机 V81 房主与客户端实测及局限见 [扳手开发提交](https://github.com/NT1Ho/UniversalWrench/commit/843352fb90affd0524dd7bf0e021d5bf203a8154)。
 - BetterStamina 1.5.7 的奔跑消耗改为 0.70，站立与步行恢复均为 1.35，负重惩罚保持 0.65。已按 BepInEx 实际写回的 0.7 保存，Steam 与隔离端哈希一致，避免下一次文件核验重复替换。配置复本附于本目录。
@@ -11,7 +21,7 @@
 
 本轮仅在本地准备。外网分机、具体天气下局部驱雾的视觉收益仍待验收。
 
-## 最终文件与针对性复核
+### 0.2.0-dev 文件与针对性复核
 
 Steam 原安装实际启动至主菜单，BepInEx 加载四个目标 DLL 及 BetterStamina 1.5.7。退出后五个安装文件逐一与管理端候选 SHA-256 匹配。正式版 V2.1.2 的版本记录仍保留。标准 ZIP SHA-256 为 71d65de0cc39da0d8198471b244a6e6dcfba031d1e35309f4e318326b9b02dd8。
 
