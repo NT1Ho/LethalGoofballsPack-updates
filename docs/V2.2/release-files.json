@@ -1,0 +1,66 @@
+[
+  {
+    "path": "BepInEx/config/FlipMods.BetterStamina.cfg",
+    "before": "386a8f1ee7a75fd76cca81f2091c1b2ee328ce6d35887f95f0f270ec090a0506",
+    "sha256": "708aa660c01853f27af904f8eeec66240f93af059ef4bfe7ed98d6124d610d96",
+    "bytes": 5164,
+    "package": "FlipMods-BetterStamina",
+    "source_commit": null
+  },
+  {
+    "path": "BepInEx/pack-info/display-pages.json",
+    "before": "9be976a39f122198041e7e30ed9d2a5fb61a6900ea61d219fc19669c831e3d1f",
+    "sha256": "e041eca408e2e598271b8920a2361c010a4c806c0ebf4d0bd36eabfa2553fbe9",
+    "bytes": 40011,
+    "package": null,
+    "source_commit": null
+  },
+  {
+    "path": "BepInEx/pack-info/download-sources.json",
+    "before": "49786c4350ce20fb17089223abe7fc1703a4f56c042097eab729ded7c2ba0497",
+    "sha256": "81ac50f1adf8ded691616105f71d7c137bfefddd262a288cb099574a8c3d9e1c",
+    "bytes": 32842,
+    "package": null,
+    "source_commit": null
+  },
+  {
+    "path": "BepInEx/pack-info/original-files.json",
+    "before": "587b776ca132172489dd8a3abb8a302d07a3caeb6b8eadb7169ab420201adee1",
+    "sha256": "5f87b9ab453a2ac6bcf8ab5521d7dbc53aea15b113ec14c694b45ad99a5b16b0",
+    "bytes": 277516,
+    "package": null,
+    "source_commit": null
+  },
+  {
+    "path": "BepInEx/plugins/UniversalWrench/UniversalWrench.dll",
+    "before": "88b51f5ade07762c6d0d6c3b61c8db08c9497fd0a1eaf933b75a34c4f7ddc2b6",
+    "sha256": "273c469745c3bdbdc7fb1373dbbb2fb55dc810f94430279ed84f96e5e5b8f418",
+    "bytes": 678912,
+    "package": "NT1Ho-UniversalWrench",
+    "source_commit": "021ca5dca49c3e9c2f141a649090d1b1c5ccadbb"
+  },
+  {
+    "path": "BepInEx/plugins/NT1Ho-WesleyZhCN/WesleyDisplayZh.dll",
+    "before": "0b2a4fbb3ef1174ab1bc53320ebe9e39c56d73ca4e3d3a50f944c8deb71be18c",
+    "sha256": "b33bddad007c889d3c6d366f3f6056794804fd22c0b71800663e1da139317626",
+    "bytes": 16896,
+    "package": "NT1Ho-WesleyZhCN",
+    "source_commit": "c8f73b0813e8064f85ec05fbb67b9a2a3a10a7b4"
+  },
+  {
+    "path": "BepInEx/plugins/NT1Ho-CrewCompatibility/CrewCompatibility.dll",
+    "before": "0a644445d01cc4746b4660230bd987d29b657e416f079bbeab9409c7e38bcc11",
+    "sha256": "350145e180653767ed3a5cedee50b2e6ff3aaa2a2415bddc629b1495531cf461",
+    "bytes": 25600,
+    "package": "NT1Ho-CrewCompatibility",
+    "source_commit": "2aafc0bf55097ad257266ad7d2b95b7ace14bdaa"
+  },
+  {
+    "path": "BepInEx/plugins/NT1Ho-ShipEdgeReverb/ShipEdgeReverb.dll",
+    "before": "4db095ecc06cf2e995c55fb07d2bfce00c817161394775601b765dfd92abefe5",
+    "sha256": "807f4f7b6433c3fc826a6124223da597c9f7dae6b516cfc1b8c5b70b2ef19861",
+    "bytes": 9728,
+    "package": "NT1Ho-ShipEdgeReverb",
+    "source_commit": "2aafc0bf55097ad257266ad7d2b95b7ace14bdaa"
+  }
+]
