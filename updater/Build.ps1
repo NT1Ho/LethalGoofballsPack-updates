@@ -68,6 +68,10 @@ if (!$AdminOnly -and -not $SkipTests -and (Test-Path (Join-Path $projectRoot 'te
     & (Join-Path $projectRoot 'tests\RoutingTests.exe')
     if ($LASTEXITCODE -ne 0) { throw 'Routing tests failed' }
     & (Join-Path $projectRoot 'tests\Test-Admin.ps1') -AdminExe (Join-Path $outputDir 'Lethal company pack Updater Admin.exe') -ReceiverExe (Join-Path $outputDir 'Lethal company pack Updater.exe')
+    & $compiler /nologo /target:exe @refs "/r:$(Join-Path $outputDir 'Lethal company pack Updater.exe')" "/out:$(Join-Path $outputDir 'RetirementInstallTests.exe')" (Join-Path $projectRoot 'tests\RetirementInstallTests.cs')
+    if ($LASTEXITCODE -ne 0) { throw 'Retirement test build failed' }
+    & (Join-Path $outputDir 'RetirementInstallTests.exe') (Join-Path ([IO.Path]::GetTempPath()) ('lgp-retirement-'+[Guid]::NewGuid().ToString('N')))
+    if ($LASTEXITCODE -ne 0) { throw 'Retirement tests failed' }
     & $compiler /nologo /optimize+ /target:exe /main:DpiTests "/win32manifest:$manifest" /platform:anycpu /utf8output @refs "/out:$(Join-Path $projectRoot 'tests\DpiTests.exe')" $common $ui $publisherCore @inventory @cecil @adminModules (Join-Path $projectRoot 'src\Client.cs') $selfUpdate $clientVersion @diagnostics (Join-Path $projectRoot 'tests\DpiTests.cs')
     if ($LASTEXITCODE -ne 0) { throw 'DPI test build failed' }
     & (Join-Path $projectRoot 'tests\DpiTests.exe')

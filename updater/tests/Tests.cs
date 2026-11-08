@@ -88,7 +88,7 @@ class Tests {
             runRoot=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"runs",DateTime.UtcNow.ToString("yyyyMMddHHmmss"));Directory.CreateDirectory(runRoot);
             if(args.Contains("--publisher")){Publishing();PublishingConcurrency();Console.WriteLine("Publisher regression checks passed.");return;}
             if(args.Contains("--badges")){Badges();Console.WriteLine("Badge regression checks passed.");return;}
-            var timer=Stopwatch.StartNew();Paths();Updates();Badges();MutableConfigs();Recovery();Publishing();PublishingConcurrency();GameProcess();timer.Stop();
+            var timer=Stopwatch.StartNew();Paths();Updates();Retirement();Badges();MutableConfigs();Recovery();Publishing();PublishingConcurrency();GameProcess();timer.Stop();
             Console.WriteLine("RESULT: "+passed+" checks passed in "+timer.Elapsed.TotalSeconds.ToString("0.00")+" s; fixtures only; no real game files changed.");
         }catch(Exception e){Console.Error.WriteLine(e);Environment.ExitCode=1;}
     }
@@ -175,6 +175,31 @@ class Tests {
         string jroot=NewRoot(),outside=Path.Combine(runRoot,"outside");Directory.CreateDirectory(outside);Directory.CreateDirectory(Path.Combine(jroot,"BepInEx"));File.WriteAllText(Path.Combine(outside,"safe.txt"),"safe");
         using(var p=Process.Start(new ProcessStartInfo("cmd.exe","/c mklink /J \""+Path.Combine(jroot,"BepInEx","plugins")+"\" \""+outside+"\""){UseShellExecute=false,CreateNoWindow=true,RedirectStandardOutput=true,RedirectStandardError=true})){p.StandardOutput.ReadToEnd();p.WaitForExit();Assert(p.ExitCode==0,"junction fixture created");}
         var jd=new Downloads();jd.manifest=new Manifest{version="j",files=new List<PackFile>{F(jd,"BepInEx/plugins/safe.txt","unsafe")}};Reject(()=>Run(jroot,jd),"junction target blocked");Assert(File.ReadAllText(Path.Combine(outside,"safe.txt"))=="safe","junction cannot escape game root");
+    }
+    static void Retirement() {
+        foreach(bool managed in new[]{false,true}) {
+            string root=NewRoot();var d=new Downloads();
+            d.manifest=new Manifest{version="old",files=RetiredFiles.Snatch.Select(p=>F(d,p,"old")).ToList()};
+            if(managed)Run(root,d);
+            foreach(string p in RetiredFiles.Snatch)Put(root,p,"personal contents");
+            const string shared="BepInEx/plugins/Lutschlon-EverythingCanDieAlternative/ui_images/SNATCHER.jpg";
+            Put(root,shared,"keep shared");Put(root,"BepInEx/core/BepInEx.dll","keep dependency");
+            d.manifest=new Manifest{version="retired",deletes=RetiredFiles.Snatch.ToList()};
+            var r=Run(root,d);
+            Assert(r.deleted==5&&r.skipped==0&&RetiredFiles.Snatch.All(p=>!File.Exists(Target(root,p))),"retired files removed including edited config; managed="+managed);
+            var backup=Directory.GetDirectories(Target(root,".lcpack-updater/backups")).Single(p=>Data.Load<Journal>(Path.Combine(p,"journal.json")).changes.Any(c=>c.newHash==null));
+            var journal=Data.Load<Journal>(Path.Combine(backup,"journal.json"));
+            Assert(journal.changes.Count==5&&journal.changes.All(c=>File.ReadAllText(Path.Combine(backup,c.backup))=="personal contents"),"retirement retains exact backups; managed="+managed);
+            Assert(File.ReadAllText(Target(root,shared))=="keep shared"&&File.ReadAllText(Target(root,"BepInEx/core/BepInEx.dll"))=="keep dependency","shared files preserved");
+            Assert(Run(root,d).deleted==0,"retirement idempotent");
+        }
+        string rollback=NewRoot();foreach(string p in RetiredFiles.Snatch)Put(rollback,p,"original");
+        var remove=new Downloads{manifest=new Manifest{version="retired",deletes=RetiredFiles.Snatch.ToList()}};
+        using(var locked=new FileStream(Target(rollback,RetiredFiles.Snatch[1]),FileMode.Open,FileAccess.Read,FileShare.Read))Reject(()=>Run(rollback,remove),"locked retired config aborts");
+        Assert(RetiredFiles.Snatch.All(p=>File.ReadAllText(Target(rollback,p))=="original"),"partial retirement rolls back");
+        Assert(RetiredFiles.Contains(RetiredFiles.Snatch[0].ToUpperInvariant())&&!RetiredFiles.Contains(RetiredFiles.Snatch[0]+".other"),"retirement exact case insensitive paths only");
+        var unchanged=new Downloads{manifest=new Manifest{version="unchanged"}};Run(rollback,unchanged);
+        Assert(RetiredFiles.Snatch.All(p=>File.Exists(Target(rollback,p))),"no deletion without manifest instruction");
     }
     static void Recovery() {
         string root=NewRoot();Put(root,"BepInEx/plugins/a.dll","old-a");Put(root,"BepInEx/plugins/b.dll","old-b");var d=new Downloads();d.manifest=new Manifest{version="v2",files=new List<PackFile>{F(d,"BepInEx/plugins/a.dll","new-a"),F(d,"BepInEx/plugins/b.dll","new-b")}};

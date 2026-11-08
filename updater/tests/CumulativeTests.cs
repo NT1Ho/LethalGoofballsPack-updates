@@ -48,6 +48,12 @@ class CumulativeTests {
         Cumulative.ValidateReceipt(Data.Json(removedInfo),m.baseHash);
         removedInfo.files[0].path="BepInEx/pack-info/Other/manifest.json";Refuse(()=>Cumulative.ValidateReceipt(Data.Json(removedInfo),m.baseHash),"可登记");
         removedInfo.files[0].path="BepInEx/pack-info/display-pages.json";Refuse(()=>Cumulative.ValidateReceipt(Data.Json(removedInfo),m.baseHash),"可登记");
+        removedInfo.package="OrdenDelDiamanteRojo-SnatchinBrackenFORK";
+        removedInfo.files=RetiredFiles.Snatch.Select(p=>new ResultFile{path=p,before=Data.Hash(input)}).ToList();
+        Cumulative.ValidateReceipt(Data.Json(removedInfo),m.baseHash);Ok(true,"retired fork accepts exact legacy metadata paths");
+        removedInfo.package="Local-Other";Refuse(()=>Cumulative.ValidateReceipt(Data.Json(removedInfo),m.baseHash),"可登记");
+        var retiredDraft=new Draft{files=new List<PackFile>{new PackFile{path=RetiredFiles.Snatch[0],sha256=Data.Hash(input),size=new FileInfo(input).Length}}};
+        Refuse(()=>AdminWorkspace.Candidate(retiredDraft,"qa"),"永久移除");
         m.version="1.2.0";m.revision++;Register(ws,m,new Dictionary<string,string>{{patch,"new verified"},{cfg,"setting"}});
         var other=new ModResult{baseHash=m.baseHash,package="Local-B",kind="新增",revision=1,version="1.0.0",summary="新增资源",tests="通过",dependencies=new[]{"Local-A-1.2.0"},files=new List<ResultFile>{new ResultFile{path=patch,before=Data.Hash(input)}}};
         Register(ws,other,new Dictionary<string,string>{{patch,"conflict"}});Refuse(()=>Cumulative.Build(draft),"相同文件");

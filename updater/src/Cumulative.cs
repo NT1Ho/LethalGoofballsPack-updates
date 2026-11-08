@@ -44,7 +44,8 @@ public static class Cumulative {
         Require(m.files!=null&&m.files.Count>0&&m.files.Count<=10000,m.package+" 缺少文件清单");
         foreach(var f in m.files){
             Require(f!=null,"存在空文件项");SafePath.Validate(f.path);
-            bool removedPackageInfo=m.kind=="移除"&&f.sha256==null&&f.path.StartsWith("BepInEx/pack-info/"+m.package+"/",StringComparison.OrdinalIgnoreCase);
+            bool removedPackageInfo=m.kind=="移除"&&f.sha256==null&&(f.path.StartsWith("BepInEx/pack-info/"+m.package+"/",StringComparison.OrdinalIgnoreCase)||
+                (CI.Equals(m.package,"OrdenDelDiamanteRojo-SnatchinBrackenFORK")&&RetiredFiles.Contains(f.path)));
             bool restoredInfo=m.kind=="新增"&&f.before==null&&f.sha256!=null&&new[]{"manifest.json","README.md","CHANGELOG.md"}.Any(n=>CI.Equals(f.path,"BepInEx/pack-info/"+m.package+"/"+n));
             Require((removedPackageInfo||restoredInfo||Regex.IsMatch(f.path,@"^BepInEx/(plugins|config|patchers)/",RegexOptions.IgnoreCase))&&!Regex.IsMatch(f.path,@"(?:^|/)(?:\.git|bin|obj|logs?|cache|saves?|diagnostics|tests?)(?:/|$)|\.(?:pdb|log|bak|old|tmp|sav|exe|ps1|cmd|bat|cs|zip)$|LethalDiagnostics\.dll$|nt1ho\.lethaldiagnostics\.cfg$",RegexOptions.IgnoreCase),"此路径不属于可登记的最终 MOD 文件："+f.path);
             Require((f.before==null||Hash(f.before))&&(f.sha256==null||Hash(f.sha256))&&f.before!=f.sha256,"文件新旧哈希无效或无变化："+f.path);
@@ -145,7 +146,8 @@ public static class Cumulative {
         var history=pages.History.FirstOrDefault(h=>h.Version==tag);if(history==null){history=new HistoryRelease{Version=tag,PublishedUtc=DateTimeOffset.Now.ToString("o"),Changes=new List<HistoryEntry>()};pages.History.Insert(0,history);}
         foreach(var m in b.results){
             var previous=packs.SingleOrDefault(r=>CI.Equals(Val(r,"package"),m.package));
-            if(!String.IsNullOrEmpty(m.fromVersion))Require(previous!=null&&Val(previous,"version")==m.fromVersion,"候选组件起始版本不匹配："+m.package);
+            bool alreadyRemoved=m.kind=="移除"&&previous==null&&m.files.All(f=>f.sha256==null&&!current.ContainsKey(f.path)&&next.deletes.Contains(f.path,CI));
+            if(!String.IsNullOrEmpty(m.fromVersion))Require(alreadyRemoved||(previous!=null&&Val(previous,"version")==m.fromVersion),"候选组件起始版本不匹配："+m.package);
             string key=m.package.Substring(m.package.IndexOf('-')+1);
             foreach(var f in m.files){
                 PackFile old;current.TryGetValue(f.path,out old);var owner=owners.SingleOrDefault(r=>CI.Equals(Val(r,"path"),f.path));

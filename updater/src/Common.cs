@@ -21,6 +21,17 @@ public static class Channel {
     public const string ClientName = "Lethal company pack Updater.exe";
 }
 public class PackFile { public string path; public string sha256; public long size; public string url; }
+public static class RetiredFiles {
+    // Explicit removal still requires a manifest delete; existing journal backups preserve personal configs.
+    public static readonly string[] Snatch = {
+        "BepInEx/plugins/readthisifbad-SnatchinBracken/SnatchingBracken.dll",
+        "BepInEx/config/Ovchinikov.SnatchinBracken.Main.cfg",
+        "BepInEx/pack-info/readthisifbad-SnatchinBracken/manifest.json",
+        "BepInEx/pack-info/readthisifbad-SnatchinBracken/README.md",
+        "BepInEx/pack-info/readthisifbad-SnatchinBracken/UPSTREAM_LICENSE"
+    };
+    public static bool Contains(string path){return Snatch.Contains(path,StringComparer.OrdinalIgnoreCase);}
+}
 public class Manifest {
     public int schema = 1;
     public string version = "";
@@ -273,8 +284,10 @@ public class Engine {
         }
         foreach (string n in m.deletes) {
             string p = SafePath.Target(root, n); if (!File.Exists(p)) continue;
-            if (!owned.ContainsKey(n)) { skipped++; continue; }
-            if (Data.Hash(p) != owned[n].sha256) throw new IOException("待删除文件已被本地修改，未删除：" + n);
+            if (!RetiredFiles.Contains(n)) {
+                if (!owned.ContainsKey(n)) { skipped++; continue; }
+                if (Data.Hash(p) != owned[n].sha256) throw new IOException("待删除文件已被本地修改，未删除：" + n);
+            }
             deletions.Add(n);
         }
         guard();

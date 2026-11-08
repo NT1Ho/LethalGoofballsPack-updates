@@ -51,7 +51,7 @@ try{
     if($PSBoundParameters.ContainsKey('Dependencies')){$deps=@($Dependencies|Where-Object {$_})}
     foreach($p in @($Files.Keys)+@($Remove)){
         [void][LcPack.SafePath]::Validate($p)
-        $removedInfo=$Kind -eq '移除' -and $Remove -contains $p -and !$Files.ContainsKey($p) -and $p.StartsWith("BepInEx/pack-info/$Package/",[StringComparison]::OrdinalIgnoreCase)
+        $removedInfo=$Kind -eq '移除' -and $Remove -contains $p -and !$Files.ContainsKey($p) -and ($p.StartsWith("BepInEx/pack-info/$Package/",[StringComparison]::OrdinalIgnoreCase) -or ($Package -eq 'OrdenDelDiamanteRojo-SnatchinBrackenFORK' -and [LcPack.RetiredFiles]::Contains($p)))
         $restoredInfo=$Kind -eq '新增' -and $Files.ContainsKey($p) -and $draft.Base.deletes -contains $p -and @("BepInEx/pack-info/$Package/manifest.json","BepInEx/pack-info/$Package/README.md","BepInEx/pack-info/$Package/CHANGELOG.md") -contains $p
         if(!$removedInfo -and !$restoredInfo -and $p -notmatch '^BepInEx/(config|plugins|patchers)/'){throw "登记范围不允许 $p"}
         if($Files.ContainsKey($p) -and $Remove -contains $p){throw "同时写入和删除 $p"}

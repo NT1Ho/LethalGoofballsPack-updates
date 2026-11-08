@@ -54,6 +54,7 @@ public sealed class AdminWorkspace {
         var m=Data.Read<Manifest>(Data.Json(new Manifest{version=version,files=draft.files,deletes=draft.deletes}));
         foreach(var f in m.files)if(String.IsNullOrEmpty(f.url))f.url=Channel.Web+"/releases/download/"+version+"/"+f.sha256+".bin";
         SafePath.ValidateManifest(m);
+        if(m.files.Any(f=>RetiredFiles.Contains(f.path)))throw new InvalidDataException("SnatchinBracken 已永久移除，不能重新加入候选清单。");
         return m;
     }
     void Commit(Draft next){
