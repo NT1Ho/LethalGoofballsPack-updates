@@ -1,0 +1,53 @@
+{
+  "base": "V2.2",
+  "gameVersion": 81,
+  "settings": [
+    {
+      "path": "BepInEx/config/Zaggy1024.OpenBodyCams.cfg",
+      "section": "ShipUpgrade",
+      "key": "Enabled",
+      "from": true,
+      "to": false
+    },
+    {
+      "path": "BepInEx/config/nwnt.EverythingCanDieAlternative.cfg",
+      "section": "Mobs",
+      "key": "RADMECH.Health",
+      "from": 15,
+      "to": 25
+    },
+    {
+      "path": "BepInEx/config/Entity378.sellbodies.cfg",
+      "section": "Body Values",
+      "key": "Min price of Old Bird Bodies",
+      "from": 750,
+      "to": 500
+    },
+    {
+      "path": "BepInEx/config/Entity378.sellbodies.cfg",
+      "section": "Body Values",
+      "key": "Max price of Old Bird Bodies",
+      "from": 900,
+      "to": 600
+    }
+  ],
+  "hEnhancedMoreCounterplay": {
+    "assemblyVersion": "1.5.1",
+    "plugin": "BaronDrakula.MoreCounterplay",
+    "baselineDLLSHA256": "d088de9bb49009400b6d1ba6e2808814f630973809a1047aeb58418bc5c1b84e",
+    "candidateDLLSHA256": "15edf5d042c747515e7e41aa1a62c16e5923eecdddc1db92c5260fa514059cf1",
+    "lightningSetting": {
+      "path": "BepInEx/config/BaronDrakula.MoreCounterplay.cfg",
+      "section": "Old Bird",
+      "key": "OldBirdShutdownSeconds",
+      "seconds": 10
+    },
+    "zapSeconds": 5
+  },
+  "selfSortingStorage": {
+    "package": "Zigzag-SelfSortingStorage-1.5.3",
+    "officialZipSHA256": "2f0a3c23d9d41b87f3ab28f810643279656c1b386b69e6edc3f813040397a95b",
+    "priceCredits": 20,
+    "useStockConfiguration": true
+  }
+}
