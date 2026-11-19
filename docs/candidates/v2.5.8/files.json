@@ -24,14 +24,14 @@
         "change":  "替换",
         "path":  "BepInEx/pack-info/download-sources.json",
         "before_sha256":  "bee2ab2b6eea0a579dcb58050fa8f63d4e5422aa9c5f9b7a3dd62a5669b6dbac",
-        "after_sha256":  "c3d05ecc4ca5c6d99cfb984a2c5fad3a7727fc37e0a929100c3ecf6b95f4977c",
+        "after_sha256":  "5ea52823e28e118a7654c7776332496873ba0664be2498bc38fe4c52ed0b7a4e",
         "size":  38482
     },
     {
         "change":  "替换",
         "path":  "BepInEx/pack-info/installed-files.sha256",
         "before_sha256":  "8180684daaafeed71c05826deccf95b6fc7425777ffd96291e71617f6fe1d24c",
-        "after_sha256":  "d777868836540b486078150b1229a03feb67f1b4b5cbc4c58fabfc0fe258d03e",
+        "after_sha256":  "9db6d2419798b1b689c5a76f676a5b27b58f16a01278c44cbffa4620586d2e8b",
         "size":  184418
     },
     {
@@ -66,14 +66,14 @@
         "change":  "替换",
         "path":  "BepInEx/pack-info/original-files.json",
         "before_sha256":  "5d6305554da0a981b4d522061ef3cd6207e39ae4cc5aaee5d57cbb427b5bb447",
-        "after_sha256":  "96cca8cf1c971166a5512ff5e6fefc7b1b896e22a4777cca8c24c7ec8ce3af3c",
+        "after_sha256":  "b54a4ae65b64849553d760d0e985461830a12c341c1ccf3bbea10e75c0e8e313",
         "size":  312662
     },
     {
         "change":  "新增",
         "path":  "BepInEx/plugins/LethalGoofballsPack-SlimeBlast/SlimeBlast.dll",
         "before_sha256":  null,
-        "after_sha256":  "b4d2a6baae6acc4b04f257210a79fe18f1fa07c3baba12650e61add0f7f45afe",
+        "after_sha256":  "8d80f7fff4425d82ae11225acf9f76e0befe220699e3aeacceef337d0b622746",
         "size":  7680
     },
     {
