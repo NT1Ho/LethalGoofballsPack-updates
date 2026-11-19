@@ -1,0 +1,93 @@
+[
+    {
+        "change":  "替换",
+        "path":  "BepInEx/config/fandovec03.NaturalSelection.cfg",
+        "before_sha256":  "a8fae9d288cbafcd9b99e25716b1715b36d48d0ae6b8ed0f1652d0cb08235dee",
+        "after_sha256":  "d4166e81ad5f5aecce4cb0357ed6fec0754bc87dd061f2b9364b4eb5882275b4",
+        "size":  10251
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/config-changes.json",
+        "before_sha256":  "e02a638d286ec7a2a31744bdb05227ea5a72e8182c8233aa1c66245c69a83ac1",
+        "after_sha256":  "3994f4a13ccbea1c1cb986317250780e7aa6fe540866b352ef9cf80774144813",
+        "size":  38845
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/display-pages.json",
+        "before_sha256":  "66cd93728fe25bd79454664f976554cac1235950f501d463b1d2e7d72987c1ba",
+        "after_sha256":  "57b2110babbd789dd046b8e28e7fcc0f6c4fb1b6d06d29852e72e4f52bec9581",
+        "size":  45821
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/download-sources.json",
+        "before_sha256":  "bee2ab2b6eea0a579dcb58050fa8f63d4e5422aa9c5f9b7a3dd62a5669b6dbac",
+        "after_sha256":  "c3d05ecc4ca5c6d99cfb984a2c5fad3a7727fc37e0a929100c3ecf6b95f4977c",
+        "size":  38482
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/installed-files.sha256",
+        "before_sha256":  "8180684daaafeed71c05826deccf95b6fc7425777ffd96291e71617f6fe1d24c",
+        "after_sha256":  "d777868836540b486078150b1229a03feb67f1b4b5cbc4c58fabfc0fe258d03e",
+        "size":  184418
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/local-universal-wrench.json",
+        "before_sha256":  "7cf9333d141c42051266917fa1ae6245e333654c02f98cfc18395a8af8fe1be7",
+        "after_sha256":  "f1294bf5274a0a0181aaa56cb325564cd7f94b75bdbcb91c849e4bbbf8c41ac1",
+        "size":  2504
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/manifest.json",
+        "before_sha256":  "2e8fbd8ebac5529f42bb207babc8c3af82155185b87a1a51b11cb597fa1b0776",
+        "after_sha256":  "32cc9c7a379c1e9ba0634d89c75423ce0804175431233a2d5fdcde2da56ca1dd",
+        "size":  4569
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/MODS.txt",
+        "before_sha256":  "e63cabfec95534a48af533e065836eb243a263fa62d830384a14b5450926c994",
+        "after_sha256":  "681f290e56d5c144f3dd561d0ee0f2a611e9dfc44262ce5eebfb30c346700d34",
+        "size":  9105
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/NT1Ho-UniversalWrench/SOURCE_COMMIT.txt",
+        "before_sha256":  "f321e07fd9ceb4b292bf67d7f4559331c31fecf723ad23e322f38b03769e27fe",
+        "after_sha256":  "bdc937fe957bedda726f5f30a948d7b717c82d8cacb0ec1a751f25ccdf6734ea",
+        "size":  474
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/original-files.json",
+        "before_sha256":  "5d6305554da0a981b4d522061ef3cd6207e39ae4cc5aaee5d57cbb427b5bb447",
+        "after_sha256":  "96cca8cf1c971166a5512ff5e6fefc7b1b896e22a4777cca8c24c7ec8ce3af3c",
+        "size":  312662
+    },
+    {
+        "change":  "新增",
+        "path":  "BepInEx/plugins/LethalGoofballsPack-SlimeBlast/SlimeBlast.dll",
+        "before_sha256":  null,
+        "after_sha256":  "b4d2a6baae6acc4b04f257210a79fe18f1fa07c3baba12650e61add0f7f45afe",
+        "size":  7680
+    },
+    {
+        "change":  "新增",
+        "path":  "BepInEx/plugins/UniversalWrench/powerheartreveal",
+        "before_sha256":  null,
+        "after_sha256":  "27d6dc81179d4bb72fcd4cf1e10474b6d0ff4abc8ebcb2ce9fa9d6e5cedf2689",
+        "size":  91888
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/UniversalWrench/UniversalWrench.dll",
+        "before_sha256":  "d0fb8546439b22c6c690b46caae3db2581e79ba15af795a5a1378171409ff82a",
+        "after_sha256":  "8fe8818fac2107e9c42c73750c4b825e89149f0a510130e67bbb2cb70818f80c",
+        "size":  1584128
+    }
+]
