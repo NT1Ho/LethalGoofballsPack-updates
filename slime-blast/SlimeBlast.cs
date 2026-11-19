@@ -1,5 +1,5 @@
 using System;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using BepInEx;
 using GameNetcodeStuff;
 using HarmonyLib;
@@ -23,6 +23,7 @@ internal static class SlimeExplosion
         internal readonly Vector3 Origin;
         internal readonly float Range;
         internal readonly int Occluders;
+        internal readonly HashSet<BlobAI> Handled = new();
         private Collider[]? hitboxes;
 
         internal Blast(Vector3 origin, float range, bool goThroughCar)
@@ -49,7 +50,6 @@ internal static class SlimeExplosion
     }
 
     [ThreadStatic] private static Blast? activeBlast;
-    private static readonly ConditionalWeakTable<BlobAI, object> dying = new();
 
     [HarmonyPrefix, HarmonyPatch(typeof(Landmine), nameof(Landmine.SpawnExplosion))]
     private static void Enter(Vector3 explosionPosition, float damageRange, bool goThroughCar, out Blast? __state)
@@ -69,12 +69,13 @@ internal static class SlimeExplosion
     [HarmonyPatch(typeof(EnemyAI), nameof(EnemyAI.HitEnemyOnLocalClient))]
     private static bool Hit(EnemyAI __instance, int force, PlayerControllerB? playerWhoHit)
     {
-        if (activeBlast == null || __instance is not BlobAI blob || playerWhoHit != null || force <= 0) return true;
-        if (!blob.IsOwner || !blob.IsSpawned || blob.isEnemyDead || dying.TryGetValue(blob, out _) ||
-            !activeBlast.Reaches(blob)) return false;
+        var blast = activeBlast;
+        if (blast == null || __instance is not BlobAI blob || playerWhoHit != null || force <= 0) return true;
+        if (!blob.IsOwner || !blob.IsSpawned || blob.isEnemyDead || blast.Handled.Contains(blob) ||
+            !blast.Reaches(blob)) return false;
 
-        // Use the owner/server's vanilla destroy-on-death path; additional colliders and FairAI see the same pending death.
-        dying.Add(blob, new object());
+        // A guard can reject the native cleanup. Only deduplicate this blast's colliders and FairAI callbacks.
+        blast.Handled.Add(blob);
         blob.KillEnemyOnOwnerClient(overrideDestroy: true);
         return false;
     }
