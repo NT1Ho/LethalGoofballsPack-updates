@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using BepInEx;
+using BepInEx.Bootstrap;
 using Dissonance;
 using GameNetcodeStuff;
 using HarmonyLib;
@@ -14,13 +15,16 @@ using TalkingHeads.VoiceChatPatch;
 using Unity.Netcode;
 using UnityEngine;
 
-[BepInPlugin("NT1Ho.CrewCompatibility", "Crew Compatibility", "1.0.2")]
+[BepInPlugin("NT1Ho.CrewCompatibility", "Crew Compatibility", "1.0.3")]
 [BepInDependency("OpJosMod.ReviveCompany")]
 [BepInDependency("TalkingHeads")]
 [BepInDependency("mattymatty.LobbyControl")]
 [BepInDependency("me.swipez.melonloader.morecompany")]
+[BepInDependency(HotbarPlusId, BepInDependency.DependencyFlags.SoftDependency)]
 public sealed class CrewCompatibility : BaseUnityPlugin
 {
+    const string HotbarPlusId = "FlipMods.HotbarPlus";
+    static Action<PlayerControllerB, int> sendAbsoluteSlot;
     static CrewCompatibility instance;
     void Awake()
     {
@@ -43,8 +47,32 @@ public sealed class CrewCompatibility : BaseUnityPlugin
         Patch("MoreCompany.CosmeticSyncPatch:SV_ReceiveCosmetics", il: nameof(CosmeticDelivery));
         Patch("MoreCompany.CosmeticSyncPatch:SyncCosmeticsToOtherClients", il: nameof(CosmeticDelivery));
         Patch("LobbyControl.API.ConnectionEvents:get_HasCompletedAllCheckpoints", postfix: nameof(OptionalBadge));
+        InstallHotbarSlotSync(patcher);
         MaskedAnimation.Install(Logger);
         Logger.LogInfo("V81 crew compatibility ready");
+    }
+
+    static void InstallHotbarSlotSync(Harmony patcher)
+    {
+        if (!Chainloader.PluginInfos.TryGetValue(HotbarPlusId, out var hotbar)) return;
+        var version = hotbar.Metadata.Version;
+        if (version != new Version(1, 8, 5) && version != new Version(1, 8, 6)) return;
+        var send = AccessTools.Method(typeof(PlayerControllerB), "SwitchToSlotServerRpc", new[] { typeof(int) });
+        var relative = AccessTools.Method("HotbarPlus.Networking.SyncManager:SendHotbarSlotChange", new[] { typeof(int) });
+        if (send == null || relative == null) return;
+        sendAbsoluteSlot = (Action<PlayerControllerB, int>)send.CreateDelegate(typeof(Action<PlayerControllerB, int>));
+        patcher.Patch(relative, prefix: new HarmonyMethod(typeof(CrewCompatibility), nameof(SendHotbarSlot)));
+        instance.Logger.LogInfo("HotbarPlus uses V81's native absolute slot sync");
+    }
+
+    static bool SendHotbarSlot(int __0)
+    {
+        var player = StartOfRound.Instance?.localPlayerController;
+        // The native utility slot is 50 and is outside the normal wheel sequence.
+        if (player && player.IsOwner && NetworkManager.Singleton?.IsClient == true &&
+            __0 >= 0 && __0 < player.ItemSlots.Length && __0 != player.currentItemSlot)
+            sendAbsoluteSlot(player, __0);
+        return false;
     }
 
     static MethodInfo Method(string name) => AccessTools.Method(typeof(CrewCompatibility), name);
