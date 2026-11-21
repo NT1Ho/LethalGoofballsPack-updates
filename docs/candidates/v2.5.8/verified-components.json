@@ -1,0 +1,62 @@
+[
+  {
+    "package": "NT1Ho-Hatchet",
+    "version": "0.2.74",
+    "source_repository": "https://github.com/NT1Ho/Hatchet",
+    "source_branch": "codex/hatchet-v81-acceptance",
+    "source_commit": "c7ba13d94cfe6f2691111c7c2b5123bb6e59f5aa",
+    "evidence_commit": "b506f6189a1aa1a2a1b1e10bf715d89d81930c9e",
+    "version_file": "Directory.Build.props",
+    "version_marker": "<Version>0\\.2\\.74</Version>",
+    "runtime_source_paths": ["src", "Directory.Build.props", "assets"],
+    "archive": "Hatchet-0.2.74-Test.zip",
+    "delivery_glob": "Hatchet-*-Test.zip",
+    "archive_sha256": "adebca794de901c67fe21fbe6b735d90280bc1a725545073d90a66a6714a661b",
+    "install_prefix": "BepInEx/plugins/NT1Ho-Hatchet/",
+    "runtime_file": "BepInEx/plugins/NT1Ho-Hatchet/Hatchet.dll",
+    "verified_dll_sha256": "78c38b4d6117c1fbf57218fc0f865325d0583ad9e48c951e41cfedff3c7eb5e5"
+  },
+  {
+    "package": "NT1Ho-UniversalWrench",
+    "version": "0.2.14-dev",
+    "source_repository": "https://github.com/NT1Ho/UniversalWrench",
+    "source_branch": "art/phase2b-game-preview",
+    "source_commit": "5ab184c8ccc3d75564e0c048c776f3876bbd0290",
+    "evidence_commit": "4f1b6ba10bc5d8df26817a25ea2d16c0228637e3",
+    "version_file": "Directory.Build.props",
+    "version_marker": "<InformationalVersion>0\\.2\\.14-dev</InformationalVersion>",
+    "runtime_source_paths": ["src", "Directory.Build.props", "assets"],
+    "archive": "UniversalWrench-0.2.14-dev.zip",
+    "delivery_glob": "UniversalWrench-*-dev.zip",
+    "archive_sha256": "0b9e0cbb577ead02d8789e592548328a94f8112360bcd54570d429d56b323447",
+    "install_prefix": "BepInEx/plugins/UniversalWrench/",
+    "runtime_file": "BepInEx/plugins/UniversalWrench/UniversalWrench.dll",
+    "verified_dll_sha256": "97c954ff1f525741ca69d8265e9b4a773e6d7df0414a9981361fc755dd9194d0"
+  },
+  {
+    "package": "NT1Ho-CrewCompatibility",
+    "version": "1.0.3",
+    "source_repository": "https://github.com/NT1Ho/LethalGoofballsPack-updates",
+    "source_branch": "development/v81-gameplay-audio",
+    "source_commit": "a445b2bf5b65b01e2eb9843adde5b60dc365790f",
+    "evidence_commit": "a5a2827b0d39966ce2f117ea2a91cd1c89f547da",
+    "version_file": "multiplayer/CrewCompatibility.cs",
+    "version_marker": "Crew Compatibility\", \"1\\.0\\.3\"",
+    "runtime_source_paths": ["multiplayer"],
+    "runtime_file": "BepInEx/plugins/NT1Ho-CrewCompatibility/CrewCompatibility.dll",
+    "verified_dll_sha256": "1b6367c37f547253df94bd3f014a7d12b8c43a6384ec3bac737a17e2641e16bb"
+  },
+  {
+    "package": "LethalGoofballsPack-SlimeBlast",
+    "version": "1.0.0",
+    "source_repository": "https://github.com/NT1Ho/LethalGoofballsPack-updates",
+    "source_branch": "development/v81-gameplay-audio",
+    "source_commit": "fc8457739b5764e91081c2d20634ed15b66db638",
+    "evidence_commit": "6d42bcac3f412de47ba27f7ac7e213746141b4c2",
+    "version_file": "slime-blast/SlimeBlast.cs",
+    "version_marker": "Hygrodere Explosion Response\", \"1\\.0\\.0\"",
+    "runtime_source_paths": ["slime-blast"],
+    "runtime_file": "BepInEx/plugins/LethalGoofballsPack-SlimeBlast/SlimeBlast.dll",
+    "verified_dll_sha256": "8d80f7fff4425d82ae11225acf9f76e0befe220699e3aeacceef337d0b622746"
+  }
+]

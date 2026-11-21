@@ -1,4 +1,4 @@
-﻿param([Parameter(Mandatory=$true)][string]$PackRoot,[Parameter(Mandatory=$true)][string]$ManifestPath,[Parameter(Mandatory=$true)][string]$ZipPath)
+﻿param([Parameter(Mandatory=$true)][string]$PackRoot,[Parameter(Mandatory=$true)][string]$ManifestPath,[Parameter(Mandatory=$true)][string]$ZipPath,[string]$ComponentPlan)
 $ErrorActionPreference='Stop'
 function Get-Sha256([string]$path){$stream=[IO.File]::OpenRead($path);$sha=[Security.Cryptography.SHA256]::Create();try{return ([BitConverter]::ToString($sha.ComputeHash($stream))).Replace('-','').ToLower()}finally{$sha.Dispose();$stream.Dispose()}}
 Add-Type -AssemblyName System.IO.Compression,System.IO.Compression.FileSystem
@@ -8,6 +8,15 @@ if($out.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'ZIP 
 $record=Get-Content -LiteralPath $ManifestPath -Raw -Encoding UTF8|ConvertFrom-Json
 $files=@(if($record.files){$record.files}else{$record.PSObject.Properties|ForEach-Object {[PSCustomObject]@{path=$_.Name;sha256=$_.Value.sha256;size=$_.Value.size}}})
 if(-not $files.Count){throw '审核清单为空。'}
+if($ComponentPlan){
+    $selected=Get-Content -LiteralPath $ComponentPlan -Raw -Encoding UTF8|ConvertFrom-Json
+    $planned=@($selected.files.PSObject.Properties)
+    if(!$planned.Count){throw 'Component plan is empty.'}
+    $byPath=@{};foreach($file in $files){$byPath[$file.path]=$file}
+    foreach($file in $planned){
+        if($byPath[$file.Name].sha256 -ne $file.Value.sha256){throw "Pack manifest differs from the verified component: $($file.Name)"}
+    }
+}
 $actual=@(Get-ChildItem -LiteralPath $root -Recurse -File -Force);$entries=Get-ChildItem -LiteralPath $root -Recurse -Force
 foreach($p in @((Get-Item -LiteralPath $root))+$entries){if($p.Attributes -band [IO.FileAttributes]::ReparsePoint){throw '包内不能包含链接。'}}
 if($actual.Count -ne $files.Count){throw '包文件数与审核清单不一致。'}
