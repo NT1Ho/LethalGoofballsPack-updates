@@ -2,6 +2,10 @@
 
 只记录现有本地历史资料，不编造缺失版本。整合包版本与更新器内部版本分开。
 
+## 多人诊断开发候选
+
+- F8 诊断 0.2.0 和接收端 1.18.0 提供自动收集、跨端关联和单 ZIP 导出。Hatchet 0.2.76 与 Universal Wrench 0.2.15-dev 提供第一方游戏事件。见[安装、格式与使用](docs/MULTIPLAYER-DIAGNOSTICS.md)和[实测记录](docs/candidates/2026-11-21-multiplayer-diagnostics.md)。
+
 ## V1.9 本次维护补记
 
 - 修复两个 HookGen DLL 的历史下载地址，并补齐 V1.6 原地址附件。DLL 内容不变。
