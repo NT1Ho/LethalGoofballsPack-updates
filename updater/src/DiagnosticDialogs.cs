@@ -78,6 +78,8 @@ internal static class DiagnosticDialogs {
                 var photo=ActionButton("查看大图",DialogResult.None);
                 photo.Click+=(s,e)=>LargePhoto(form,image);actions.Controls.Add(photo);
             }
+            var linked=ActionButton("关联事件",DialogResult.None);
+            linked.Click+=(s,e)=>MultiplayerWindow.Show(form,review,mark.Id);actions.Controls.Add(linked);
             if(editable&&mark.Manual){
                 string label=review.Deleted(mark.Id)?(review.SavedDeleted(mark.Id)?"恢复标记":"撤销删除"):"标为待删除";
                 actions.Controls.Add(ActionButton(label,DialogResult.Retry));

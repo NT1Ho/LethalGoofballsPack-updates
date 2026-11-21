@@ -17,7 +17,7 @@ public sealed class DiagnosticsWindow : Form {
     readonly ContextMenuStrip settings=new ContextMenuStrip(), tools=new ContextMenuStrip();
     DiagnosticReview review;
     GameRecord record;
-    bool syncing,busy,resized,monitorEnabled;
+    bool syncing,busy,resized,monitorEnabled,shareWithHost;
     string markKey="F8";
 
     public DiagnosticsWindow(string root) {
@@ -67,13 +67,17 @@ public sealed class DiagnosticsWindow : Form {
 
         var panel=Section();panel.Margin=new Padding(8,0,0,0);panel.RowCount=3;
         panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        var ribbon=new TableLayoutPanel {Dock=DockStyle.Fill,ColumnCount=2,AutoSize=true,Margin=Padding.Empty};
+        var ribbon=new TableLayoutPanel {Dock=DockStyle.Fill,ColumnCount=3,AutoSize=true,Margin=Padding.Empty};
         ribbon.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));ribbon.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         ribbon.Controls.Add(Title("故障时间轴"),0,0);
         filter.DropDownStyle=ComboBoxStyle.DropDownList;filter.Width=122;
         filter.Items.AddRange(new object[]{"手动标记","自动异常","最近删除"});filter.SelectedIndex=0;
         filter.SelectedIndexChanged+=(s,e)=>BindTimeline();
-        ribbon.Controls.Add(filter,1,0);panel.Controls.Add(ribbon,0,0);
+        var multiplayer=Button("跨端事件");
+        multiplayer.Click+=(s,e)=>Guard(()=>{if(review!=null)MultiplayerWindow.Show(this,review,null);});
+        ribbon.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+        ribbon.Controls.Add(multiplayer,1,0);
+        ribbon.Controls.Add(filter,2,0);panel.Controls.Add(ribbon,0,0);
         timeline.Dock=DockStyle.Fill;timeline.Margin=new Padding(0,3,0,0);
         timeline.Selected+=id=>Guard(()=>OpenMark(id));
         panel.Controls.Add(timeline,0,1);
@@ -187,7 +191,7 @@ public sealed class DiagnosticsWindow : Form {
     void ReadSettings(){
         bool installed=File.Exists(Path.Combine(root,DiagnosticsStore.PluginPath));
         string cfg=Path.Combine(root,"BepInEx/config/nt1ho.lethaldiagnostics.cfg");
-        markKey="F8";monitorEnabled=true;
+        markKey="F8";monitorEnabled=true;shareWithHost=DiagnosticsStore.ReadShare(root);
         if(File.Exists(cfg))foreach(string line in File.ReadLines(cfg)){
             string[] pair=line.Split(new[]{'='},2);
             if(pair.Length!=2)continue;
@@ -211,6 +215,10 @@ public sealed class DiagnosticsWindow : Form {
         bool stopped=!Engine.GameRunning();
         Add(settings.Items,"安装或修复插件",()=>{DiagnosticsStore.Install(root);ReadSettings();},stopped);
         Add(settings.Items,monitorEnabled?"停用监控":"启用监控",()=>{DiagnosticsStore.Configure(root,!monitorEnabled,markKey);ReadSettings();},stopped);
+        Add(settings.Items,shareWithHost?"停用联机诊断共享":"启用联机诊断共享",()=>{
+            if(!shareWithHost&&MessageBox.Show(this,"共享游戏事件、MOD 版本和重要异常给当前支持诊断的房主。客机不共享截图或聊天。","联机诊断共享",MessageBoxButtons.OKCancel)!=DialogResult.OK)return;
+            DiagnosticsStore.Configure(root,monitorEnabled,markKey,!shareWithHost);ReadSettings();
+        },stopped);
         var keys=new ToolStripMenuItem("标记快捷键"){Enabled=stopped};settings.Items.Add(keys);
         for(int i=1;i<=12;i++){
             string key="F"+i;

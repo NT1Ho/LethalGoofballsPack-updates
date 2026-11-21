@@ -21,13 +21,25 @@ using LogLevel = BepInEx.Logging.LogLevel;
 using ThreadPriority = System.Threading.ThreadPriority;
 
 namespace LcDiagnostics {
-[BepInPlugin("nt1ho.lethaldiagnostics","LethalGoofballs Diagnostics","0.1.2")]
+[BepInPlugin("nt1ho.lethaldiagnostics","LethalGoofballs Diagnostics",NetworkEvidence.Version)]
 public sealed class Plugin : BaseUnityPlugin, ILogListener {
     readonly FrameTiming[] timing = new FrameTiming[1];
     Process cpu;
     double lastCpuMs, lastWall;
+    long captureTicks,lastWriterTicks;
     float nextStallEvidence;
     static Plugin current;
+    NetworkEvidence coop;
+    GameEvidence native;
+    Action<string,string,string,string,string,string,bool> bridge;
+    readonly Dictionary<(string Source,string Message),Repeat> repeats=new Dictionary<(string,string),Repeat>();
+    sealed class Repeat { public long Last;public int Extra;public string Stack; }
+    string lastGrab="";
+    long errorSecond;
+    int errorsThisSecond,errorsSuppressed;
+    internal static void Native(string category,string code,string status,string link,string detail){
+        try{current?.coop?.Emit("LethalCompany",category,code,status,link,detail,true);}catch(Exception){}
+    }
     static void BeforeControllerSet(Animator __instance, RuntimeAnimatorController __0) {
         if (__0 || !__instance || !current || current.quitting || __instance.name!="metarig") return;
         var m=__instance.GetComponentInParent<MaskedPlayerEnemy>();
@@ -77,47 +89,101 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
     }
     readonly FrameDrop frameDrop=new FrameDrop();float nextDropMark;
     Recorder recorder;ConfigEntry<bool> monitor;ConfigEntry<Key> hotkey;
-    float nextSample,nextFrameReport,lastMark=-10,nextAuto;int frames,slowFrames,gc0;double sum,max,ownTicks;long logSecond;int logCount,errorCount;long suppressed;object lastError;
+    float nextSample,nextFrameReport,lastMark=-10,nextAuto;int frames,slowFrames,gc0;double sum,max,ownTicks;long logSecond;int logCount;long suppressed;object lastError;
     int pendingError;bool quitting;string lastState="",loadingState="";float loadingSince;bool loadingReported;
     readonly Collider[] nearby=new Collider[128];readonly Queue<double> frameSamples=new Queue<double>();
     public LogLevel LogLevelFilter {get{return LogLevel.All;}}
     void Awake(){
         monitor=Config.Bind("General","Enabled",true,"Continuous local diagnostics. Does not change gameplay.");
+        var share=Config.Bind("General","ShareWithHost",true,"Share bounded game events, MOD inventory and sanitized important exceptions with the current compatible diagnostic host. No guest screenshots or chat. Set false to keep local diagnostics.");
         hotkey=Config.Bind("General","MarkKey",Key.F8,"Manual incident and screenshot. Change if another MOD uses F8.");
         if(!monitor.Value){enabled=false;return;}
         try{
             var process=cpu=Process.GetCurrentProcess(); lastCpuMs=cpu.TotalProcessorTime.TotalMilliseconds;lastWall=Time.realtimeSinceStartupAsDouble;
-            recorder=new Recorder(Path.Combine(Paths.GameRootPath,".lcpack-diagnostics"),Json.Obj("schema",1,"plugin","0.1.2","utc",DateTime.UtcNow.ToString("O"),"pid",process.Id,"processStartUtc",process.StartTime.ToUniversalTime().ToString("O"),"unity",Application.unityVersion,"application",Application.version,"cpu",SystemInfo.processorType,"logicalCores",SystemInfo.processorCount,"ramMB",SystemInfo.systemMemorySize,"gpu",SystemInfo.graphicsDeviceName,"vramMB",SystemInfo.graphicsMemorySize,"os",SystemInfo.operatingSystem,"privacy","local only; screenshots/logs may contain names; config values are not collected","preSeconds",60,"postSeconds",30));
+            recorder=new Recorder(Path.Combine(Paths.GameRootPath,".lcpack-diagnostics"),Json.Obj("schema",2,"plugin",NetworkEvidence.Version,"utc",DateTime.UtcNow.ToString("O"),"pid",process.Id,"processStartUtc",process.StartTime.ToUniversalTime().ToString("O"),"unity",Application.unityVersion,"application",Application.version,"cpu",SystemInfo.processorType,"logicalCores",SystemInfo.processorCount,"ramMB",SystemInfo.systemMemorySize,"gpu",SystemInfo.graphicsDeviceName,"vramMB",SystemInfo.graphicsMemorySize,"os",SystemInfo.operatingSystem,"privacy","screenshots and full logs local; redacted key evidence can go to the current compatible host; no chat or configuration values","preSeconds",60,"postSeconds",30));
             BepInEx.Logging.Logger.Listeners.Add(this);Application.logMessageReceivedThreaded+=UnityLog;
             current=this;
+            coop=new NetworkEvidence(recorder,share.Value);
+            bridge=coop.Emit;
+            AppDomain.CurrentDomain.SetData(NetworkEvidence.Bridge,bridge);
+            try{native=new GameEvidence();}catch(Exception error){recorder.AddImportant("coop_fault",Json.Obj("type","native_observer","detail",error.GetType().Name));}
             try{new HarmonyLib.Harmony("nt1ho.diagnostics.masked").Patch(HarmonyLib.AccessTools.PropertySetter(typeof(Animator),"runtimeAnimatorController"),prefix:new HarmonyLib.HarmonyMethod(typeof(Plugin),nameof(BeforeControllerSet)));}catch(Exception ex){Logger.LogWarning("Masked controller write observer unavailable: "+ex.GetType().Name);}
             try{ObserveStages();}catch(Exception ex){Logger.LogWarning("Stage observer unavailable: "+ex.Message);}
             SceneManager.sceneLoaded+=Loaded;SceneManager.sceneUnloaded+=Unloaded;StartCoroutine(IdentityAfterLoad());
         }catch(Exception e){Logger.LogError("Diagnostics unavailable: "+e.Message);enabled=false;}
     }
-    void Loaded(Scene s,LoadSceneMode mode){recorder.Add("scene_loaded",Json.Obj("scene",s.name,"mode",mode.ToString()));}
+    void Loaded(Scene s,LoadSceneMode mode){recorder.Add("scene_loaded",Json.Obj("scene",s.name,"mode",mode.ToString()));coop?.Emit("Unity","scene","scene_loaded","observed","",s.name,false);}
     void Unloaded(Scene s){recorder.Add("scene_unloaded",Json.Obj("scene",s.name));}
     public void LogEvent(object sender,LogEventArgs e){
         if(e.Source.SourceName=="Unity Log")return;
-        CaptureLog(e.Source.SourceName,e.Level.ToString(),e.Data==null?"":e.Data.ToString(),"",(e.Level&(LogLevel.Error|LogLevel.Fatal))!=0);
+        long start=Stopwatch.GetTimestamp();
+        try{CaptureLog(e.Source.SourceName,e.Level.ToString(),e.Data==null?"":e.Data.ToString(),"",(e.Level&(LogLevel.Error|LogLevel.Fatal))!=0);}
+        catch(Exception){}
+        finally{Interlocked.Add(ref captureTicks,Stopwatch.GetTimestamp()-start);}
     }
-    void UnityLog(string message,string stack,LogType type){CaptureLog("Unity",type.ToString(),message,stack,type==LogType.Error||type==LogType.Exception||type==LogType.Assert);}
+    void UnityLog(string message,string stack,LogType type){
+        long start=Stopwatch.GetTimestamp();
+        try{CaptureLog("Unity",type.ToString(),message,stack,type==LogType.Error||type==LogType.Exception||type==LogType.Assert);}
+        catch(Exception){}
+        finally{Interlocked.Add(ref captureTicks,Stopwatch.GetTimestamp()-start);}
+    }
     static string Cut(string s,int size){return String.IsNullOrEmpty(s)?s:s.Substring(0,Math.Min(size,s.Length));}
     void CaptureLog(string source,string level,string message,string stack,bool error){
-        if(recorder==null||quitting)return;
+        if(recorder==null||quitting||NetworkEvidence.PrivateLog(source,message))return;
         long second=Stopwatch.GetTimestamp()/Stopwatch.Frequency;
-        lock(frameSamples){if(second!=logSecond){logSecond=second;logCount=errorCount=0;}if(error?++errorCount>8:++logCount>16){Interlocked.Increment(ref suppressed);return;}}
-        var data=Json.Obj("source",Cut(source,128),"level",level,"message",Cut(message,4096),"stack",Cut(stack,8192));
-        if(error){Interlocked.Exchange(ref lastError,data);Interlocked.Exchange(ref pendingError,1);}recorder.Add("log",data);
+        if(!error && (source=="Hatchet"||source=="Short Hatchet") &&
+            (message.StartsWith("FEEDBACK ",StringComparison.Ordinal)||message.StartsWith("SFX ",StringComparison.Ordinal)))
+            coop?.Emit("NT1Ho.Hatchet",message.StartsWith("SFX ",StringComparison.Ordinal)?"audio":"effects","native_trace","observed","",message,false);
+        if(error){
+            string key=NetworkEvidence.Clean(message,1024);
+            lock(repeats){
+                if(repeats.TryGetValue((source,key),out var prior)&&second-prior.Last<10){
+                    prior.Extra++;Interlocked.Increment(ref suppressed);return;
+                }
+                if(second!=errorSecond){errorSecond=second;errorsThisSecond=0;}
+                if(++errorsThisSecond>8){errorsSuppressed++;Interlocked.Increment(ref suppressed);return;}
+                if(repeats.Count<128||prior!=null)repeats[(source,key)]=new Repeat{Last=second,Extra=prior?.Extra??0,Stack=Cut(stack,1800)};
+            }
+            var data=Json.Obj("source",NetworkEvidence.Clean(source,128),"level",level,"message",NetworkEvidence.Clean(message,4096),"stack",NetworkEvidence.Clean(stack,8192));
+            recorder.AddImportant("log",data);
+            Interlocked.Exchange(ref lastError,data);Interlocked.Exchange(ref pendingError,1);
+            coop?.Emit(source,"exception","runtime_error","error","error:"+HashText(source+"\n"+key).Substring(0,16),Cut(key,370)+"\n"+Cut(stack,500),true);
+            return;
+        }
+        lock(frameSamples){if(second!=logSecond){logSecond=second;logCount=0;}if(++logCount>16){Interlocked.Increment(ref suppressed);return;}}
+        recorder.Add("log",Json.Obj("source",Cut(source,128),"level",level,"message",NetworkEvidence.Clean(message,4096),"stack",NetworkEvidence.Clean(stack,8192)));
+    }
+    void SummarizeErrors(){
+        var now=Stopwatch.GetTimestamp()/Stopwatch.Frequency;
+        lock(repeats){
+            if(errorsSuppressed>0){
+                coop?.Emit("BepInEx","exception","distinct_errors_bounded","missing","","unique diagnostics suppressed="+errorsSuppressed,true);
+                errorsSuppressed=0;
+            }
+            foreach(var entry in repeats.Where(e=>now-e.Value.Last>=10).ToArray()){
+                var r=entry.Value;
+                if(r.Extra>0)coop?.Emit(entry.Key.Source,"exception","error_repeats","aggregated","error:"+HashText(entry.Key.Source+"\n"+entry.Key.Message).Substring(0,16),
+                    "repeated="+r.Extra+" | "+entry.Key.Message+"\n"+r.Stack,true);
+                repeats.Remove(entry.Key);
+            }
+        }
     }
     void Update(){
         if(recorder==null)return;long begin=Stopwatch.GetTimestamp();
         try{
-            float now=Time.realtimeSinceStartup;double dt=Time.unscaledDeltaTime*1000;frames++;sum+=dt;max=Math.Max(max,dt);if(dt>100)slowFrames++;
+            coop.Tick();float now=Time.realtimeSinceStartup;double dt=Time.unscaledDeltaTime*1000;frames++;sum+=dt;max=Math.Max(max,dt);if(dt>100)slowFrames++;
             if(Keyboard.current!=null&&Keyboard.current[hotkey.Value].wasPressedThisFrame&&now-lastMark>=2){lastMark=now;ManualMark();}
             if(now>=nextSample){nextSample=now+1;SampleMaskBindings();var state=Snapshot(false);recorder.Add("state",state);
+                SummarizeErrors();
+                var player=GameNetworkManager.Instance?.localPlayerController;
+                var enemy=player?player.inAnimationWithEnemy:null;
+                string grab=enemy?enemy.NetworkObjectId+" "+enemy.GetType().FullName:"";
+                if(lastGrab!=grab){
+                    Native("grab",grab.Length==0?"grab_released":"grab_observed","observed",player?"player:"+player.NetworkObjectId:"",grab.Length==0?lastGrab:grab);
+                    lastGrab=grab;
+                }
                 var signature=Json.Text(Json.Obj("planet",state["planet"],"landed",state["landed"],"players",state["players"],"connected",state["connected"],"held",state["held"],"dead",state["dead"]));
-                if(signature!=lastState){recorder.Add("state_change",state);lastState=signature;}
+                if(signature!=lastState){recorder.Add("state_change",state);lastState=signature;coop.Emit("LethalCompany","state","local_state_change","observed","","map="+state["planet"]+" phase="+state["phase"]+" item="+Json.Text(state["held"])+" dead="+state["dead"],false);}
                 string loading=Convert.ToString(state["phase"]);if(loading!=loadingState){loadingState=loading;loadingSince=now;loadingReported=false;}
                 if(loading=="landing"&&now-loadingSince>120&&!loadingReported){loadingReported=true;AutoMark("loading_timeout",state);}
             }
@@ -126,8 +192,9 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
             if(now>=nextFrameReport){
                 double cpuMs=cpu.TotalProcessorTime.TotalMilliseconds, wall=Time.realtimeSinceStartupAsDouble;
                 var n=FrameTimingManager.GetLatestTimings(1,timing);FrameTimingManager.CaptureFrameTimings();
-                recorder.Add("performance",Json.Obj("cpuCores",(cpuMs-lastCpuMs)/Math.Max(1,(wall-lastWall)*1000),"unityGpuMs",n>0 && timing[0].gpuFrameTime>0?(object)timing[0].gpuFrameTime:null,"unityCpuMs",n>0 && timing[0].cpuFrameTime>0?(object)timing[0].cpuFrameTime:null,"frames",frames,"meanMs",frames==0?0:sum/frames,"maxMs",max,"over100ms",slowFrames,"monitorMainMs",ownTicks*1000/Stopwatch.Frequency,"gc0",GC.CollectionCount(0)-gc0,"managedBytes",GC.GetTotalMemory(false),"logsSuppressed",Interlocked.Read(ref suppressed),"queueDropped",recorder.Dropped,"writerFailure",recorder.Failure,"focused",Application.isFocused,"targetFps",Application.targetFrameRate,"vSync",QualitySettings.vSyncCount));
-                lastCpuMs=cpuMs;lastWall=wall;
+                long writerTicks=Interlocked.Read(ref recorder.WriterActiveTicks);
+                recorder.Add("performance",Json.Obj("sampleSeconds",wall-lastWall,"logCallbackMs",Interlocked.Exchange(ref captureTicks,0)*1000.0/Stopwatch.Frequency,"writerActiveMs",(writerTicks-lastWriterTicks)*1000.0/Stopwatch.Frequency,"cpuCores",(cpuMs-lastCpuMs)/Math.Max(1,(wall-lastWall)*1000),"unityGpuMs",n>0 && timing[0].gpuFrameTime>0?(object)timing[0].gpuFrameTime:null,"unityCpuMs",n>0 && timing[0].cpuFrameTime>0?(object)timing[0].cpuFrameTime:null,"frames",frames,"meanMs",frames==0?0:sum/frames,"maxMs",max,"over100ms",slowFrames,"monitorMainMs",ownTicks*1000/Stopwatch.Frequency,"gc0",GC.CollectionCount(0)-gc0,"managedBytes",GC.GetTotalMemory(false),"logsSuppressed",Interlocked.Read(ref suppressed),"queueDropped",recorder.Dropped,"importantDropped",recorder.DroppedImportant,"multiplayer",coop.Metrics,"writerFailure",recorder.Failure,"focused",Application.isFocused,"targetFps",Application.targetFrameRate,"vSync",QualitySettings.vSyncCount));
+                lastCpuMs=cpuMs;lastWall=wall;lastWriterTicks=writerTicks;
                 var round=StartOfRound.Instance;
                 if(!round||!round.shipHasLanded||!Application.isFocused)frameDrop.Reset();
                 else if(frameDrop.Observe(frames,sum,max,now>=nextDropMark)){
@@ -142,9 +209,9 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
     }
     void AutoMark(string kind,object data){recorder.Mark(kind,data);}
     void ManualMark(){
-        string id=recorder.Mark("manual",Snapshot(true));
+        if(coop.IsGuest)return;string id=recorder.Mark("manual",Snapshot(true));
         if(id==null){Tip("记录未保存：请检查诊断磁盘空间或会话标记上限。");return;}
-        StartCoroutine(Screenshot(id));
+        coop.Mark(id);StartCoroutine(Screenshot(id));
     }
     void Tip(string s){if(HUDManager.Instance!=null)HUDManager.Instance.DisplayTip("故障诊断",s,false,false,"LC_DIAGNOSTICS");}
     IEnumerator Screenshot(string id){
@@ -193,7 +260,7 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
             RaycastHit hit;d["aim"]=p.gameplayCamera&&Physics.Raycast(p.gameplayCamera.transform.position,p.gameplayCamera.transform.forward,out hit,12,~0,QueryTriggerInteraction.Collide)?Entity(hit.collider):null;
             int count=Physics.OverlapSphereNonAlloc(p.transform.position,15,nearby,~0,QueryTriggerInteraction.Collide);var list=new List<object>();var seen=new HashSet<int>();
             for(int i=0;i<count&&list.Count<48;i++){var col=nearby[i];if(!col)continue;Component c=col.GetComponentInParent<EnemyAI>();if(!c)c=col.GetComponentInParent<GrabbableObject>();if(!c)c=col.GetComponentInParent<PlayerControllerB>();if(!c)c=col.GetComponentInParent<InteractTrigger>();if(c&&seen.Add(c.GetInstanceID()))list.Add(Entity(c));}
-            d["nearby"]=list;d["nearbyColliderLimit"]=count==nearby.Length;d["nearbyObjectLimit"]=list.Count==48;d["hoverTip"]=Cut(p.cursorTip?.text,256);d["missing"]="No full-world scan; nearby radius 15m / 128 colliders / 48 entities; no animation root cause inferred; LAN association requires shared user group plus seed/serverTime.";
+            d["nearby"]=list;d["nearbyColliderLimit"]=count==nearby.Length;d["nearbyObjectLimit"]=list.Count==48;d["hoverTip"]=Cut(p.cursorTip?.text,256);d["missing"]="No full-world scan; nearby radius 15m / 128 colliders / 48 entities; no animation root cause inferred; Room ID and server time associate multiplayer evidence when both peers support sharing.";
         }
         return d;
     }
@@ -201,11 +268,11 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
     IEnumerator IdentityAfterLoad(){
         yield return new WaitForSeconds(10);
         var loaded=new List<Dictionary<string,object>>();
-        foreach(var info in Chainloader.PluginInfos.Values){try{var a=info.Instance.GetType().Assembly;loaded.Add(Json.Obj("guid",info.Metadata.GUID,"name",info.Metadata.Name,"version",info.Metadata.Version.ToString(),"path",info.Location,"mvid",a.ManifestModule.ModuleVersionId.ToString()));}catch(Exception e){recorder.Add("identity_unavailable",Json.Obj("error",e.Message));}}
+        foreach(var info in Chainloader.PluginInfos.Values){try{var a=info.Instance.GetType().Assembly;loaded.Add(Json.Obj("guid",info.Metadata.GUID,"name",info.Metadata.Name,"version",info.Metadata.Version.ToString(),"path",info.Location,"mvid",a.ManifestModule.ModuleVersionId.ToString(),"dependencies",info.Dependencies.Select(dep=>Json.Obj("guid",dep.DependencyGUID,"min",dep.MinimumVersion?.ToString(),"flags",dep.Flags.ToString())).ToArray(),"loaded",true));}catch(Exception e){recorder.Add("identity_unavailable",Json.Obj("error",e.Message));}}
         var assemblies=AppDomain.CurrentDomain.GetAssemblies().Where(a=>!a.IsDynamic).Select(a=>Json.Obj("name",a.GetName().Name,"version",a.GetName().Version.ToString(),"mvid",a.ManifestModule.ModuleVersionId.ToString())).ToList();
-        string root=Paths.GameRootPath;var target=recorder;new Thread(()=>Inventory(root,target,loaded,assemblies)){IsBackground=true,Priority=ThreadPriority.BelowNormal,Name="LGP identity"}.Start();
+        string root=Paths.GameRootPath;var target=recorder;var transport=coop;new Thread(()=>Inventory(root,target,loaded,assemblies,transport)){IsBackground=true,Priority=ThreadPriority.BelowNormal,Name="LGP identity"}.Start();
     }
-    static void Inventory(string root,Recorder target,List<Dictionary<string,object>> loaded,List<Dictionary<string,object>> assemblies){
+    static void Inventory(string root,Recorder target,List<Dictionary<string,object>> loaded,List<Dictionary<string,object>> assemblies,NetworkEvidence transport){
         try{
             var files=new List<object>();var diskPlugins=new List<Dictionary<string,object>>();var expected=new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase);string version=null,manifestHash=null;
             string state=Path.Combine(root,".lcpack-updater/state.json");
@@ -225,14 +292,33 @@ public sealed class Plugin : BaseUnityPlugin, ILogListener {
             }
             foreach(var wanted in expected.Where(x=>(x.Key.EndsWith(".dll",StringComparison.OrdinalIgnoreCase)||x.Key.EndsWith(".cfg",StringComparison.OrdinalIgnoreCase))&&!File.Exists(Path.Combine(root,x.Key))))files.Add(Json.Obj("path",wanted.Key,"expected",wanted.Value,"sha256",null,"status","missing"));
             foreach(var m in loaded){string path=(string)m["path"];string hash;hashes.TryGetValue(Path.GetFullPath(path).Replace('\\','/'),out hash);m["sha256"]=hash;m["path"]=path.StartsWith(root,StringComparison.OrdinalIgnoreCase)?path.Substring(root.TrimEnd(Path.DirectorySeparatorChar).Length+1).Replace('\\','/'):"outside-game/"+Path.GetFileName(path);}
-            var duplicateGuids=diskPlugins.GroupBy(d=>(string)d["guid"]).Where(g=>g.Count()>1).Select(g=>Json.Obj("guid",g.Key,"paths",g.Select(d=>d["path"]).ToArray())).ToArray();
+            var loadedIds=new HashSet<string>(loaded.Select(x=>(string)x["guid"]),StringComparer.OrdinalIgnoreCase);foreach(var plugin in diskPlugins)plugin["loaded"]=loadedIds.Contains((string)plugin["guid"]);var duplicateGuids=diskPlugins.GroupBy(d=>(string)d["guid"]).Where(g=>g.Count()>1).Select(g=>Json.Obj("guid",g.Key,"paths",g.Select(d=>d["path"]).ToArray())).ToArray();
             Json.Atomic(Path.Combine(target.DirectoryPath,"identity.json"),Json.Obj("schema",1,"capturedUtc",DateTime.UtcNow.ToString("O"),"packVersionClaim",version,"updaterStateSha256",manifestHash,"updaterExpectedFiles",expected.Select(f=>Json.Obj("path",f.Key,"sha256",f.Value)).ToArray(),"loadedPlugins",loaded,"loadedAssemblies",assemblies,"diskPlugins",diskPlugins,"duplicateDiskGuids",duplicateGuids,"files",files,"limits","SHA256 is actual disk content sampled once at startup; MVID identifies loaded assemblies, not runtime patched IL. updaterExpectedFiles preserves the whole updater manifest as claims, not freshly verified asset hashes; config values deliberately omitted. Duplicate disk files are evidence, not automatically a duplicate loaded plugin."));
+            var startup=new List<string>();
+            string log=Path.Combine(root,"BepInEx/LogOutput.log");
+            if(File.Exists(log))
+            using(var input=new FileStream(log,FileMode.Open,FileAccess.Read,FileShare.ReadWrite))
+            using(var reader=new StreamReader(input)){
+                for(int i=0;i<640&&startup.Count<32;i++){
+                    string line=reader.ReadLine();
+                    if(line==null||line.IndexOf("Chainloader startup complete",StringComparison.Ordinal)>=0)break;
+                    if(line.IndexOf("BepInEx]",StringComparison.Ordinal)<0)continue;
+                    if(line.IndexOf("Could not load",StringComparison.OrdinalIgnoreCase)<0&&
+                        line.IndexOf("Missing dependencies",StringComparison.OrdinalIgnoreCase)<0&&
+                        line.IndexOf("Skipping",StringComparison.OrdinalIgnoreCase)<0)continue;
+                    if(!NetworkEvidence.PrivateLog("BepInEx",line))startup.Add(NetworkEvidence.Clean(line,475));
+                }
+            }
+            foreach(var skipped in diskPlugins.Where(d=>Equals(d["loaded"],false)).Take(48))
+                startup.Add($"present on disk but not loaded: {skipped["guid"]} {skipped["version"]}");
+            foreach(string issue in startup)target.AddImportant("startup_issue",Json.Obj("source","BepInEx","detail",issue));
+            transport.SetStartupIssues(startup.ToArray());
             target.Add("identity_complete",Json.Obj("loadedPlugins",loaded.Count,"files",files.Count));
         }catch(Exception e){target.Add("identity_failed",Json.Obj("error",e.Message));}
     }
     void OnApplicationQuit(){Close();}
     void OnDestroy(){if(!quitting)Close();}
-    void Close(){if(quitting)return;quitting=true;if(current==this){new HarmonyLib.Harmony("nt1ho.diagnostics.masked").UnpatchSelf();current=null;}cpu?.Dispose();if(recorder==null)return;BepInEx.Logging.Logger.Listeners.Remove(this);Application.logMessageReceivedThreaded-=UnityLog;SceneManager.sceneLoaded-=Loaded;SceneManager.sceneUnloaded-=Unloaded;recorder.Add("session_end",Json.Obj("utc",DateTime.UtcNow.ToString("O")));recorder.Dispose();}
+    void Close(){if(quitting)return;quitting=true;if(ReferenceEquals(AppDomain.CurrentDomain.GetData(NetworkEvidence.Bridge),bridge))AppDomain.CurrentDomain.SetData(NetworkEvidence.Bridge,null);native?.Stop();SummarizeErrors();coop?.Dispose();if(current==this){new HarmonyLib.Harmony("nt1ho.diagnostics.masked").UnpatchSelf();current=null;}cpu?.Dispose();if(recorder==null)return;BepInEx.Logging.Logger.Listeners.Remove(this);Application.logMessageReceivedThreaded-=UnityLog;SceneManager.sceneLoaded-=Loaded;SceneManager.sceneUnloaded-=Unloaded;recorder.Add("session_end",Json.Obj("utc",DateTime.UtcNow.ToString("O")));recorder.Dispose();}
     void IDisposable.Dispose(){}
 }
 }

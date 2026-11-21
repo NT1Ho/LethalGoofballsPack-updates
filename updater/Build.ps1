@@ -1,4 +1,4 @@
-﻿param([string]$OutputDirectory,[string]$ChannelConfig,[switch]$SkipTests,[switch]$AdminOnly,[string]$CompatibilityReceiver,[string]$GameDir,[string]$Dotnet="dotnet")
+param([string]$OutputDirectory,[string]$ChannelConfig,[switch]$SkipTests,[switch]$AdminOnly,[string]$CompatibilityReceiver,[string]$GameDir,[string]$Dotnet="dotnet")
 $ErrorActionPreference = 'Stop'
 $projectRoot = $PSScriptRoot
 if(-not $ChannelConfig -and (Test-Path (Join-Path $projectRoot 'cos-channel.json'))){$ChannelConfig=Join-Path $projectRoot 'cos-channel.json'}
@@ -16,7 +16,7 @@ $wpf = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\WPF'
 foreach($dll in @('WindowsBase.dll','PresentationCore.dll','PresentationFramework.dll','WindowsFormsIntegration.dll')){$refs += "/r:$wpf\$dll"}
 $common = @((Join-Path $projectRoot 'src\Common.cs'),(Join-Path $projectRoot 'src\Cloud.cs'))
 $ui = Join-Path $projectRoot 'src\UiStartup.cs'
-$diagnostics=@("/resource:$(Join-Path $projectRoot 'assets\explorer-searchbox.ico'),explorer-searchbox.ico",(Join-Path $projectRoot 'src\DiagnosticPresentation.cs'),(Join-Path $projectRoot 'src\DiagnosticDialogs.cs'),(Join-Path $projectRoot 'src\DiagnosticsReview.cs'),(Join-Path $projectRoot 'src\DiagnosticsTimeline.cs'),(Join-Path $projectRoot 'src\DiagnosticsStore.cs'),(Join-Path $projectRoot 'src\DiagnosticsWindow.cs'),"/resource:$diagnosticDll,LethalDiagnostics.dll")
+$diagnostics=@("/resource:$(Join-Path $projectRoot 'assets\explorer-searchbox.ico'),explorer-searchbox.ico",(Join-Path $projectRoot 'src\DiagnosticPresentation.cs'),(Join-Path $projectRoot 'src\DiagnosticDialogs.cs'),(Join-Path $projectRoot 'src\DiagnosticsReview.cs'),(Join-Path $projectRoot 'src\DiagnosticsTimeline.cs'),(Join-Path $projectRoot 'src\DiagnosticsStore.cs'),(Join-Path $projectRoot 'src\MultiplayerTimeline.cs'),(Join-Path $projectRoot 'src\MultiplayerWindow.cs'),(Join-Path $projectRoot 'src\DiagnosticsWindow.cs'),"/resource:$diagnosticDll,LethalDiagnostics.dll")
 $selfUpdate=Join-Path $projectRoot 'src\SelfUpdate.cs'
 $clientVersion=Join-Path $projectRoot 'src\ClientVersion.cs'
 $inventory=@((Join-Path $projectRoot 'src\ModInventory.cs'),(Join-Path $projectRoot 'src\ModWindow.cs'),(Join-Path $projectRoot 'src\ModNames.cs'))
