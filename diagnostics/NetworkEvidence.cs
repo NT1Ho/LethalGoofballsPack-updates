@@ -314,7 +314,7 @@ internal sealed class NetworkEvidence : IDisposable {
             if(host)HostReceive(sender,p);else GuestReceive(p);
         }catch(Exception e) {
             if(host&&rejectedUntil.Count<MaxPeers)rejectedUntil[sender]=Now+1;
-            recorder.AddImportant("coop_packet_rejected",Json.Obj("room",room,"client",sender,"reason",e.GetType().Name));
+            recorder.AddImportant("coop_packet_rejected",Json.Obj("room",room,"client",sender,"reason",e.GetType().Name,"detail",Clean(e.Message,240)));
         }
     }
     static bool Token(string text) => text!=null&&text.Length==32&&Guid.TryParseExact(text,"N",out _);
@@ -342,8 +342,11 @@ internal sealed class NetworkEvidence : IDisposable {
         if(st.Pending!=null||p.seq!=st.Last+1||p.items==null||p.items.Length<1||p.items.Length>MaxSignals||Now<st.NextBatch)return;
         st.NextBatch=Now+.15;
         var rows=new List<object>(p.items.Length);
+        int rejected=0;
         foreach(var s in p.items) {
-            if(s==null||!Valid(s))throw new InvalidDataException("Invalid signal");
+            if(s==null||!Valid(s)){rejected++;continue;}
+            bool metadata=s.category=="inventory"&&s.code=="mod_loaded";
+            if(!metadata&&PrivateLog(s.source??"",s.detail??"")){rejected++;continue;}
             s.source=Clean(s.source,96);s.detail=Clean(s.detail,920);s.link=Clean(s.link,116);
             s.category=Clean(s.category,48);s.code=Clean(s.code,64);s.status=Clean(s.status,40);
             if(!double.IsFinite(s.time)||s.time>net.ServerTime.Time+2||s.time<net.ServerTime.Time-Retention-5)s.time=-1;
@@ -351,13 +354,13 @@ internal sealed class NetworkEvidence : IDisposable {
         }
         var r=new Receipt{Sequence=p.seq};
         if(recorder.AddImportant("coop_batch",Json.Obj("room",room,"role","guest","peer",p.stream,"client",sender,
-            "player",Slot(sender),"seq",p.seq,"receivedTime",net.ServerTime.Time,"criticalLost",Math.Max(0,p.lostKey),"ordinaryLost",Math.Max(0,p.lost),"items",rows),()=>r.Saved=true))st.Pending=r;
+            "player",Slot(sender),"seq",p.seq,"receivedTime",net.ServerTime.Time,"criticalLost",Math.Max(0,p.lostKey),"ordinaryLost",Math.Max(0,p.lost),"rejectedItems",rejected,"items",rows),()=>r.Saved=true))st.Pending=r;
     }
     static bool Valid(Signal s) {
         return !String.IsNullOrEmpty(s.category)&&s.category.Length<=48&&s.code!=null&&s.code.Length<=64&&
             s.status!=null&&s.status.Length<=40&&s.utc!=null&&s.utc.Length<=40&&
             DateTimeOffset.TryParseExact(s.utc,"O",CultureInfo.InvariantCulture,DateTimeStyles.AssumeUniversal,out _)&&
-            (s.source?.Length??0)<=96&&(s.detail?.Length??0)<=920&&(s.link?.Length??0)<=116&&!PrivateLog(s.source??"",s.detail??"");
+            (s.source?.Length??0)<=96&&(s.detail?.Length??0)<=920&&(s.link?.Length??0)<=116;
     }
     void GuestReceive(Packet p) {
         if(p.op=="welcome"){

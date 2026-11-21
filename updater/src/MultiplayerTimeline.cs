@@ -33,6 +33,7 @@ public sealed class MultiplayerTimeline {
     readonly Dictionary<string,object> delivery=new Dictionary<string,object>();
     public int InvalidLines {get;private set;}
     public int DuplicateBatches {get;private set;}
+    public long RejectedItems {get;private set;}
     public long MaxCriticalLost {get;private set;}
     public long MaxOrdinaryLost {get;private set;}
     public bool Available {get{return Rows.Count>0||Peers.Count>0||Rooms.Count>0;}}
@@ -85,6 +86,7 @@ public sealed class MultiplayerTimeline {
                         }
                         timeline.delivery[scope]=new{room=Text(d,"room"),peer=Text(d,"peer"),client=Text(d,"client"),lastBatch=Number(d,"seq"),
                             criticalLost=Number(d,"criticalLost",0),ordinaryLost=Number(d,"ordinaryLost",0),lastReceiveTime=Number(d,"receivedTime")};
+                        timeline.RejectedItems+=(long)Number(d,"rejectedItems",0);
                         timeline.MaxCriticalLost=Math.Max(timeline.MaxCriticalLost,(long)Number(d,"criticalLost",0));
                         timeline.MaxOrdinaryLost=Math.Max(timeline.MaxOrdinaryLost,(long)Number(d,"ordinaryLost",0));
                         break;
@@ -121,7 +123,7 @@ public sealed class MultiplayerTimeline {
             g.Key.Room,g.Key.Peer,g.Key.Source,g.Key.Link,records=g.Count(),samples=g.OrderBy(r=>r.Time).Take(2).Select(r=>new{r.Status,r.Detail,r.Utc,r.Time}).ToArray()
         }).ToArray();
         return new{schema=1,peerStates=Peers,rooms=Rooms,linkEvents=Links,delivery=delivery.Values.ToArray(),
-            rowCount=Rows.Count,invalidLines=InvalidLines,duplicateBatches=DuplicateBatches,exceptions=errors,notes=new[]{
+            rowCount=Rows.Count,invalidLines=InvalidLines,duplicateBatches=DuplicateBatches,rejectedItems=RejectedItems,exceptions=errors,notes=new[]{
                 "Compare network time only within the same room. Negative times are not synchronized. Original client UTC and host receipt time are retained.",
                 "Waiting and unreported mean no compatible evidence has arrived. An unavailable client cannot report all missing records.",
                 "Capacity, unconfirmed batches and known drops do not establish whether an unrecorded event happened.",
@@ -129,11 +131,11 @@ public sealed class MultiplayerTimeline {
     }
     public string Summary(){
         var states=Peers.GroupBy(p=>Text(p,"room")+"/"+Text(p,"client")).Select(g=>{
-            var p=g.LastOrDefault(e=>Text(e,"plugin").Length>0)??g.Last();
+            var p=g.LastOrDefault(e=>Text(e,"status")!="disconnected"&&Text(e,"status")!="room_closed")??g.Last();
             return "客机 "+Text(p,"client")+" · "+Text(p,"status")+(p==g.Last()?"":" → "+Text(g.Last(),"status"))+
                 (Text(p,"plugin").Length>0?" · "+Text(p,"plugin"):"");
         }).ToArray();
-        return Rows.Count+" 条跨端事件 · "+states.Length+" 个房间内的客机连接"+
+        return Rows.Count+" 条跨端事件 · "+states.Length+" 次客机连接"+
             (states.Length==0?"":"\r\n"+String.Join("；",states.Take(8)))+
             (InvalidLines>0?" · "+InvalidLines+" 行损坏或尚未写完":"");
     }
