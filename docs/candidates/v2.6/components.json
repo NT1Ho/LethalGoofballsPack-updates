@@ -28,5 +28,14 @@
     "source_branch": "development/v2.6",
     "package": "NT1Ho-CrewCompatibility",
     "description": "房主按当前尸体身份确认复活，忽略旧请求，恢复本地 HUD 并保留至少 1 HP。"
+  },
+  {
+    "package": "NT1Ho-WesleyImageReader",
+    "version": "0.1.3",
+    "source_branch": "maintenance/wesley-image-reader",
+    "source_commit": "101a8513c8075be8b1f99b2eeb1dab71666b305d",
+    "verified_dll_sha256": "49c6eacde84639a3093c19d7eabe89e52afda7f09d9b48eed0ed00d19de0df11",
+    "reader_data_sha256": "53071f58fd7ffa432482f9fbfc3c483794acf75b6ddcdebb94252e6b91e3d99d",
+    "description": "补齐大军械库任务屏幕，修复秘密档案查看和名称，改善中文断行与长文滚动。"
   }
 ]

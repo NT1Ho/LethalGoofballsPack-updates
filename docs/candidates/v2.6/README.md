@@ -42,3 +42,7 @@ CrewCompatibility 1.0.4 复用 ReviveCompany 的瞄准、长按、资格判断�
 便携地雷在两个方向实测同一物品的交接、平视及上下 30°、正常步行和奔跑、切到空槽、取回、丢弃和对端第三人称持握。拆卸、原位和朝向、25 Credits 价值及重新激活实测通过。
 
 交付与回退资料保存在 `D:/codex/LethalGoofballsPack/V2.6-candidate`。异地联机、第三名观察者和实际语音通话尚未覆盖。
+
+## Wesley 汉化与阅读返修
+
+V2.6 的更新候选包含 WesleyImageReader 0.1.3，带入导弹保险箱两态、秘密档案的原版检视与汉化，以及按字形宽度调整的中文排版。[Wesley 专项记录](wesley-reader.md)
