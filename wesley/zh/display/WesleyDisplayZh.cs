@@ -8,13 +8,31 @@ using WesleyMoonScripts.Components;
 
 namespace LethalGoofballsPack.WesleyZh
 {
-    [BepInPlugin("NT1Ho.WesleyDisplayZh", "Wesley 简中显示补充", "1.2.0")]
+    [BepInPlugin("NT1Ho.WesleyDisplayZh", "Wesley 简中显示补充", "1.3.0")]
     [BepInDependency("JacobG5.WesleyMoonScripts")]
     [BepInDependency("Yorimor.CustomStoryLogs")]
     [BepInDependency("Aueser.LCChineseProject")]
     internal sealed class Plugin : BaseUnityPlugin
     {
-        private void Awake() => new Harmony("NT1Ho.WesleyDisplayZh").PatchAll(typeof(Plugin).Assembly);
+        private MediaCaptions captions;
+
+        private void Awake()
+        {
+            try
+            {
+                captions = new MediaCaptions(new CaptionCatalog(typeof(Plugin).Assembly.GetManifestResourceStream("wesley.captions")));
+                Logger.LogInfo($"Wesley 字幕已加载，共 {captions.SourceCount} 个媒体名称。");
+            }
+            catch (System.Exception exception)
+            {
+                Logger.LogError($"Wesley 字幕数据加载失败：{exception}");
+            }
+            new Harmony("NT1Ho.WesleyDisplayZh").PatchAll(typeof(Plugin).Assembly);
+        }
+
+        private void LateUpdate() => captions?.Tick();
+
+        private void OnDestroy() => captions?.Dispose();
     }
 
     [HarmonyPatch(typeof(LevelCassetteLoader), "TapeEnded")]
