@@ -207,6 +207,8 @@ public partial class Transfer : IDisposable {
 }
 public class UpdateResult { public string version; public int downloaded; public int deleted; public int skipped; public bool latest; public bool backupPending; }
 public class Engine {
+    const string ReviveConfig = "BepInEx/config/OpJosMod.ReviveCompany.cfg";
+    static readonly Regex ReviveLimit = new Regex(@"^([ \t]*LimitAmountOfRevives[ \t]*=[ \t]*)(true|false)(?=[ \t]*\r?$)", RegexOptions.Multiline|RegexOptions.IgnoreCase|RegexOptions.CultureInvariant);
     readonly string root, home, statePath, pending;
     readonly Action guard;
     public Engine(string root, Action gameGuard) {
@@ -320,7 +322,12 @@ public class Engine {
             }
             guard(); progress("正在备份并安装……", 100);
             if (journal.hadState) { journal.stateOldHash = Data.Hash(statePath); Data.CopyDurable(statePath, Path.Combine(pending, "state.old")); if (Data.Hash(Path.Combine(pending,"state.old")) != journal.stateOldHash) throw new IOException("更新记录备份校验失败。"); }
-            foreach (var f in changed) Backup(journal, f.path, f.sha256);
+            for(int i=0;i<changed.Count;i++){
+                var f=changed[i];
+                Backup(journal,f.path,f.sha256);
+                var change=journal.changes[i];
+                if(change.existed)change.newHash=StageReviveDefault(m.version,f,Path.Combine(pending,change.backup),Path.Combine(pending,"new-"+i));
+            }
             foreach (string n in deletions) Backup(journal, n, null);
             Data.Atomic(Path.Combine(pending, "journal.json"), Data.Json(journal)); journalWritten = true;
             for (int i = 0; i < changed.Count; i++) {
@@ -342,6 +349,23 @@ public class Engine {
         bool backupPending = false;
         try { Archive(); } catch (IOException) { backupPending = true; } catch (UnauthorizedAccessException) { backupPending = true; }
         return new UpdateResult { version = m.version, downloaded = changed.Count, deleted = deletions.Count, skipped = skipped, backupPending = backupPending };
+    }
+    static string StageReviveDefault(string version, PackFile file, string saved, string staged) {
+        if(version!="V2.6"||!String.Equals(file.path,ReviveConfig,StringComparison.OrdinalIgnoreCase))return file.sha256;
+        var wanted=ReviveLimit.Match(File.ReadAllText(staged));
+        if(!wanted.Success||!String.Equals(wanted.Groups[2].Value,"false",StringComparison.OrdinalIgnoreCase))return file.sha256;
+        byte[] bytes=File.ReadAllBytes(saved);
+        bool bom=bytes.Length>=3&&bytes[0]==0xef&&bytes[1]==0xbb&&bytes[2]==0xbf;
+        var encoding=new UTF8Encoding(bom,true);
+        int offset=bom?3:0;
+        string previous=encoding.GetString(bytes,offset,bytes.Length-offset);
+        string migrated=ReviveLimit.Replace(previous,"${1}false");
+        if(!ReviveLimit.IsMatch(previous)){
+            string newline=previous.Contains("\r\n")?"\r\n":"\n";
+            migrated+=newline+"[Limit amount of revives]"+newline+"LimitAmountOfRevives = false"+newline;
+        }
+        File.WriteAllText(staged,migrated,encoding);
+        return Data.Hash(staged);
     }
     void Backup(Journal j, string relative, string hash) {
         string p = SafePath.Target(root, relative); var c = new Change { path = relative, newHash = hash, existed = File.Exists(p), backup = "old-" + j.changes.Count };

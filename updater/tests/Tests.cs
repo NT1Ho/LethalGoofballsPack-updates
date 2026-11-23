@@ -88,7 +88,7 @@ class Tests {
             runRoot=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"runs",DateTime.UtcNow.ToString("yyyyMMddHHmmss"));Directory.CreateDirectory(runRoot);
             if(args.Contains("--publisher")){Publishing();PublishingConcurrency();Console.WriteLine("Publisher regression checks passed.");return;}
             if(args.Contains("--badges")){Badges();Console.WriteLine("Badge regression checks passed.");return;}
-            var timer=Stopwatch.StartNew();Paths();Updates();Retirement();Badges();MutableConfigs();Recovery();Publishing();PublishingConcurrency();GameProcess();timer.Stop();
+            var timer=Stopwatch.StartNew();Paths();Updates();Retirement();Badges();MutableConfigs();ReviveDefault();Recovery();Publishing();PublishingConcurrency();GameProcess();timer.Stop();
             Console.WriteLine("RESULT: "+passed+" checks passed in "+timer.Elapsed.TotalSeconds.ToString("0.00")+" s; fixtures only; no real game files changed.");
         }catch(Exception e){Console.Error.WriteLine(e);Environment.ExitCode=1;}
     }
@@ -175,6 +175,20 @@ class Tests {
         string jroot=NewRoot(),outside=Path.Combine(runRoot,"outside");Directory.CreateDirectory(outside);Directory.CreateDirectory(Path.Combine(jroot,"BepInEx"));File.WriteAllText(Path.Combine(outside,"safe.txt"),"safe");
         using(var p=Process.Start(new ProcessStartInfo("cmd.exe","/c mklink /J \""+Path.Combine(jroot,"BepInEx","plugins")+"\" \""+outside+"\""){UseShellExecute=false,CreateNoWindow=true,RedirectStandardOutput=true,RedirectStandardError=true})){p.StandardOutput.ReadToEnd();p.WaitForExit();Assert(p.ExitCode==0,"junction fixture created");}
         var jd=new Downloads();jd.manifest=new Manifest{version="j",files=new List<PackFile>{F(jd,"BepInEx/plugins/safe.txt","unsafe")}};Reject(()=>Run(jroot,jd),"junction target blocked");Assert(File.ReadAllText(Path.Combine(outside,"safe.txt"))=="safe","junction cannot escape game root");
+    }
+    static void ReviveDefault() {
+        const string path="BepInEx/config/OpJosMod.ReviveCompany.cfg";
+        const string old="[Limit amount of revives]\r\nLimitAmountOfRevives = true\r\n[Time Until Cant Be Revived]\r\nTimeUntilCantBeRevived = 120\r\n";
+        string root=NewRoot(), personal=old.Replace("120","93")+"# keep my settings\r\n";
+        var v258=new Downloads();
+        v258.manifest=new Manifest{version="V2.5.8",files=new List<PackFile>{F(v258,path,old,"V2.5.8")}};
+        Run(root,v258);Put(root,path,personal);
+        var v26=new Downloads();
+        v26.manifest=new Manifest{version="V2.6",files=new List<PackFile>{F(v26,path,old.Replace("true","false"),"V2.6")}};
+        var result=Run(root,v26);
+        Assert(result.downloaded==1&&File.ReadAllText(Target(root,path))==personal.Replace("true","false"),"V2.6 changes only the ReviveCompany limit and keeps the player's time setting");
+        Assert(Directory.GetFiles(Target(root,".lcpack-updater/backups"),"old-*",SearchOption.AllDirectories).Any(p=>File.ReadAllText(p)==personal),"migration backs up exact pre-upgrade personal ReviveCompany config");
+        Assert(Run(root,new Downloads{manifest=v26.manifest}).latest,"repeated check retains the merged config");
     }
     static void Retirement() {
         foreach(bool managed in new[]{false,true}) {
