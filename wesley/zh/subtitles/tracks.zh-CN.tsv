@@ -361,7 +361,7 @@ A	Mic8	5332	1680	5300	D	关不住它。
 A	Mic9	3329	0	2600	D	你的诚实劳动对公司至关重要。
 A	MoonCorrupt4	14516	0	2220	D	再也不会有人伤害你了。
 A	Phase2Start	15184	0	4000	D	警报！A 门已被攻破。
-A	Phase2Start	15184	5180	7350	D	正在释放［名称听不清］。
+A	Phase2Start	15184	5180	7350	D	正在释放皮斯特罗赛图斯。
 A	Phase2Start	15184	8160	10540	D	开始执行第 5 号规程。
 A	Phase2Start	15184	11260	13860	D	所有入侵者必须死。
 A	PlayerEnter	4180	0	2540	D	警报，检测到移动。
@@ -420,6 +420,7 @@ A	RadioLog4	63173	57750	61220	D	这里是《穿越星辰》。谢谢你们，我
 A	RadioNoise	21618	1000	3050	D	有埋伏！左边，左边！
 A	RadioStatic	173095	2100	10500	D	东北风，5 至 10 节。
 A	RadioStatic	173095	37800	40400	D	海上天气预报……
+A	RadioStatic	173095	50680	55350	D	北滩以北……夜间……
 A	RadioStatic	173095	84500	91000	D	午夜后局部有雾，能见度至多一海里。
 A	RandomCaveLog	27274	0	8040	D	嘿，瞧瞧。这东西能用了。也好，在洞里能有点消遣。
 A	RandomCaveLog	27274	8040	15260	D	整天待在地下不容易。看不见太阳，也不知道几点。还真有点难过。
@@ -705,15 +706,15 @@ A	gratar_final_1	27259	9620	13700	D	愿明天更光明。
 A	gratar_inside_loop_2	864102	41400	44700	D	警报。工厂内所有人员必须撤离。
 A	gratar_inside_loop_2	864102	94800	97700	D	警报。工厂内发现生命体。
 A	gratar_inside_loop_2	864102	153600	158200	D	警报。C 区机器故障。
-A	gratar_inside_loop_2	864102	206000	209200	D	警报。正在执行设施……［后半句听不清］
+A	gratar_inside_loop_2	864102	205800	210600	D	警报。正在扫描整个设施。
 A	gratar_inside_loop_2	864102	262400	266900	D	警报。在工厂内发现未登记人员。
 A	gratar_inside_loop_2	864102	311400	314600	D	警报。所有人员必须撤离。
-A	gratar_inside_loop_2	864102	358800	362750	D	警报。机器发生故障。
+A	gratar_inside_loop_2	864102	358100	363600	D	警报。E 区机器故障。
 A	gratar_inside_loop_2	864102	421200	426850	D	警报。F 区发现未登记的生命体。
 A	gratar_inside_loop_2	864102	477200	481750	D	警报。工厂内所有人员必须撤离。
 A	gratar_inside_loop_2	864102	482200	485300	D	这是最后一次警告。
 A	gratar_inside_loop_2	864102	535300	540300	D	警报。工厂内所有人员必须死。
-A	gratar_inside_loop_2	864102	560100	565950	D	警报。第 4 个字母是大写 Q。
+A	gratar_inside_loop_2	864102	560100	566600	D	警报。第 4 个字母是大写 Q。
 A	gratar_inside_loop_2	864102	588300	593900	D	警报。正在为炮塔供电。
 A	gratar_inside_loop_2	864102	635900	639450	D	工厂内所有人员必须死。
 A	gratar_inside_loop_2	864102	679100	683900	D	工厂内所有人员必须死。
@@ -795,6 +796,7 @@ A	secret_log	70928	46360	52540	D	等我用完，就把你卖给格拉塔尔的�
 A	secret_log	70928	53860	61200	D	上次它说到第二个字母就停了。那个字母是……大写 H！
 A	secret_log	70928	61200	66560	D	不能让任何人知道这件事。
 A	secret_log	70928	66560	68980	D	通话结束。
+A	unworhty	31742	22800	26300	D	……没有资格。
 A	vo1	20208	0	8500	D	啊，你好。你醒了。
 A	vo1	20208	8500	19800	D	今天真好，你不觉得吗？
 A	vo2	14248	0	3960	D	嗯，你上次看见外面，大概已经是很久以前了。
@@ -829,7 +831,9 @@ A	walkie_8	1875	0	1160	D	回答我。
 A	walkie_9	1691	0	1000	D	我迷路了。
 A	whisper4	1933	0	860	D	我看见你了。
 A	whisper6	1139	0	1139	D	在你身后。
+A	whisper8	1850	0	720	D	杀了他们。
 A	why are you blue	4442	420	4300	D	你怎么回事？你怎么是蓝色的？
+A	worthy	31742	22800	25000	D	……有资格。
 V	AsteroidT	1528	1390	9730	D	本录像带包含高度机密的资料，不得向公众公开。
 V	AsteroidT	1528	11500	20500	D	在环绕 56-Vow 的第 13 号小行星上，发现了一座隐藏的生物武器试验设施。
 V	AsteroidT	1528	20990	27830	D	你的任务是找到并回收这里的试验武器残留物。
@@ -926,17 +930,18 @@ V	HydreneVideo	362	4020	6020	D	来拿他的超级战衣。
 V	HyxTapeTake2	2641	2630	6850	D	啊，清甜的夏日微风，舒缓的河水……
 V	HyxTapeTake2	2641	6850	12560	D	还有森林里清晨的鸟鸣。
 V	HyxTapeTake2	2641	13330	18040	D	听着像一场梦。可如果我告诉你，这不是梦呢？
-V	HyxTapeTake2	2641	18040	22540	D	这里……他在看着。
+V	HyxTapeTake2	2641	18040	20650	D	在希克斯，你就能听到这些声音。
+V	HyxTapeTake2	2641	20650	22540	D	他在看着。
 V	HyxTapeTake2	2641	22540	27900	D	我们有许多度假区，可以慢慢挑。
 V	HyxTapeTake2	2641	27900	32640	D	你想住在小村庄，还是小镇？
 V	HyxTapeTake2	2641	32640	36140	D	或者是森林里舒服的小木屋？
 V	HyxTapeTake2	2641	36140	40960	D	你想住小村、小镇，还是舒适的木屋？
 V	HyxTapeTake2	2641	40960	43640	D	因为你会错过……你会失踪。
-V	HyxTapeTake2	2641	43840	50250	D	这里的天空与大自然，几乎可以称得上异常。
+V	HyxTapeTake2	2641	45100	50300	D	希克斯的天空和自然风光，几乎可以称得上异常。
 V	HyxTapeTake2	2641	50300	53700	D	你会错过……不来可就错过了。
 V	HyxTapeTake2	2641	53700	58980	D	尤其是今年，我们会迎来一场非常特别的日食。
 V	HyxTapeTake2	2641	58980	63620	D	这景象和你以前见过的都不一样。
-V	HyxTapeTake2	2641	74900	79320	D	别怀疑。他在这儿。他死了。他在看着。
+V	HyxTapeTake2	2641	74900	79320	D	别怀疑。他在这儿。……他在看着。
 V	HyxTapeTake2	2641	79320	80900	D	加入我们。
 V	HyxTapeTake2	2641	80900	82240	D	他在看着。
 V	MotraTape	1485	400	2600	D	大家好，我是哈里。看这门强力迫击炮！
