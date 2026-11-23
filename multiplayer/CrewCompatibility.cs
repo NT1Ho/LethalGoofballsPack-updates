@@ -11,17 +11,18 @@ using GameNetcodeStuff;
 using HarmonyLib;
 using LobbyControl.API;
 using LobbyControl.Utils;
+using OPJosMod.ReviveCompany;
 using TalkingHeads.VoiceChatPatch;
 using Unity.Netcode;
 using UnityEngine;
 
-[BepInPlugin("NT1Ho.CrewCompatibility", "Crew Compatibility", "1.0.3")]
+[BepInPlugin("NT1Ho.CrewCompatibility", "Crew Compatibility", "1.0.4")]
 [BepInDependency("OpJosMod.ReviveCompany")]
 [BepInDependency("TalkingHeads")]
 [BepInDependency("mattymatty.LobbyControl")]
 [BepInDependency("me.swipez.melonloader.morecompany")]
 [BepInDependency(HotbarPlusId, BepInDependency.DependencyFlags.SoftDependency)]
-public sealed class CrewCompatibility : BaseUnityPlugin
+public sealed partial class CrewCompatibility : BaseUnityPlugin
 {
     const string HotbarPlusId = "FlipMods.HotbarPlus";
     static Action<PlayerControllerB, int> sendAbsoluteSlot;
@@ -38,9 +39,11 @@ public sealed class CrewCompatibility : BaseUnityPlugin
         Patch("DeadBodyInfo:Start", il: nameof(BodyTags));
         Patch("PlayerPhysicsRegion:OnTriggerStay", il: nameof(PhysicsBodySlot));
         Patch("OPJosMod.ReviveCompany.GeneralUtil:RevivePlayer", nameof(BeginRevive), nameof(EndRevive), nameof(Revive));
+        Patch("OPJosMod.ReviveCompany.GeneralUtil:SetPlayerDiedAt", nameof(BeginDeathWindow));
         Patch("OPJosMod.ReviveCompany.GeneralUtil:GetClosestAlivePlayer", nameof(ClosestLiving));
         Patch("OPJosMod.ReviveCompany.Patches.PlayerControllerBPatch:canUse", nameof(FindReviveTarget));
-        Patch("OPJosMod.ReviveCompany.Patches.PlayerControllerBPatch:setHoverTipAndCurrentInteractTriggerPatch", il: nameof(UseAimedBody));
+        Patch("OPJosMod.ReviveCompany.Patches.PlayerControllerBPatch:setHoverTipAndCurrentInteractTriggerPatch", il: nameof(ReviveInteraction));
+        Patch("StartOfRound:Start", postfix: nameof(RegisterReviveMessage));
         Patch("TalkingHeads.Util.UtilExtensions:FindComponentInChildren", nameof(HasTransform));
         Patch("TalkingHeads.VoiceChatPatch.VoicePatchPatch:OnPlayerStoppedSpeaking", nameof(StoppedSpeaking));
         Patch("TalkingHeads.VoiceChatPatch.VoicePatchPatch:LateUpdate", il: nameof(RemoveStale));
@@ -114,9 +117,7 @@ public sealed class CrewCompatibility : BaseUnityPlugin
 
     static bool BeginRevive(int playerId, out PlayerControllerB __state)
     {
-        var slots = StartOfRound.Instance.allPlayerScripts;
-        var player = playerId >= 0 && playerId < slots.Length ? slots[playerId] : null;
-        __state = player && player.isPlayerDead ? player : null;
+        __state = acceptedBody ? CurrentRevival(playerId, acceptedBody.NetworkObjectId) : null;
         return __state;
     }
     static RagdollGrabbableObject aimedBody;
@@ -130,13 +131,29 @@ public sealed class CrewCompatibility : BaseUnityPlugin
         return false;
     }
     static RagdollGrabbableObject AimedBody(Vector3 ignored) => aimedBody;
-    static IEnumerable<CodeInstruction> UseAimedBody(IEnumerable<CodeInstruction> source)
+    static IEnumerable<CodeInstruction> ReviveInteraction(IEnumerable<CodeInstruction> source)
     {
+        bool sentLegacyRevive = false;
         foreach (var op in source)
         {
             if (Calls(op, "GetClosestDeadBody")) op.operand = Method(nameof(AimedBody));
+            if (Calls(op, "RevivePlayer")) op.operand = Method(nameof(RequestRevival));
+            if (op.operand is MethodInfo check && check.DeclaringType == typeof(string) && check.Name == "op_Inequality")
+                op.operand = Method(nameof(CanHoldRevive));
+            if (Calls(op, "SentMessageNeedResponses") || (!sentLegacyRevive && Calls(op, "SendRpcMessage")))
+            {
+                sentLegacyRevive = true;
+                op.opcode = OpCodes.Pop;
+                op.operand = null;
+            }
             yield return op;
         }
+    }
+    static bool CanHoldRevive(string ignoredTip, string ignoredEmpty)
+    {
+        var p = StartOfRound.Instance?.localPlayerController;
+        return p && p.IsOwner && !p.isPlayerDead && !p.isGrabbingObjectAnimation && !p.inTerminalMenu &&
+            !p.inSpecialMenu && !p.isTypingChat && !p.quickMenuManager.isMenuOpen;
     }
     static bool ClosestLiving(Vector3 position, ref PlayerControllerB __result)
     {
@@ -173,8 +190,14 @@ public sealed class CrewCompatibility : BaseUnityPlugin
         ops[cleanup - 2] = new CodeInstruction(OpCodes.Call, Method(nameof(CleanOwnBody)));
         ops[cleanup - 1] = new CodeInstruction(OpCodes.Nop);
         ops[cleanup] = new CodeInstruction(OpCodes.Ldnull); // original proximity cleanup sees no object
+        int health = ops.FindIndex(op => Equals(op.operand, AccessTools.Field(typeof(ConfigVariables), nameof(ConfigVariables.ExtraHealthLostPerRevive))));
+        if (health < 0 || ops[health + 1].opcode != OpCodes.Mul || ops[health + 2].opcode != OpCodes.Sub)
+            throw new InvalidOperationException("Unrecognized revive health calculation");
+        ops.Insert(health + 3, new CodeInstruction(OpCodes.Call, Method(nameof(ClampReviveHealth))));
         return ops;
     }
+
+    static int ClampReviveHealth(int health) => Math.Max(1, health);
 
     static void RestoreVoiceFilter(PlayerControllerB p)
     {
@@ -192,12 +215,15 @@ public sealed class CrewCompatibility : BaseUnityPlugin
         if (!body || body.playerObjectId != (int)p.playerClientId) return;
         var handle = body.grabBodyObject as RagdollGrabbableObject;
         if (!handle || handle.ragdoll != body) return;
+        p.deadBody = null;
         if (handle.isHeld && handle.playerHeldBy && handle.playerHeldBy.IsOwner &&
             handle.playerHeldBy.currentlyHeldObjectServer == handle) handle.playerHeldBy.DiscardHeldObject();
         if (StartOfRound.Instance.IsServer) instance.StartCoroutine(Despawn(body, handle));
     }
     static IEnumerator Despawn(DeadBodyInfo body, RagdollGrabbableObject handle)
     {
+        // Send the accepted revival before Netcode removes that corpse on the other peers.
+        yield return null;
         // The owner's normal discard RPC clears just the corpse slot before NGO removes it.
         while (handle && body && handle.isHeld && handle.playerHeldBy && handle.playerHeldBy.isPlayerControlled)
             yield return null;
@@ -209,6 +235,7 @@ public sealed class CrewCompatibility : BaseUnityPlugin
         __state.disableInteract = false;
         __state.enemyWaitingForBodyRagdoll = null;
         __state.overrideGameOverSpectatePivot = null;
+        if (__state == StartOfRound.Instance.localPlayerController) HUDManager.Instance.HideHUD(false);
         StartOfRound.Instance.UpdatePlayerVoiceEffects();
     }
 
