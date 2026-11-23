@@ -1,0 +1,32 @@
+[
+  {
+    "source_branch": "codex/heavy-contact-control",
+    "version": "0.2.79",
+    "archive": "Hatchet-0.2.79-Test.zip",
+    "archive_sha256": "db63513f5e41569332aa33edccc2ec89f195bb0172882fc295429b8cbe1b0d7f",
+    "source_commit": "56302b0103ea64d4925678871016661dd1958a39",
+    "verified_dll_sha256": "a34a856e2bb73e69065776fd18b91c82da9b674cda0ba3df2cfa18b943ec1856",
+    "package": "NT1Ho-Hatchet",
+    "core_sha256": "e7698fd71a72a50479b74f25d73cd13fc7566841720315d7a97ecced8ee84229",
+    "description": "重击命中后按通用机制分别处理控制与伤害，包含已验收的命中反馈改进。",
+    "evidence_commit": "c4f64a84f0944dc4eb3f86df19649a57eb87a62d"
+  },
+  {
+    "archive": "UniversalWrench-0.2.16-dev.zip",
+    "archive_sha256": "1525f0608773e68fc7131f27088ab7d636dddcf3b99b0f27c7a0f72b0ab2ae31",
+    "description": "便携地雷采用更低的第一人称双手持握，包含已交付的诊断事件。",
+    "source_commit": "b3ad7945b5331e9014bfd61d2ff71c5031ea8f78",
+    "verified_dll_sha256": "3dcbcee2be0148f1de10b2c3293afff8cb870fea787f66dca9a3e6dc628c12d9",
+    "package": "NT1Ho-UniversalWrench",
+    "version": "0.2.16-dev",
+    "source_branch": "codex/v26-portable-mine"
+  },
+  {
+    "version": "1.0.4",
+    "verified_dll_sha256": "ad2f4c73d6872bc6602cb2445e447985e7e33e681c0307800c8bc00085b58b80",
+    "source_commit": "a68f37142b71a5f4abcc92d1233877e74e2c5cc7",
+    "source_branch": "development/v2.6",
+    "package": "NT1Ho-CrewCompatibility",
+    "description": "房主按当前尸体身份确认复活，忽略旧请求，恢复本地 HUD 并保留至少 1 HP。"
+  }
+]
