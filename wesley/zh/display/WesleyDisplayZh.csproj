@@ -1,14 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>1.3.1</Version>
+    <Version>1.3.2</Version>
     <GameRoot Condition="'$(GameRoot)' == ''">D:/STEAM/steamapps/common/Lethal Company</GameRoot>
     <Plugins>$(GameRoot)/BepInEx/plugins</Plugins>
+    <WesleyMoonScriptsPath Condition="'$(WesleyMoonScriptsPath)' == '' and Exists('$(Plugins)/JLL/WesleyMoonScripts.dll')">$(Plugins)/JLL/WesleyMoonScripts.dll</WesleyMoonScriptsPath>
+    <WesleyMoonScriptsPath Condition="'$(WesleyMoonScriptsPath)' == ''">$(Plugins)/JacobG5-JLL/JLL/WesleyMoonScripts.dll</WesleyMoonScriptsPath>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="../glossary.tsv" LogicalName="wesley.glossary" />
     <EmbeddedResource Include="../subtitles/tracks.zh-CN.tsv" LogicalName="wesley.captions" WithCulture="false" />
-    <Reference Include="$(GameRoot)/BepInEx/core/0Harmony.dll;$(GameRoot)/BepInEx/core/BepInEx.dll;$(Plugins)/JLL/WesleyMoonScripts.dll;$(Plugins)/IAmBatby-LethalLevelLoader/LethalLevelLoader.dll;$(Plugins)/Magic_Wesley-CustomStoryLogsFixed/Yorimor.CustomStoryLogs.dll" Private="false"/>
+    <Reference Include="$(GameRoot)/BepInEx/core/0Harmony.dll;$(GameRoot)/BepInEx/core/BepInEx.dll;$(WesleyMoonScriptsPath);$(Plugins)/IAmBatby-LethalLevelLoader/LethalLevelLoader.dll;$(Plugins)/Magic_Wesley-CustomStoryLogsFixed/Yorimor.CustomStoryLogs.dll" Private="false"/>
     <Reference Include="$(GameRoot)/Lethal Company_Data/Managed/Unity*.dll;$(GameRoot)/Lethal Company_Data/Managed/Assembly-CSharp.dll" Private="false"/>
   </ItemGroup>
 </Project>

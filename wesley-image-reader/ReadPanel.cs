@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using BepInEx.Bootstrap;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -107,6 +108,15 @@ namespace WesleyImageReader
         void InitStyles()
         {
             font = Font.CreateDynamicFontFromOSFont(new[] { "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans CJK SC", "Arial" }, 20);
+            if ((!font || !font.HasCharacter('中')) && Chainloader.PluginInfos.TryGetValue("Aueser.LCChineseProject", out var chinese))
+            {
+                string bundledFont = Path.Combine(Path.GetDirectoryName(chinese.Location), "fonts", "NotoSansSC-VF.ttf");
+                if (File.Exists(bundledFont))
+                {
+                    if (font) Destroy(font);
+                    font = new Font(bundledFont);
+                }
+            }
             style = new GUIStyle(GUI.skin.label)
             {
                 font = font, wordWrap = false, richText = false, alignment = TextAnchor.UpperLeft,

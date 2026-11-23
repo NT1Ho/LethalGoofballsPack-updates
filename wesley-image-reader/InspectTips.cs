@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using BepInEx.Bootstrap;
 using HarmonyLib;
 
 namespace WesleyImageReader
@@ -10,7 +11,8 @@ namespace WesleyImageReader
     {
         private const string CanonicalTip = "Inspect: [Z]";
 
-        private static bool Prepare() => TargetMethod() != null;
+        private static bool Prepare() =>
+            Chainloader.PluginInfos.ContainsKey("butterystancakes.lethalcompany.butteryfixes") && TargetMethod() != null;
 
         private static MethodBase TargetMethod() =>
             AccessTools.Method("ButteryFixes.Utility.ScriptableObjectOverrides:OverrideItems");

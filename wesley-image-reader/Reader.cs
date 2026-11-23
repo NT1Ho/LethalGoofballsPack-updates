@@ -3,10 +3,12 @@ using System.IO;
 using System.IO.Compression;
 using System.Collections.Generic;
 using BepInEx;
+using BepInEx.Logging;
 using GameNetcodeStuff;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace WesleyImageReader
 {
@@ -14,9 +16,30 @@ namespace WesleyImageReader
     [Serializable] internal class Entry { public string id, texture, title; public int width, height, format; public bool native, inspect; public Rule[] rules; }
     [Serializable] internal class Rule { public string kind, material, slot, path, scene; }
 
-    [BepInPlugin("NT1Ho.WesleyImageReader","Wesley 图片中文阅读","0.1.3")]
+    [BepInPlugin("NT1Ho.WesleyImageReader","Wesley 图片中文阅读","0.1.4")]
     [BepInDependency("butterystancakes.lethalcompany.butteryfixes", BepInDependency.DependencyFlags.SoftDependency)]
-    public sealed class Reader : BaseUnityPlugin
+    public sealed class ReaderPlugin : BaseUnityPlugin
+    {
+        private void Awake()
+        {
+            string location = Info.Location, guid = Info.Metadata.GUID;
+            var logger = Logger;
+            Reader runtime = null;
+            void EnsureRuntime(Scene scene, LoadSceneMode mode)
+            {
+                if (runtime) return;
+                var host = new GameObject("Wesley Reader Runtime");
+                DontDestroyOnLoad(host);
+                runtime = host.AddComponent<Reader>();
+                runtime.Initialize(location, guid, logger);
+            }
+            SceneManager.sceneLoaded += EnsureRuntime;
+            Application.quitting += () => SceneManager.sceneLoaded -= EnsureRuntime;
+            EnsureRuntime(default, default);
+        }
+    }
+
+    internal sealed class Reader : MonoBehaviour
     {
         internal static Reader Active;
         internal readonly Dictionary<string,List<Entry>> ByTexture = new Dictionary<string,List<Entry>>(StringComparer.Ordinal);
@@ -25,13 +48,15 @@ namespace WesleyImageReader
         internal NativeArt Art;
         private Harmony patch;
         private ReadPanel panel;
+        private ManualLogSource logger;
 
-        private void Awake()
+        internal void Initialize(string location, string guid, ManualLogSource log)
         {
+            logger=log;
             try
             {
                 Art=new NativeArt(this);
-                Data=ZipFile.OpenRead(Path.Combine(Path.GetDirectoryName(Info.Location),"Reader.wri"));
+                Data=ZipFile.OpenRead(Path.Combine(Path.GetDirectoryName(location),"Reader.wri"));
                 using (var file=Data.GetEntry("index.json").Open())
                 using (var sr=new StreamReader(file))
                 {
@@ -51,11 +76,11 @@ namespace WesleyImageReader
                     }
                 }
                 panel=gameObject.AddComponent<ReadPanel>(); panel.enabled=false;
-                patch=new Harmony(Info.Metadata.GUID);
+                patch=new Harmony(guid);
                 patch.PatchAll(typeof(Reader).Assembly);
                 Active=this;Art.Start();
             }
-            catch(Exception e){Logger.LogError(e);Release();}
+            catch(Exception e){logger.LogError(e);Release();}
         }
         internal static PlayerControllerB Player => GameNetworkManager.Instance?.localPlayerController;
         internal static bool Usable(PlayerControllerB p) => p && p.IsOwner && p.isPlayerControlled && !p.isPlayerDead &&
@@ -91,7 +116,7 @@ namespace WesleyImageReader
             catch (Exception ex)
             {
                 panel.Close();
-                Logger.LogWarning(ex.Message);
+                logger.LogWarning(ex.Message);
                 return false;
             }
         }
@@ -113,7 +138,7 @@ namespace WesleyImageReader
             catch (Exception ex)
             {
                 panel.Close();
-                Logger.LogWarning(ex.Message);
+                logger.LogWarning(ex.Message);
             }
         }
         private void OnDisable(){Art?.Stop();if(panel)panel.Close();}

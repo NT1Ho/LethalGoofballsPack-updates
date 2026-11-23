@@ -4,24 +4,37 @@ using BepInEx;
 using CustomStoryLogs.Tools;
 using HarmonyLib;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using WesleyMoonScripts.Components;
 
 namespace LethalGoofballsPack.WesleyZh
 {
-    [BepInPlugin("NT1Ho.WesleyDisplayZh", "Wesley 简中显示补充", "1.3.1")]
+    [BepInPlugin("NT1Ho.WesleyDisplayZh", "Wesley 简中显示补充", "1.3.2")]
     [BepInDependency("JacobG5.WesleyMoonScripts")]
     [BepInDependency("Yorimor.CustomStoryLogs")]
     [BepInDependency("Aueser.LCChineseProject")]
     internal sealed class Plugin : BaseUnityPlugin
     {
-        private MediaCaptions captions;
-
         private void Awake()
         {
             try
             {
-                captions = new MediaCaptions(new CaptionCatalog(typeof(Plugin).Assembly.GetManifestResourceStream("wesley.captions")));
-                Logger.LogInfo($"Wesley 字幕已加载，共 {captions.SourceCount} 个媒体名称。");
+                var catalog = new CaptionCatalog(typeof(Plugin).Assembly.GetManifestResourceStream("wesley.captions"));
+                // The shared BepInEx manager can be destroyed during a clean V81 startup.
+                CaptionRuntime runtime = null;
+                void EnsureRuntime(Scene scene, LoadSceneMode mode)
+                {
+                    if (runtime) return;
+                    var host = new GameObject("Wesley Subtitles Runtime");
+                    DontDestroyOnLoad(host);
+                    runtime = host.AddComponent<CaptionRuntime>();
+                    runtime.Captions = new MediaCaptions(catalog);
+                }
+                SceneManager.sceneLoaded += EnsureRuntime;
+                Application.quitting += () => SceneManager.sceneLoaded -= EnsureRuntime;
+                EnsureRuntime(default, default);
+                Logger.LogInfo($"Wesley 字幕已加载，共 {runtime.Captions.SourceCount} 个媒体名称。");
             }
             catch (System.Exception exception)
             {
@@ -29,10 +42,15 @@ namespace LethalGoofballsPack.WesleyZh
             }
             new Harmony("NT1Ho.WesleyDisplayZh").PatchAll(typeof(Plugin).Assembly);
         }
+    }
 
-        private void LateUpdate() => captions?.Tick();
+    internal sealed class CaptionRuntime : MonoBehaviour
+    {
+        internal MediaCaptions Captions;
 
-        private void OnDestroy() => captions?.Dispose();
+        private void LateUpdate() => Captions?.Tick();
+
+        private void OnDestroy() => Captions?.Dispose();
     }
 
     [HarmonyPatch(typeof(LevelCassetteLoader), "TapeEnded")]

@@ -1,0 +1,7 @@
+{
+  "name": "Wesley_Moons_ZH",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/NT1Ho/LethalGoofballsPack-updates/tree/development/wesley-standalone/wesley/zh/standalone",
+  "description": "Simplified Chinese text, subtitles and image reader for Wesley's Moons on Lethal Company V81.",
+  "dependencies": ["Magic_Wesley-Wesleys_Moons-7.0.18"]
+}
