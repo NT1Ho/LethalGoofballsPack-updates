@@ -13,12 +13,14 @@ namespace LethalGoofballsPack.WesleyZh
         private readonly CaptionHud view = new CaptionHud();
         private readonly Dictionary<AudioClip, CaptionTrack> audioTracks = new Dictionary<AudioClip, CaptionTrack>();
         private readonly List<AudioPlayback> audio = new List<AudioPlayback>();
+        private readonly List<AudioSource> nativeAudio = new List<AudioSource>();
         private readonly List<VideoPlayback> videos = new List<VideoPlayback>();
         private readonly List<Scene> newScenes = new List<Scene>();
         private Terminal terminal;
         private object lastVoice;
         private object lastWriting;
         private float discoverAt;
+        private float scanNativeAudioAt;
 
         internal static MediaCaptions Current { get; private set; }
         internal int SourceCount => catalog.SourceCount;
@@ -51,6 +53,7 @@ namespace LethalGoofballsPack.WesleyZh
         {
             audioTracks.Clear();
             audio.RemoveAll(playback => !playback.Source || playback.Source.gameObject.scene == scene);
+            nativeAudio.RemoveAll(source => !source || source.gameObject.scene == scene);
             videos.RemoveAll(playback => !playback.Player || playback.Player.gameObject.scene == scene);
             newScenes.Remove(scene);
             view.Show(null, null);
@@ -58,17 +61,20 @@ namespace LethalGoofballsPack.WesleyZh
 
         private void DiscoverSceneMedia()
         {
-            // Native playOnAwake does not enter the managed AudioSource.Play wrapper.
-            // Inspect new scenes once. Managed calls and VideoPlayer.started handle later playback.
+            // Authored sources can be inactive until a player enters the listening area.
+            // Retain only captioned playOnAwake sources so later native starts do not need a scene scan.
             foreach (var scene in newScenes)
             {
                 if (!scene.isLoaded) continue;
                 foreach (var root in scene.GetRootGameObjects())
                 {
                     if (!terminal) terminal = root.GetComponentInChildren<Terminal>();
-                    foreach (var source in root.GetComponentsInChildren<AudioSource>())
+                    foreach (var source in root.GetComponentsInChildren<AudioSource>(true))
                     {
-                        if (source.isPlaying && source.clip && !audio.Exists(item => item.Source == source && !item.OneShot))
+                        if (!source.clip) continue;
+                        if (source.playOnAwake && catalog.ForAudio(source.clip.name, source.clip.length) != null)
+                            nativeAudio.Add(source);
+                        if (source.isActiveAndEnabled && source.isPlaying && !audio.Exists(item => item.Source == source && !item.OneShot))
                             Play(source, source.clip, 0);
                     }
                     foreach (var player in root.GetComponentsInChildren<VideoPlayer>())
@@ -104,7 +110,20 @@ namespace LethalGoofballsPack.WesleyZh
 
         internal void Tick()
         {
-            if (newScenes.Count != 0 && Time.unscaledTime >= discoverAt) DiscoverSceneMedia();
+            float now = Time.unscaledTime;
+            if (newScenes.Count != 0 && now >= discoverAt) DiscoverSceneMedia();
+            if (nativeAudio.Count != 0 && now >= scanNativeAudioAt)
+            {
+                scanNativeAudioAt = now + 0.1f;
+                for (int i = nativeAudio.Count - 1; i >= 0; i--)
+                {
+                    var source = nativeAudio[i];
+                    if (!source) nativeAudio.RemoveAt(i);
+                    else if (source.isActiveAndEnabled && source.isPlaying &&
+                             !audio.Exists(item => item.Source == source && !item.OneShot))
+                        Play(source, source.clip, 0);
+                }
+            }
             if (audio.Count == 0 && videos.Count == 0 && lastVoice == null && lastWriting == null) return;
 
             var round = StartOfRound.Instance;
