@@ -144,12 +144,14 @@ A	Cunningham's interaction	85258	40600	42140	D	坎宁安：呃，我是新来的
 A	Cunningham's interaction	85258	42140	47200	D	G.A.R.Y.：警报，命令已被覆盖。等待新指令。
 A	Cunningham's interaction	85258	47200	50600	D	坎宁安：告诉我寻找科斯莫科斯（Cosmocos）的隐藏代码。
 A	Cunningham's interaction	85258	50600	54980	D	G.A.R.Y.：警报，隐藏代码是——
-A	Cunningham's interaction	85258	55960	67400	D	G.A.R.Y.：……隐藏代码是……\n［数据损坏］
-A	Cunningham's interaction	85258	68280	71940	D	G.A.R.Y.：……未找到新的管理层记录……
-A	Cunningham's interaction	85258	71940	77100	D	G.A.R.Y.：……依据第 5 号规程，所有入侵者必须死。
-A	Cunningham's interaction	85258	78100	84980	D	G.A.R.Y.：……隐藏代码是……
+A	Cunningham's interaction	85258	55960	64900	D	［数据损坏］
+A	Cunningham's interaction	85258	65900	67200	D	坎宁安：比想象中容易。
+A	Cunningham's interaction	85258	67220	71940	D	G.A.R.Y.：警报，未发现新任管理层的记录。
+A	Cunningham's interaction	85258	72000	77100	D	G.A.R.Y.：依据第 5 号规程，所有入侵者必须死。
+A	Cunningham's interaction	85258	77100	78600	D	坎宁安：我靠——
 A	Decontamination	65716	0	6000	D	设施的中央电源已丢失。
 A	Decontamination	65716	6000	13620	D	即将净化。5、4、3、2、1。
+A	Decontamination	65716	58550	61300	D	净化完成。
 A	GeoffreyEternLog	129364	0	11100	D	在波拉鲁斯见面、引发这场惨烈大战，至今已经过去了 120 多天。
 A	GeoffreyEternLog	129364	11100	19820	D	不出所料，军方对最初的袭击极为愤怒，同一周就发动了反击。
 A	GeoffreyEternLog	129364	19820	23100	D	从那以后，局势不断升级。
@@ -295,6 +297,19 @@ A	HarringtonResearch4	85848	39300	47200	D	想到这就可怕。不过，我删�
 A	HarringtonResearch4	85848	47200	59220	D	只有它能让克隆体活过刚造出来那段时间。
 A	HarringtonResearch4	85848	60040	72520	D	他们造出的军队，都会在一个月之内倒下。我想，我可能阻止了一场大祸。
 A	HarringtonResearch4	85848	72520	84940	D	现在，我该去找条更有希望的出路了。哈林顿教授，通话结束。
+A	HarryPerkins	48116	0	3600	D	好，好。好吧。
+A	HarryPerkins	48116	3600	7700	D	你要我站在这儿，对着这东西说话？
+A	HarryPerkins	48116	7700	9860	D	好，明白了。
+A	HarryPerkins	48116	9860	12320	D	啊，灯在那儿。
+A	HarryPerkins	48116	12320	16600	D	这些都得念一遍？有报酬的，对吧？
+A	HarryPerkins	48116	16600	21140	D	好。哈里·珀金斯，第一次录音。
+A	HarryPerkins	48116	21140	22480	D	你好。
+A	HarryPerkins	48116	22480	25340	D	扫描时请保持不动。
+A	HarryPerkins	48116	26000	28000	D	你好。
+A	HarryPerkins	48116	28000	31200	D	请等扫描结束再走。
+A	HarryPerkins	48116	31200	36400	D	请保持安静。肃静。别出声。
+A	HarryPerkins	48116	36400	41060	D	等指示灯亮了再走。等灯。
+A	HarryPerkins	48116	41060	43560	D	等灯。等灯。
 A	Hyxlog1	37974	0	7000	D	种子正在孕育。
 A	Hyxlog1	37974	7000	18000	D	人类在干涉。
 A	Hyxlog1	37974	18000	24000	D	种子必须生长。
@@ -326,8 +341,9 @@ A	Kenji5	5942	0	3200	D	我不得不这么做！我没办法！
 A	Kenji6	5614	0	4460	D	别再发疯了！放我出去！
 A	Kenji7	5614	0	3000	D	为什么？为什么？
 A	Kenji8	5614	0	3000	D	你不能怪我！
-A	LecaroReveal	24953	1650	7610	D	在水晶洞穴之间，越过那条河。
-A	LecaroReveal	24953	7610	16550	D	宽阔的道路通向莱卡罗的矿井。
+A	LecaroReveal	24953	1600	7600	D	穿过水晶洞穴之间的火焰之河。
+A	LecaroReveal	24953	7600	11200	D	那就是正确的路线。
+A	LecaroReveal	24953	11200	16560	D	沿着这条路，穿过莱卡罗的矿井。
 A	Lightsoff	6661	0	3380	D	警报。正在关闭设施照明。
 A	LivingSpeach	24567	800	10100	D	献祭者受诅咒的血肉将为你指路。
 A	LivingSpeach	24567	10100	17440	D	可死亡无法挽回。
@@ -344,11 +360,13 @@ A	Mic8	5332	0	1680	D	这道墙关不住它。
 A	Mic8	5332	1680	5300	D	关不住它。
 A	Mic9	3329	0	2600	D	你的诚实劳动对公司至关重要。
 A	MoonCorrupt4	14516	0	2220	D	再也不会有人伤害你了。
-A	Phase2Start	15184	0	5740	D	警报！A 门已被攻破。
-A	Phase2Start	15184	5740	10000	D	正在释放……开始执行第 5 号规程。
-A	Phase2Start	15184	10000	13860	D	所有入侵者必须死。
+A	Phase2Start	15184	0	4000	D	警报！A 门已被攻破。
+A	Phase2Start	15184	5180	7350	D	正在释放［名称听不清］。
+A	Phase2Start	15184	8160	10540	D	开始执行第 5 号规程。
+A	Phase2Start	15184	11260	13860	D	所有入侵者必须死。
 A	PlayerEnter	4180	0	2540	D	警报，检测到移动。
 A	Playerleave	3944	0	2840	D	警报。检测到设施外有动静。
+A	PullApparatus	25913	850	8480	D	警报。错误代码［数字听不清］。设施电源缺失。
 A	RadioLog1	57510	1200	6420	D	大家好，你们最喜欢的电台《穿越星辰》开播了！
 A	RadioLog1	57510	6420	10800	D	现在是上午 11:13。今天天气看来不怎么好。
 A	RadioLog1	57510	10800	15740	D	别让它毁了星期一。可惜，我得报告几条坏消息。
@@ -399,6 +417,10 @@ A	RadioLog4	63173	39420	47420	D	军队规模还在扩大。他们将横扫整个
 A	RadioLog4	63173	47420	52820	D	我不愿任何人经历那种恐怖。我再说一次，快走。
 A	RadioLog4	63173	52820	57750	D	跑去穹顶。我们即将停播。
 A	RadioLog4	63173	57750	61220	D	这里是《穿越星辰》。谢谢你们，我们在那里见。
+A	RadioNoise	21618	1000	3050	D	有埋伏！左边，左边！
+A	RadioStatic	173095	2100	10500	D	东北风，5 至 10 节。
+A	RadioStatic	173095	37800	40400	D	海上天气预报……
+A	RadioStatic	173095	84500	91000	D	午夜后局部有雾，能见度至多一海里。
 A	RandomCaveLog	27274	0	8040	D	嘿，瞧瞧。这东西能用了。也好，在洞里能有点消遣。
 A	RandomCaveLog	27274	8040	15260	D	整天待在地下不容易。看不见太阳，也不知道几点。还真有点难过。
 A	RandomCaveLog	27274	15260	21500	D	这些晶体很亮。但谁也说不清是什么。他们之前放了鸟进来。
@@ -436,10 +458,15 @@ A	SoloverTalking2	133946	108880	114820	D	这里有什么让他们害怕。那东
 A	SoloverTalking2	133946	115820	117300	D	逼他们露出了破绽。
 A	SoloverTalking2	133946	117300	127420	D	如果那家能在整个星系扭曲现实的公司，也会怕这里的某种东西……
 A	SoloverTalking2	133946	127420	131640	D	那我睡觉可得睁着一只眼。
+A	Spider	14746	820	4530	D	蜘蛛。蜘蛛。
+A	Spider	14746	4530	8880	D	蜘蛛。蜘蛛。
+A	Spider	14746	8880	13250	D	蜘蛛。蜘蛛。
 A	TerminateAllIntruders	24414	680	7200	D	警报！发现入侵者。
 A	TerminateAllIntruders	24414	7200	15600	D	依据第 5 号规程……
 A	TerminateAllIntruders	24414	15600	23520	D	消灭所有入侵者。
-A	ThalassoReveal	25512	9100	17000	D	塔拉索的神殿里，还藏着一条秘密通道。
+A	ThalassoReveal	25512	800	4500	D	在海面之下，
+A	ThalassoReveal	25512	4500	8150	D	在溺水室深处，
+A	ThalassoReveal	25512	8200	17000	D	塔拉索的神殿里，还藏着一条秘密通道。
 A	TheVoiceEnd	33903	0	8500	D	把种子带到各自对应的天体。
 A	TheVoiceEnd	33903	8500	13100	D	这样能拖住他足够久。
 A	TheVoiceEnd	33903	13100	22000	D	事成之后回来，我会采取行动。
@@ -490,21 +517,24 @@ A	TheVoiceStart	51491	38000	45500	D	你看到的那些东西都不是真的。�
 A	TheVoiceStart	51491	45500	51000	D	他想把你的神智一点点熔掉。
 A	ToWar	4425	0	1640	D	我要荣耀！
 A	TrapV10	1767	0	1240	D	别出声。
+A	TrapV11	1161	0	760	D	打声招呼吧！
 A	TrapV13	1707	0	1700	D	漫长的夜就要来了！
 A	TrapV14	1625	0	1340	D	他在看着我们所有人。
 A	TrapV15	2067	0	2060	D	想跟我做朋友吗？
 A	TrapV16	2961	0	1840	D	这外头会安静下来。
 A	TrapVO2	1001	0	840	D	安静。
+A	TrapVO3	1176	0	650	D	肃静。
 A	TrapVO4	1840	0	1840	D	今天多好啊！
 A	TrapVO8	1874	0	1580	D	一点声也别出。
 A	TrapVO9	1460	0	1450	D	别尖叫！
-A	UtrilReveal	24730	600	9700	D	浮空岛那边，穿过两条峡谷。有光会照出路。
-A	UtrilReveal	24730	9700	15440	D	循光走过黑暗。
+A	UtrilReveal	24730	600	7800	D	越过浮空岛，穿过两道峡谷。
+A	UtrilReveal	24730	7800	15440	D	那里的光会照亮前路，指引你穿过尤特里尔的黑暗。
 A	VictimBeg1	5996	0	2360	D	放我走吧，求求你。
 A	VictimBeg1	5996	2360	5360	D	求你了，我跟你一样。
 A	VictimBeg10	2316	0	1980	D	求你别伤害他们。
 A	VictimBeg11	4632	0	4620	D	你们是好人……你们是好人。
 A	VictimBeg12	7616	0	2100	D	放了他们吧。
+A	VictimBeg12	7616	2120	4620	D	求你了，谁来帮帮忙。
 A	VictimBeg12	7616	5100	7600	D	求你了，放他们走吧。
 A	VictimBeg13	10286	0	4400	D	求你了……求你了。
 A	VictimBeg13	10286	4400	9750	D	走吧……快走吧。
@@ -520,16 +550,25 @@ A	VictimBeg6	8833	0	1720	D	好疼。
 A	VictimBeg6	8833	1720	5060	D	疼死了。
 A	VictimBeg6	8833	5060	8420	D	求求你……救救我。
 A	VictimBeg7	6360	0	2500	D	他们抓了我们……
+A	VictimBeg8	3572	0	1200	D	不……
 A	VictimBeg9	4515	0	4180	D	别伤害他们……别伤害他们。
 A	VictimBury	6952	0	2100	D	不……不要。
 A	VictimBury	6952	2100	6240	D	求求你……求求你……
 A	VictimConveyor	11308	0	3520	D	不，不……够了，够了。
 A	VictimConveyor	11308	3520	10320	D	让它停下！让它停下！
 A	VictimHurt3	11308	0	4200	D	啊！不要！求你了！不要！
+A	VictimPrepare	2435	0	1830	D	不，不，不，不！
+A	VictimPrepare3	4091	0	3020	D	求你了……求你了！
+A	VictimPrepare4	5260	0	3200	D	不！不，不，不！
 A	VictimVo1	9415	0	2280	D	为什么？你为什么要这么做？
 A	VictimVo1	9415	5240	8500	D	不要。求你了。
+A	VictimVo10	7301	0	2680	D	为什么？为什么？为什么？
+A	VictimVo10	15215	520	2990	D	我尽力了。我尽力了。
 A	VictimVo11	13206	0	1420	D	我不是有意的。
 A	VictimVo11	13206	1420	4380	D	我没想让事情变成这样。
+A	VictimVo11	13206	4380	6900	D	我没有……求你了。
+A	VictimVo11	13206	7020	10040	D	放我走。放我走。
+A	VictimVo11	13206	10040	12350	D	求你了。
 A	VictimVo11	15215	0	4780	D	我已经尽力了，行吗？我真的尽力了。
 A	VictimVo12	9102	0	4600	D	别再来了。别再来了！
 A	VictimVo12	9102	4600	6820	D	放我走吧，求你了。
@@ -539,7 +578,9 @@ A	VictimVo13	15215	0	6000	D	你得……你得让我离开这里。
 A	VictimVo13	15215	6000	11000	D	求你了，帮我逃出去。
 A	VictimVo14	15215	0	8920	D	别信他们。他们无论要你做什么，都别做。
 A	VictimVo15	15215	0	6480	D	我不该来。我不该来的。
+A	VictimVo2	6525	0	4020	D	为什么？为什么是我？不……
 A	VictimVo2	15215	0	5240	D	为什么是我？偏偏是我？
+A	VictimVo3	6014	0	3270	D	我是无辜的！我是无辜的！
 A	VictimVo3	15215	0	3000	D	你在做什么？
 A	VictimVo3	15215	3000	6000	D	这是什么？
 A	VictimVo4	7963	0	4160	D	求你放我走。放我走！
@@ -547,9 +588,12 @@ A	VictimVo4	15215	0	3600	D	不，别……住手！
 A	VictimVo5	7268	0	3840	D	不是我。不是我！
 A	VictimVo6	5526	0	3980	D	求求你，放我走。
 A	VictimVo7	8406	0	3720	D	我只想回家。我只想回家。
-A	VictimVo8	10231	0	7100	D	我从没……我从没……
-A	VictimVo8	15215	0	6000	D	我动不了了。
+A	VictimVo7	8406	3730	6560	D	我只想回家。求你了。
+A	VictimVo8	10231	0	5700	D	我从来没有……
+A	VictimVo8	10231	5700	8380	D	我从来没有……我从来没有……
+A	VictimVo8	15215	180	5940	D	我……动不了了。
 A	VictimVo9	15215	8000	15000	D	救我！救救我！
+A	VoiceHey	609	0	609	D	喂！
 A	WestermanVo6FailNew	40780	0	9280	D	你总算走到了尽头。我一次次把你拖进泥里……
 A	WestermanVo6FailNew	40780	9280	16400	D	你却次次都能干干净净地出来。可我真高兴你活着到了这里。
 A	WestermanVo6FailNew	40780	16400	23680	D	看你那表现，就像看小孩把方块往圆洞里塞。
@@ -655,8 +699,29 @@ A	fatality_report_4	113448	88800	93940	D	谁也别想离开工厂。这个秘密
 A	fatality_report_4	113448	93940	100420	D	控制室 1 的炮塔正在蓄能。控制室 1 的炮塔开火。
 A	fatality_report_4	113448	100420	107320	D	经理 1 正在逃离。正在为工厂内所有炮塔蓄能。
 A	fatality_report_4	113448	107320	113340	D	G.A.R.Y. 感谢你的服务。经理 1 已退出登录。
+A	gratar_final_1	27259	120	5460	D	警报。即将对整个设施进行净化。
 A	gratar_final_1	27259	5460	9620	D	格拉塔尔感谢你的服务。
 A	gratar_final_1	27259	9620	13700	D	愿明天更光明。
+A	gratar_inside_loop_2	864102	41400	44700	D	警报。工厂内所有人员必须撤离。
+A	gratar_inside_loop_2	864102	94800	97700	D	警报。工厂内发现生命体。
+A	gratar_inside_loop_2	864102	153600	158200	D	警报。C 区机器故障。
+A	gratar_inside_loop_2	864102	206000	209200	D	警报。正在执行设施……［后半句听不清］
+A	gratar_inside_loop_2	864102	262400	266900	D	警报。在工厂内发现未登记人员。
+A	gratar_inside_loop_2	864102	311400	314600	D	警报。所有人员必须撤离。
+A	gratar_inside_loop_2	864102	358800	362750	D	警报。机器发生故障。
+A	gratar_inside_loop_2	864102	421200	426850	D	警报。F 区发现未登记的生命体。
+A	gratar_inside_loop_2	864102	477200	481750	D	警报。工厂内所有人员必须撤离。
+A	gratar_inside_loop_2	864102	482200	485300	D	这是最后一次警告。
+A	gratar_inside_loop_2	864102	535300	540300	D	警报。工厂内所有人员必须死。
+A	gratar_inside_loop_2	864102	560100	565950	D	警报。第 4 个字母是大写 Q。
+A	gratar_inside_loop_2	864102	588300	593900	D	警报。正在为炮塔供电。
+A	gratar_inside_loop_2	864102	635900	639450	D	工厂内所有人员必须死。
+A	gratar_inside_loop_2	864102	679100	683900	D	工厂内所有人员必须死。
+A	gratar_inside_loop_2	864102	684100	700900	D	死。死。死。
+A	gratar_inside_loop_2	864102	730200	734350	D	警报。工厂即将关闭。
+A	gratar_inside_loop_2	864102	734350	738500	D	公司感谢你的服务。再见。
+A	gratar_inside_loop_2	864102	770000	773200	D	警报。
+A	gratar_inside_loop_2	864102	777400	782220	D	别问任何问题。谢谢。
 A	harringtonlog_1	64826	0	6240	D	呃，真得弄一台录音机才行。
 A	harringtonlog_1	64826	6240	16080	D	总之，昨天我们终于建好了这里的第二处研究设施。
 A	harringtonlog_1	64826	16080	19620	D	设备过几天到。
@@ -699,6 +764,26 @@ A	harringtonlog_4	77699	64680	71900	D	我们被击中了。更糟的是，我们
 A	harringtonlog_4	77699	71900	75540	D	我……我得走了。
 A	kenjinitsthecaretaker	5739	0	5440	D	你是看护者。一只手给予，另一只手夺走。
 A	lightson	6034	0	3540	D	警报。正在开启设施照明。
+A	protocol wipeout	90816	150	3500	D	第 154 年，第 12 天。
+A	protocol wipeout	90816	3580	7700	D	今天真让人害怕。
+A	protocol wipeout	90816	8200	13000	D	清除协议获批。
+A	protocol wipeout	90816	13000	17000	D	明天就要安装核弹。
+A	protocol wipeout	90816	17000	23000	D	知道它是从哪儿来的以后，我待在这里就没那么安心了。
+A	protocol wipeout	90816	23000	27000	D	我只能想象可能会出什么岔子。
+A	protocol wipeout	90816	27000	31450	D	更糟的是，这么多年的研究说不定都要毁了！
+A	protocol wipeout	90816	31450	34180	D	还有这些实验。
+A	protocol wipeout	90816	34180	37980	D	你要是不知道……
+A	protocol wipeout	90816	37980	44400	D	清除协议只有在……发生灾难时才会启动。
+A	protocol wipeout	90816	44400	48080	D	摧毁。一切。
+A	protocol wipeout	90816	48080	56000	D	我再怎么着迷于这门技术，也不能让它毁掉我们做过的一切。
+A	protocol wipeout	90816	56000	62120	D	也许我能改动其中几个部件。
+A	protocol wipeout	90816	62120	64000	D	到时候再看。
+A	protocol wipeout	90816	65800	69260	D	鹰计划已经完成了。
+A	protocol wipeout	90816	69260	74500	D	我们收到了新机器的设计图。
+A	protocol wipeout	90816	74500	78900	D	它们会被投入刚刚爆发的大战。
+A	protocol wipeout	90816	79000	84240	D	新项目要叫胡桃夹子计划。
+A	protocol wipeout	90816	84240	86520	D	我很期待。
+A	protocol wipeout	90816	86520	89340	D	就记到这儿。
 A	secret_log	70928	0	5900	D	第 154 年……第 73 天。
 A	secret_log	70928	5900	10380	D	成功了。我找到科斯莫科斯（Cosmocos）了。
 A	secret_log	70928	10380	16640	D	其实，是我造的人工智能找到的。
@@ -714,12 +799,14 @@ A	vo1	20208	0	8500	D	啊，你好。你醒了。
 A	vo1	20208	8500	19800	D	今天真好，你不觉得吗？
 A	vo2	14248	0	3960	D	嗯，你上次看见外面，大概已经是很久以前了。
 A	vo2	14248	3960	6420	D	有人来看你了。
+A	vo2	14248	6420	9800	D	他说他很了解你。
 A	vo3	14248	0	5040	D	你不是第一个到这里的，也不会是最后一个。
 A	vo3	14248	5040	9520	D	为公司工作的人，总会碰上可怕的事。
 A	vo4	7925	0	7800	D	在你之前来过那么多人。许多人什么也没改变。
 A	vo5	7925	0	2300	D	可你不一样。
 A	vo6	7925	0	7850	D	作为奖励，你的合同延长一个月。
 A	vo7	7925	0	3060	D	你活下来了，但事情还没完。
+A	vo8	7925	0	1140	D	他在这儿。
 A	walkie_1	2428	0	1000	D	谁在那儿？
 A	walkie_10	2181	0	1400	D	在树林里。
 A	walkie_11	2078	0	1400	D	来找我。
@@ -741,11 +828,14 @@ A	walkie_7	3045	0	2150	D	我什么也感觉不到。
 A	walkie_8	1875	0	1160	D	回答我。
 A	walkie_9	1691	0	1000	D	我迷路了。
 A	whisper4	1933	0	860	D	我看见你了。
+A	whisper6	1139	0	1139	D	在你身后。
+A	why are you blue	4442	420	4300	D	你怎么回事？你怎么是蓝色的？
 V	AsteroidT	1528	1390	9730	D	本录像带包含高度机密的资料，不得向公众公开。
 V	AsteroidT	1528	11500	20500	D	在环绕 56-Vow 的第 13 号小行星上，发现了一座隐藏的生物武器试验设施。
 V	AsteroidT	1528	20990	27830	D	你的任务是找到并回收这里的试验武器残留物。
 V	AsteroidT	1528	27830	33300	D	设施已毁，但仍有数件失控的生物武器。
 V	AsteroidT	1528	33300	39000	D	它们随时会以任何方式杀死遇到的人。
+V	AsteroidT	1528	41140	44200	D	祝你好运。
 V	AsteroidT	1528	45500	50300	W	祝你好运。
 V	AsteroidTapeNew	1340	180	5680	D	本段影像高度机密，仅供你本人观看。
 V	AsteroidTapeNew	1340	7120	12060	D	一颗环绕 56-Vow 的小行星上，有一座生物武器试验设施。
@@ -757,7 +847,7 @@ V	AsteroidTapeNew	1340	32450	34310	D	这些武器的状况尚不清楚。
 V	AsteroidTapeNew	1340	34870	40830	D	小心任何会动、会说话、会流血、会哭喊或看着不对劲的东西。
 V	AsteroidTapeNew	1340	40830	43890	D	如果你想带着完整的器官回来。
 V	AsteroidTapeNew	1340	52210	54090	D	统一领（Unified Dominion）祝你好运。
-V	AsteroidTapeNew	1340	450	6900	W	统一领机密录像，仅限在监督下观看。\n传播本影像将立即受到法律及纪律追究。
+V	AsteroidTapeNew	1340	940	6400	W	本带属统一领所有，内容机密，须在监督下观看。\n散播本片将立即受到法律和纪律处分。
 V	AsteroidTapeNew	1340	13950	15450	W	待回收遗物与生物武器：BIO-HXNV7（失踪）
 V	AsteroidTapeNew	1340	15450	16830	W	BIO-HXNV7、BIO-JHCF3（均失踪）
 V	AsteroidTapeNew	1340	16830	18650	W	BIO-HXNV7、BIO-JHCF3、\nBIO-HNEX5、BIO-GZHX4（均失踪）
@@ -778,7 +868,7 @@ V	CentusPreview	871	4480	8820	D	为的是确认一切合规，戈曼家的人也
 V	CentusPreview	871	8820	14480	D	你得有件多大的外套，才能把一整车东西藏进去？
 V	CubatresVideo (2)	1016	4460	9220	D	还有一个。斯特拉把名字改了。
 V	CubatresVideo (2)	1016	9220	16800	D	小心。我看还是那个傻斯特拉。
-V	DemetricaVideo	62	0	1030	W	厌倦战争了吗？来德梅特里卡的穹顶避难，等冲突结束。
+V	DemetricaVideo	62	0	1033	W	厌倦了战争，想找个安全的地方吗？\n来德梅特里卡的穹顶避难，等战事结束。我们等你。
 V	DescentPreviewVideo	841	0	4180	D	它分两层：公司大楼，还有更糟的公司大楼。
 V	DescentPreviewVideo	841	4180	7360	D	公司大楼，但其实真的挺好。
 V	DescentPreviewVideo	841	7360	9700	D	它的效率比……稍低一点。
@@ -842,12 +932,16 @@ V	HyxTapeTake2	2641	27900	32640	D	你想住在小村庄，还是小镇？
 V	HyxTapeTake2	2641	32640	36140	D	或者是森林里舒服的小木屋？
 V	HyxTapeTake2	2641	36140	40960	D	你想住小村、小镇，还是舒适的木屋？
 V	HyxTapeTake2	2641	40960	43640	D	因为你会错过……你会失踪。
-V	HyxTapeTake2	2641	57900	63620	D	这次日食非同寻常，你从没见过这样的景象。
+V	HyxTapeTake2	2641	43840	50250	D	这里的天空与大自然，几乎可以称得上异常。
+V	HyxTapeTake2	2641	50300	53700	D	你会错过……不来可就错过了。
+V	HyxTapeTake2	2641	53700	58980	D	尤其是今年，我们会迎来一场非常特别的日食。
+V	HyxTapeTake2	2641	58980	63620	D	这景象和你以前见过的都不一样。
 V	HyxTapeTake2	2641	74900	79320	D	别怀疑。他在这儿。他死了。他在看着。
 V	HyxTapeTake2	2641	79320	80900	D	加入我们。
-V	HyxTapeTake2	2641	80900	82200	D	他在看。
+V	HyxTapeTake2	2641	80900	82240	D	他在看着。
 V	MotraTape	1485	400	2600	D	大家好，我是哈里。看这门强力迫击炮！
 V	MotraTape	1485	3000	4660	D	就像普通迫击炮，但这是 Mortor 牌！
+V	MotraTape	1485	4660	6880	D	当年要是有这门炮，莫特拉就不会沦陷！
 V	MotraTape	1485	7220	8600	D	普通的防卫手段不管用？
 V	MotraTape	1485	9000	11140	D	你家总是被人闯进去？
 V	MotraTape	1485	11740	15600	D	窃贼、小偷、多管闲事的邻居、疯狂的前任、巨蜂、任天堂……
@@ -861,6 +955,9 @@ V	MotraTape	1485	32700	36300	D	流落荒岛时，甚至还能用它接水。
 V	MotraTape	1485	37060	39780	D	Mortor 牌迫击炮，每门只要 300,000！
 V	MotraTape	1485	40460	44400	D	接下来的 20 分钟内致电订购，第二门免费！
 V	MotraTape	1485	500	3000	W	强力迫击炮（Mighty Mortor）｜© 2005 Mortor, Inc.
+V	MotraTape	1485	24800	27880	W	强阵雨／小雪／局部多云／死亡。谁也料不到迫击炮突袭。
+V	MotraTape	1485	37200	40000	W	每门 300,000。
+V	MotraTape	1485	40000	44440	W	限时优惠：买一送一。
 V	UtrilVideo	1800	430	6670	D	我这辈子怕是只能用这种糟糕的设备做记录了。
 V	UtrilVideo	1800	7630	12850	D	我是哈林顿教授。我现在在尤特里尔。
 V	UtrilVideo	1800	14790	21540	D	这里白天比夜里还黑，却有种奇特的美。
@@ -882,12 +979,14 @@ V	VindictTape	1458	47220	51560	D	直到宿主死亡，然后在新的地方扎�
 V	VindictTape	1458	52560	54820	D	文迪克特已被它覆盖。
 V	VindictTape	1458	55260	56990	D	到处都是。
 V	VindictTape	1458	56990	60470	D	哈林顿教授，通话结束。
-V	WM_Acidir	914	340	4920	D	第 4 卷，阿西迪尔。我是坎宁安船长。
-V	WM_Acidir	914	6840	9360	D	刚到这里时，船员看起来都还好。
-V	WM_Acidir	914	10800	13840	D	「还好」这个说法已经很宽松了。他们还撑得住。
-V	WM_Acidir	914	15000	19940	D	不过待得越久，情况似乎越糟。
-V	WM_Acidir	914	21940	26440	D	我不知道是空气、庄园，还是湖泊的问题。
-V	WM_Acidir	914	28660	31060	D	但我们已经有几个人失踪了。
+V	WM_Acidir	914	340	4920	D	阿西迪尔的录像。我是坎宁安船长。
+V	WM_Acidir	914	6840	9440	D	刚到这里时，船员看起来都还好。
+V	WM_Acidir	914	10800	13960	D	「还好」也就是勉强撑得住。
+V	WM_Acidir	914	15000	19960	D	不过待得越久，情况似乎越糟。
+V	WM_Acidir	914	21940	27640	D	我不确定问题出在空气、庄园，还是那些酸液湖。
+V	WM_Acidir	914	28660	31080	D	但我们已经有几个人失踪了。
+V	WM_Acidir	914	31080	34100	D	我给阿西迪尔评 S 级。
+V	WM_Acidir	914	34100	36780	D	坎宁安，通话结束。
 V	WM_Acidir	914	0	4650	W	坎宁安旅行日志｜第 4 卷：阿西迪尔
 V	WM_Atlantica	1020	620	4100	D	第 2 卷，亚特兰蒂卡。我是坎宁安船长。
 V	WM_Atlantica	1020	4100	8980	D	来亚特兰蒂卡不在原计划之内。
@@ -992,16 +1091,23 @@ V	babob hakw	2175	58300	61100	W	用你现在手上的那把刀。
 V	babob hakw	2175	61100	64200	W	但记住，要是他死在你手里……
 V	babob hakw	2175	64200	68000	W	你们两个都别想活着出去。
 V	babob hakw	2175	68000	72400	W	生或死，由你选择。
-V	filitriostape	2228	22990	24430	D	你喜欢玩具吗？
+V	filitriostape	2228	22990	24980	D	你喜欢玩具吗？
+V	filitriostape	2228	25750	28250	D	你喜欢玩乐吗？
 V	filitriostape	2228	32100	33060	D	你喜欢……
 V	filitriostape	2228	33060	39730	D	在菲利特里奥斯，你能想到的玩具我们都有。
 V	filitriostape	2228	40750	41800	D	机器人！
-V	filitriostape	2228	42560	43750	D	蓝色方块！
+V	filitriostape	2228	42560	43750	D	益智方块！
+V	filitriostape	2228	44100	46000	D	火车头！
 V	filitriostape	2228	46160	54040	D	现在限时供应家用安保胡桃夹子！
 V	filitriostape	2228	54900	62280	D	现在就拨打屏幕上的号码，免费获赠一把玩具霰弹枪！
-V	filitriostape	2228	78820	83900	D	今天就来 141 菲利特里奥斯！
-V	filitriostape	2228	83900	91770	D	在这里，你的梦想会永远延续。
+V	filitriostape	2228	78820	86900	D	今天就来 141 菲利特里奥斯！
+V	filitriostape	2228	87260	91770	D	在这里，你的梦想会永远延续。
 V	filitriostape	2228	28300	30400	W	你喜欢太阳吗？
-V	filitriostape	2228	63600	68300	W	售完即止。电池不含在内，霰弹单独出售。
-V	filitriostape	2228	68300	73500	W	小零件可能导致幼童窒息。须有成人监护。\n请勿用霰弹枪瞄准任何人，无论死活。
-V	filitriostape	2228	73500	78700	W	本店对伤害、肢体或亲友失踪，\n以及长时间接触玩具后失去运动控制概不负责。
+V	filitriostape	2228	56500	62280	W	限时优惠！马上拨打电话！
+V	filitriostape	2228	63600	66500	W	售完即止。电池不含在内，霰弹单独出售。
+V	filitriostape	2228	66500	70000	W	不适合未满 13 岁的儿童。小零件可能使幼童窒息。须有成人监护。
+V	filitriostape	2228	70000	72400	W	请勿用霰弹枪瞄准任何人，无论死活。
+V	filitriostape	2228	72400	75000	W	在店内受伤、失去或损伤肢体、亲友未能离店，本店概不负责。
+V	filitriostape	2228	75000	76850	W	长期接触后失去运动控制、面部或双手，或出现解离，亦不负责。
+V	filitriostape	2228	76850	78700	W	亦不负责玩具与亡者交流、自行移动、邀人穿越世界、拒绝服从、离壳、排出有机物或周围积血。
+V	filitriostape	2228	78700	79380	W	无论如何，切勿……

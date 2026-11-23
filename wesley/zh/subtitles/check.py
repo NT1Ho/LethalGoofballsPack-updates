@@ -59,12 +59,16 @@ def verify():
         "secret_log": ("Cosmocos", "Gratar"),
         "babob hakw": ("Decimator",),
         "AsteroidTapeNew": ("Unified Dominion",),
+        "HarryPerkins": ("Harry Perkins",),
+        "protocol wipeout": ("Protocol Wipeout", "Project Hawk", "Project Nutcracker"),
     }.items():
         for entry in approved:
             assert terms[entry] in " ".join(texts[name]), (name, entry)
     for name, literals in {
         "secret_log": ("bit.ly/3", "大写 H"),
         "AsteroidTapeNew": ("56-Vow", "BIO-HXNV7", "BIO-JHCF3", "BIO-HNEX5", "BIO-GZHX4"),
+        "gratar_inside_loop_2": ("第 4 个字母是大写 Q",),
+        "WM_Acidir": ("S 级",),
         "Cunningham Log 3": ("第 6 个字母", "小写 z"),
         "Cunningham Log 4": ("大写 P",),
         "HarringtonResearch2": ("GYN-H", "LYN-H"),
