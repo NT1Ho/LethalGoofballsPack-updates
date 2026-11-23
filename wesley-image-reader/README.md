@@ -6,7 +6,7 @@
 
 - 大军械库的导弹保险箱按实际屏幕材质显示当前的前置操作或任务完成状态。正在阅读时，屏幕换成已收录状态即更新正文，屏幕熄灭或换成未知状态即关闭。摩尔斯电码表保留原图上的字母、数字及点划。
 - 秘密档案使用游戏的原版检视姿势，放大时同时显示封面中文。卡牌手册使用原版检视与 Q/E 翻页。普通可检视物品沿用游戏按键路径。
-- 阅读器复用原有 IMGUI 和系统中文字体。按实测宽度断行并避开不宜位于行首、行尾的标点。正文随窗口重排，段落、清单和任务代码沿用原结构。
+- 阅读器复用原有 IMGUI、系统中文字体和原版背景透明度。窗口展示标题与正文，长文还有滚动位置指示。按实际宽度断行，保留原有分段、清单和任务代码。
 
 TextMeshPro 有亚洲文字断行表，接入时还需要为此窗口建立 Canvas 并接好中文字体资源。沿用已有 IMGUI 可直接在排版时测量现用字体，改动集中在阅读窗口。[Unity GUIStyle 测量](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/GUIStyle.CalcSize.html) · [TMP 断行设置](https://docs.unity3d.com/ja/Packages/com.unity.textmeshpro%403.0/api/TMPro.TMP_Settings.html)
 

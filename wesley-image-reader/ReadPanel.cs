@@ -16,23 +16,21 @@ namespace WesleyImageReader
         Vector3 origin;
         Entry entry;
         int page;
-        string key;
         GUIContent body;
         readonly List<string> lines = new List<string>();
         List<string> titleLines;
         float scroll, height, viewport, nextStateCheck, textWidth, lineHeight, paragraphGap, titleLineHeight;
         Vector2Int layoutSize;
         Font font;
-        GUIStyle style, heading, hint;
+        GUIStyle style, heading;
 
-        internal void Show(Entry reading, GrabbableObject held, Transform target, string closeKey)
+        internal void Show(Entry reading, GrabbableObject held, Transform target)
         {
             item = held;
             initialSlot = Reader.Player.currentlyHeldObjectServer;
             anchor = target;
             origin = Reader.Player.transform.position;
             page = Targets.Page(held);
-            key = closeKey;
             Load(reading);
             enabled = true;
         }
@@ -117,8 +115,6 @@ namespace WesleyImageReader
             style.normal.textColor = new Color(.94f, .96f, .98f);
             heading = new GUIStyle(style) { fontStyle = FontStyle.Bold };
             heading.normal.textColor = Color.white;
-            hint = new GUIStyle(style);
-            hint.normal.textColor = new Color(.72f, .77f, .82f);
         }
 
         void Measure(float scale)
@@ -126,7 +122,6 @@ namespace WesleyImageReader
             layoutSize = new Vector2Int(Screen.width, Screen.height);
             style.fontSize = Mathf.RoundToInt(20 * scale);
             heading.fontSize = Mathf.RoundToInt(22 * scale);
-            hint.fontSize = Mathf.RoundToInt(14 * scale);
             lineHeight = Mathf.Ceil(Mathf.Max(style.lineHeight, style.CalcSize(new GUIContent("国Ag")).y)) + 4 * scale;
             paragraphGap = 9 * scale;
 
@@ -166,19 +161,18 @@ namespace WesleyImageReader
 
             float pad = 18 * scale;
             float titleHeight = titleLines.Count == 0 ? 0 : titleLines.Count * titleLineHeight + 7 * scale;
-            float hintHeight = 23 * scale;
-            viewport = Mathf.Min(height, Mathf.Max(lineHeight, Screen.height * .74f - titleHeight - hintHeight - pad * 2));
+            viewport = Mathf.Min(height, Mathf.Max(lineHeight, Screen.height * .74f - titleHeight - pad * 2));
             float maxScroll = height - viewport;
             scroll = Mathf.Clamp(scroll, 0, maxScroll);
             float width = textWidth + pad * 2;
-            float outerHeight = titleHeight + viewport + hintHeight + pad * 2;
+            float outerHeight = titleHeight + viewport + pad * 2;
             float x = FollowsNativeInspect ? Screen.width * .07f : (Screen.width - width) / 2;
             float y = FollowsNativeInspect ? Screen.height * .65f - outerHeight / 2 : (Screen.height - outerHeight) / 2;
             var area = new Rect(x, y, width, outerHeight);
             var old = GUI.color;
             try
             {
-                GUI.color = new Color(.035f, .05f, .066f, .95f);
+                GUI.color = new Color(.035f, .045f, .055f, .80f);
                 GUI.DrawTexture(area, Texture2D.whiteTexture);
                 GUI.color = Color.white;
                 for (int i = 0; i < titleLines.Count; i++)
@@ -197,8 +191,6 @@ namespace WesleyImageReader
                     }
                 }
                 finally { GUI.EndGroup(); }
-                var footer = maxScroll > .1f ? key + " 关闭    ↑↓ / PgUp / PgDn 滚动" : key + " 关闭";
-                GUI.Label(new Rect(content.x, content.yMax + 6 * scale, textWidth, hintHeight), footer, hint);
                 if (maxScroll > .1f)
                 {
                     float grip = Mathf.Max(12 * scale, viewport * viewport / height);

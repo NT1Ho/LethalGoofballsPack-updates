@@ -63,7 +63,7 @@ namespace WesleyImageReader
             p.quickMenuManager && !p.quickMenuManager.isMenuOpen && !p.inAnimationWithEnemy && !p.isClimbingLadder &&
             !(ShipBuildModeManager.Instance && ShipBuildModeManager.Instance.InBuildMode);
 
-        internal bool TryRead(PlayerControllerB player, string key)
+        internal bool TryRead(PlayerControllerB player)
         {
             try
             {
@@ -79,13 +79,13 @@ namespace WesleyImageReader
                 if (entry != null)
                 {
                     if (entry.native || entry.inspect || Targets.NativeBook(held)) return false;
-                    panel.Show(entry, held, held.transform, key);
+                    panel.Show(entry, held, held.transform);
                     return true;
                 }
                 if (held && held.itemProperties.canBeInspected) return false;
                 entry = Targets.Aimed(player, out var target);
                 if (entry == null || entry.native || entry.inspect) return false;
-                panel.Show(entry, null, target, key);
+                panel.Show(entry, null, target);
                 return true;
             }
             catch (Exception ex)
@@ -96,7 +96,7 @@ namespace WesleyImageReader
             }
         }
 
-        internal void InspectChanged(PlayerControllerB player, string key)
+        internal void InspectChanged(PlayerControllerB player)
         {
             if (!player.IsInspectingItem)
             {
@@ -108,7 +108,7 @@ namespace WesleyImageReader
             {
                 var held = player.currentlyHeldObjectServer;
                 var entry = Targets.Held(held);
-                if (entry != null && entry.inspect) panel.Show(entry, held, held.transform, key);
+                if (entry != null && entry.inspect) panel.Show(entry, held, held.transform);
             }
             catch (Exception ex)
             {
@@ -139,13 +139,13 @@ namespace WesleyImageReader
         {
             __state = __instance.IsInspectingItem;
             return ___throwingObject || !Handles(__instance, context) ||
-                !Reader.Active.TryRead(__instance, context.control.displayName);
+                !Reader.Active.TryRead(__instance);
         }
 
         private static void Postfix(PlayerControllerB __instance, InputAction.CallbackContext context, bool __state, bool __runOriginal)
         {
             if (__runOriginal && __state != __instance.IsInspectingItem && Handles(__instance, context))
-                Reader.Active.InspectChanged(__instance, context.control.displayName);
+                Reader.Active.InspectChanged(__instance);
         }
     }
 }
