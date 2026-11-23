@@ -1,0 +1,94 @@
+{
+  "edits": [
+    [
+      "W0004",
+      "日记第847篇\n",
+      ""
+    ],
+    [
+      "W0005",
+      "日记第848篇\n",
+      ""
+    ],
+    [
+      "W0006",
+      "日记第849篇\n",
+      ""
+    ],
+    [
+      "W0474",
+      "另一个人的复制品。\n……",
+      "另一个人的复制品。……"
+    ],
+    [
+      "W2019",
+      "这个地方棒极——\n……\n你不会",
+      "这个地方棒极——……\n你不会"
+    ],
+    [
+      "W0255",
+      "摩尔斯电码对照表\n请按原表中的字母、数字与点划顺序辨认。",
+      "字母\nA ·−　B −···　C −·−·　D −··\nE ·　F ··−·　G −−·　H ····\nI ··　J ·−−−　K −·−　L ·−··\nM −−　N −·　O −−−　P ·−−·\nQ −−·−　R ·−·　S ···　T −\nU ··−　V ···−　W ·−−　X −··−\nY −·−−　Z −−··\n\n数字\n1 ·−−−−　2 ··−−−　3 ···−−\n4 ····−　5 ·····　6 −····\n7 −−···　8 −−−··　9 −−−−·　0 −−−−−"
+    ]
+  ],
+  "additions": [
+    {
+      "id": "W0253",
+      "texture": "MissileCaseTerminal1",
+      "title": "导弹保险箱",
+      "width": 512,
+      "height": 256,
+      "format": 28,
+      "native": false,
+      "rules": [
+        {
+          "kind": "mesh",
+          "material": "MissileCaseTerminal",
+          "slot": "_BaseColorMap",
+          "path": "OptionalObjective/CaseTerminal",
+          "scene": ""
+        }
+      ],
+      "body": "无法打开导弹保险箱，需要完成以下操作。\n\n• 检查无线电信号\n• 检查密码输入\n• 检查通信\n\n完成上述所有任务后方可继续。"
+    },
+    {
+      "id": "W0254",
+      "texture": "MissileCaseTerminal2",
+      "title": "导弹保险箱",
+      "width": 512,
+      "height": 256,
+      "format": 28,
+      "native": false,
+      "rules": [
+        {
+          "kind": "mesh",
+          "material": "MissileCaseTerminal 1",
+          "slot": "_BaseColorMap",
+          "path": "OptionalObjective/CaseTerminal",
+          "scene": ""
+        }
+      ],
+      "body": "所有任务已完成。\n\n是否打开导弹保险箱？y/n"
+    },
+    {
+      "id": "W3816",
+      "texture": "Folder_BaseColor",
+      "title": "秘密档案",
+      "width": 512,
+      "height": 512,
+      "format": 28,
+      "native": false,
+      "inspect": true,
+      "rules": [
+        {
+          "kind": "mesh",
+          "material": "SecretFileMtl",
+          "slot": "_BaseColorMap",
+          "path": "SecretFiles/AlcatrasFileModel",
+          "scene": ""
+        }
+      ],
+      "body": "阿尔卡特拉斯刑事收容机构"
+    }
+  ]
+}

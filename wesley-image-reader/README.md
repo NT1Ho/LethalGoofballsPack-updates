@@ -1,4 +1,18 @@
-# Wesley 图片中文阅读 0.1.2
+# Wesley 图片中文阅读
+
+## 0.1.3 · V2.6 本地候选
+
+在游戏配置的键盘「查看物品」按键上读取信息，默认 Z。瞄准环境中的文字表面，或手持有正文的便条时使用。再次按查看键关闭。长文用上下方向键和 Page Up / Page Down 滚动。
+
+- 大军械库的导弹保险箱按实际屏幕材质显示当前的前置操作或任务完成状态。正在阅读时，屏幕换成已收录状态即更新正文，屏幕熄灭或换成未知状态即关闭。摩尔斯电码表保留原图上的字母、数字及点划。
+- 秘密档案使用游戏的原版检视姿势，放大时同时显示封面中文。卡牌手册使用原版检视与 Q/E 翻页。普通可检视物品沿用游戏按键路径。
+- 阅读器复用原有 IMGUI 和系统中文字体。按实测宽度断行并避开不宜位于行首、行尾的标点。正文随窗口重排，段落、清单和任务代码沿用原结构。
+
+TextMeshPro 有亚洲文字断行表，接入时还需要为此窗口建立 Canvas 并接好中文字体资源。沿用已有 IMGUI 可直接在排版时测量现用字体，改动集中在阅读窗口。[Unity GUIStyle 测量](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/GUIStyle.CalcSize.html) · [TMP 断行设置](https://docs.unity3d.com/ja/Packages/com.unity.textmeshpro%403.0/api/TMPro.TMP_Settings.html)
+
+构建命令为 `dotnet build WesleyImageReader.csproj -c Release -p:GameRoot="<隔离 V81>"`。执行 `python revise.py <0.1.2 的 Reader.wri> <0.1.3 输出 Reader.wri>` 生成匹配资源。脚本校验已安装 0.1.2 的数据哈希，并读取本目录的 `revision-0.1.3.json`。五张原尺寸中文手册页直接沿用。拾取和丢弃提示复用阅读条目标题，保留原始物品身份。
+
+## 0.1.2 · 历史记录
 
 独立的 V81 / BepInEx 5 本地阅读插件。将 WesleyImageReader.dll 与同版本 Reader.wri 放在同一插件目录。每个客户端只控制自己的画面。
 

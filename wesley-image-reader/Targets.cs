@@ -90,6 +90,14 @@ namespace WesleyImageReader
             (int)(AccessTools.Field(held.GetType(),"currentPage")?.GetValue(held) ?? 0):0;
         internal static bool NativeBook(GrabbableObject held) =>
             held && held.itemProperties?.spawnPrefab?.name=="BattleGuidePrefab" && Page(held)>0;
+        internal static Entry InspectCaption(Item item)
+        {
+            var reader = Reader.Active;
+            if (!reader || !reader.isActiveAndEnabled || !item || !item.spawnPrefab ||
+                !reader.ByPrefab.TryGetValue(item.spawnPrefab.name, out var entries)) return null;
+            var entry = Only(entries);
+            return entry?.inspect == true ? entry : null;
+        }
         internal static Entry Held(GrabbableObject held)
         {
             var hits=new HashSet<Entry>();
@@ -116,6 +124,18 @@ namespace WesleyImageReader
             return Only(hits);
         }
         static Entry Only(HashSet<Entry> hits){if(hits.Count==1)foreach(var item in hits)return item;return null;}
+
+        internal static Entry Displayed(Transform target, Entry previous)
+        {
+            if (target.TryGetComponent<GrabbableObject>(out var item)) return Held(item);
+            var hits = new HashSet<Entry>();
+            if (target.TryGetComponent<Renderer>(out var renderer) && renderer.enabled && !renderer.forceRenderingOff)
+                RendererEntries(renderer, hits);
+            else if (target.TryGetComponent<DecalProjector>(out var decal) && decal.isActiveAndEnabled && decal.fadeFactor > 0)
+                MaterialEntries(decal.material, target, null, true, hits);
+            return hits.Contains(previous) ? previous : Only(hits);
+        }
+
         static Ray LocalRay(Ray ray,Transform t)=>new Ray(t.InverseTransformPoint(ray.origin),t.worldToLocalMatrix.MultiplyVector(ray.direction));
         // Resolve an actual visible triangle on a readable multi-material mesh, including its housing.
         static bool FrontFace(Mesh mesh,Ray ray,out int slot,out float distance)

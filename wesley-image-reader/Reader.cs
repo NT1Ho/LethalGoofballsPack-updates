@@ -11,10 +11,11 @@ using UnityEngine.InputSystem;
 namespace WesleyImageReader
 {
     [Serializable] internal class Catalog { public Entry[] entries; }
-    [Serializable] internal class Entry { public string id, texture, title; public int width, height, format; public bool native; public Rule[] rules; }
+    [Serializable] internal class Entry { public string id, texture, title; public int width, height, format; public bool native, inspect; public Rule[] rules; }
     [Serializable] internal class Rule { public string kind, material, slot, path, scene; }
 
-    [BepInPlugin("NT1Ho.WesleyImageReader","Wesley 图片中文阅读","0.1.2")]
+    [BepInPlugin("NT1Ho.WesleyImageReader","Wesley 图片中文阅读","0.1.3")]
+    [BepInDependency("butterystancakes.lethalcompany.butteryfixes", BepInDependency.DependencyFlags.SoftDependency)]
     public sealed class Reader : BaseUnityPlugin
     {
         internal static Reader Active;
@@ -23,7 +24,6 @@ namespace WesleyImageReader
         internal ZipArchive Data;
         internal NativeArt Art;
         private Harmony patch;
-        private InputAction read;
         private ReadPanel panel;
 
         private void Awake()
@@ -44,48 +44,85 @@ namespace WesleyImageReader
                         list.Add(e);
                         foreach(var r in e.rules){
                             if(r.kind!="mesh" || r.scene!="")continue;
-                            var root=r.path.Split('/')[0];if(!root.EndsWith("Prefab",StringComparison.Ordinal))continue;
+                            var root=r.path.Split('/')[0];if(!e.inspect&&!root.EndsWith("Prefab",StringComparison.Ordinal))continue;
                             if(!ByPrefab.TryGetValue(root,out var items))ByPrefab[root]=items=new HashSet<Entry>();
                             items.Add(e);
                         }
                     }
                 }
                 panel=gameObject.AddComponent<ReadPanel>(); panel.enabled=false;
-                read=new InputAction("WesleyRead",InputActionType.Button,"<Keyboard>/z");
-                read.performed+=Toggle;
                 patch=new Harmony(Info.Metadata.GUID);
                 patch.PatchAll(typeof(Reader).Assembly);
-                Active=this;read.Enable();Art.Start();
+                Active=this;Art.Start();
             }
             catch(Exception e){Logger.LogError(e);Release();}
         }
         internal static PlayerControllerB Player => GameNetworkManager.Instance?.localPlayerController;
         internal static bool Usable(PlayerControllerB p) => p && p.IsOwner && p.isPlayerControlled && !p.isPlayerDead &&
             !p.isTypingChat && !p.inTerminalMenu && !p.inSpecialInteractAnimation && !p.isGrabbingObjectAnimation &&
-            !p.quickMenuManager.isMenuOpen && !p.inAnimationWithEnemy && !p.isClimbingLadder &&
+            p.quickMenuManager && !p.quickMenuManager.isMenuOpen && !p.inAnimationWithEnemy && !p.isClimbingLadder &&
             !(ShipBuildModeManager.Instance && ShipBuildModeManager.Instance.InBuildMode);
-        private void Toggle(InputAction.CallbackContext context)
+
+        internal bool TryRead(PlayerControllerB player, string key)
         {
-            try {
-                if(panel.enabled){panel.Close();return;}
-                var p=Player;
-                if(!Usable(p))return;
-                var held=p.currentlyHeldObjectServer;
-                var entry=held?Targets.Held(held):null;
-                if(entry!=null){if(!entry.native)panel.Show(entry,held,held.transform);}
-                else {
-                    entry=Targets.Aimed(p,out var target);
-                    if(entry!=null && !entry.native)panel.Show(entry,null,target);
+            try
+            {
+                if (panel.enabled && !panel.FollowsNativeInspect)
+                {
+                    panel.Close();
+                    return true;
                 }
-            } catch(Exception e){panel.Close();Logger.LogWarning(e.Message);}
+                if (!Usable(player) || player.IsInspectingItem || player.activatingItem)
+                    return false;
+                var held = player.currentlyHeldObjectServer;
+                var entry = held ? Targets.Held(held) : null;
+                if (entry != null)
+                {
+                    if (entry.native || entry.inspect || Targets.NativeBook(held)) return false;
+                    panel.Show(entry, held, held.transform, key);
+                    return true;
+                }
+                if (held && held.itemProperties.canBeInspected) return false;
+                entry = Targets.Aimed(player, out var target);
+                if (entry == null || entry.native || entry.inspect) return false;
+                panel.Show(entry, null, target, key);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                panel.Close();
+                Logger.LogWarning(ex.Message);
+                return false;
+            }
         }
-        private void OnDisable(){read?.Disable();Art?.Stop();if(panel)panel.Close();}
-        private void OnEnable(){if(Active==this){read?.Enable();Art.Start();}}
+
+        internal void InspectChanged(PlayerControllerB player, string key)
+        {
+            if (!player.IsInspectingItem)
+            {
+                if (panel.FollowsNativeInspect) panel.Close();
+                return;
+            }
+            if (!Usable(player) || !player.currentlyHeldObjectServer) return;
+            try
+            {
+                var held = player.currentlyHeldObjectServer;
+                var entry = Targets.Held(held);
+                if (entry != null && entry.inspect) panel.Show(entry, held, held.transform, key);
+            }
+            catch (Exception ex)
+            {
+                panel.Close();
+                Logger.LogWarning(ex.Message);
+            }
+        }
+        private void OnDisable(){Art?.Stop();if(panel)panel.Close();}
+        private void OnEnable(){if(Active==this)Art.Start();}
         private void OnDestroy()=>Release();
         private void Release()
         {
             Art?.Stop();if(Active==this)Active=null;
-            read?.Dispose();read=null;patch?.UnpatchSelf();patch=null;
+            patch?.UnpatchSelf();patch=null;
             if(panel){panel.Close();Destroy(panel);}Data?.Dispose();Data=null;
         }
     }
@@ -93,8 +130,22 @@ namespace WesleyImageReader
     [HarmonyPatch(typeof(PlayerControllerB),"InspectItem_performed")]
     internal static class InspectKey
     {
-        private static bool Prefix(PlayerControllerB __instance,InputAction.CallbackContext context) =>
-            !Reader.Active || !Reader.Active.isActiveAndEnabled || !(context.control?.device is Keyboard k) || context.control != k.zKey ||
-            Targets.NativeBook(__instance.currentlyHeldObjectServer);
+        private static bool Handles(PlayerControllerB player, InputAction.CallbackContext context) =>
+            Reader.Active && Reader.Active.isActiveAndEnabled && player == Reader.Player &&
+            context.performed && context.control?.device is Keyboard;
+
+        private static bool Prefix(PlayerControllerB __instance, InputAction.CallbackContext context,
+            bool ___throwingObject, out bool __state)
+        {
+            __state = __instance.IsInspectingItem;
+            return ___throwingObject || !Handles(__instance, context) ||
+                !Reader.Active.TryRead(__instance, context.control.displayName);
+        }
+
+        private static void Postfix(PlayerControllerB __instance, InputAction.CallbackContext context, bool __state, bool __runOriginal)
+        {
+            if (__runOriginal && __state != __instance.IsInspectingItem && Handles(__instance, context))
+                Reader.Active.InspectChanged(__instance, context.control.displayName);
+        }
     }
 }
