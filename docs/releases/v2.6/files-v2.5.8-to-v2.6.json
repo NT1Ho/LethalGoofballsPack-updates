@@ -1,0 +1,156 @@
+[
+    {
+        "change":  "替换",
+        "path":  "BepInEx/config/OpJosMod.ReviveCompany.cfg",
+        "before_sha256":  "0553c472108a26afa999c2ebbb938d4a52f9d35569241bad6125a0ae4476ba49",
+        "after_sha256":  "bc9a94a5248245e213073d74ef86da592b152d990b8af27315974c6a2940b72d",
+        "size":  3133
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/config/V81TestChn/custom-localization/Wesley/wesley-01.cfg",
+        "before_sha256":  "8b9b5497135fb6813534aa6dd225734598b8a19824451e2ae5b7ab47d4516ac9",
+        "after_sha256":  "680195a5dd23ac22527e8eda59d94556b48c828895ee9ad915f9feeb5fa8efbb",
+        "size":  198736
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/config/V81TestChn/custom-localization/Wesley/wesley-02.cfg",
+        "before_sha256":  "c5eacf50d76fafe1344eadbc7aae3c0435e46c0e3d0d84ae294beada854eba3e",
+        "after_sha256":  "d6a5c7a77f190cd5c13633b7d74bba8dcbea9b26728e1f7c3deb206c0f9f1899",
+        "size":  198147
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/config-changes.json",
+        "before_sha256":  "3994f4a13ccbea1c1cb986317250780e7aa6fe540866b352ef9cf80774144813",
+        "after_sha256":  "3e1037ef382162cdd4e65956bec5d82be2b1ce65cce5e5c1adcf9243eb07af05",
+        "size":  38862
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/display-pages.json",
+        "before_sha256":  "70de0f0e21f41bf27e0177da069521d3c9c6ee39192fa93ff75a50dc889abe69",
+        "after_sha256":  "615443d8184914db1950436ef50b489e35cf6b490ebab53f60b19f76d461ed26",
+        "size":  68561
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/download-sources.json",
+        "before_sha256":  "e677600566e7bfc3febf6597340753e2a7dc1f7635304dd3d8d9999764823da5",
+        "after_sha256":  "a962038c48b07bde25ae01ce6530a160331090ba705adc3238567d57f8a2c97a",
+        "size":  48392
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/installed-files.sha256",
+        "before_sha256":  "a942f20ccff3a2f76f0f5dd8e7d76924f7bf5be54da7f23342d630606805686c",
+        "after_sha256":  "bf0476447e437d473fa562b36c5f67a8174730407c1adbd859cc978fcec9ca2b",
+        "size":  184418
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/local-universal-wrench.json",
+        "before_sha256":  "1ce51f95d4496a8d4f53730bc459a5818eed25a6e363a53ea11876fe5c53d90f",
+        "after_sha256":  "1df950069b64daacea4736549c96352c577ec03206165819e765d812930f6f71",
+        "size":  2522
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/manifest.json",
+        "before_sha256":  "908a1b3bc6631a086e5d971f9b846ce557fd7037ba46acd6d1ee28da048471aa",
+        "after_sha256":  "ce62fb40c27d6fe0af962d45473902204b975ab7e97cf1dd9d23be975800c7be",
+        "size":  5444
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/MODS.txt",
+        "before_sha256":  "093a63008530c1c5158370ceeab02d0de5597aa830d642ddd0ab3a435d387e11",
+        "after_sha256":  "196cff5b77de510b26324298732aef62bfac8162a51912ebf23296a6c360bada",
+        "size":  9452
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/NT1Ho-Hatchet/PROVENANCE.json",
+        "before_sha256":  "de878deb76b53ee10a8e85fa5f7ae34dd288d6ab4631eabbcfd6e1d3c3559ef4",
+        "after_sha256":  "e152a2edb0d36f2f920c61f2707bc2d2eb9e07b5ff45b7b6591ceaf99bfce3f5",
+        "size":  2812
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/NT1Ho-UniversalWrench/SOURCE_COMMIT.txt",
+        "before_sha256":  "4ce6911676c7bb5548af611e606c5cdd2210f7150eac5d626f78c6b6d5d9a501",
+        "after_sha256":  "51925437c764362ed665c675a5f18a39e243af85cfbb3a97a058355e57d43a84",
+        "size":  465
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/original-files.json",
+        "before_sha256":  "449aa5dc4c443917c10b02b96ac2b3e51c5d8e4c34a30832e128a3402f0f13e7",
+        "after_sha256":  "fd1438a55744677dbf7bd42dfdc9d7507d957d2735701dd2b3563dbcd2ea8c95",
+        "size":  359982
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/NT1Ho-CrewCompatibility/CrewCompatibility.dll",
+        "before_sha256":  "1b6367c37f547253df94bd3f014a7d12b8c43a6384ec3bac737a17e2641e16bb",
+        "after_sha256":  "ad2f4c73d6872bc6602cb2445e447985e7e33e681c0307800c8bc00085b58b80",
+        "size":  32256
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/NT1Ho-Hatchet/Hatchet.Core.dll",
+        "before_sha256":  "d57cfa87119cae64907672eb5cdd5679135a9ab206c045597253fc520187f38e",
+        "after_sha256":  "e7698fd71a72a50479b74f25d73cd13fc7566841720315d7a97ecced8ee84229",
+        "size":  19968
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/NT1Ho-Hatchet/Hatchet.dll",
+        "before_sha256":  "78c38b4d6117c1fbf57218fc0f865325d0583ad9e48c951e41cfedff3c7eb5e5",
+        "after_sha256":  "a34a856e2bb73e69065776fd18b91c82da9b674cda0ba3df2cfa18b943ec1856",
+        "size":  1131008
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/NT1Ho-WesleyImageReader/Reader.wri",
+        "before_sha256":  "b889e40c4702ce5476b3789b950c290c0f48353c2f9d09894b86c9339c000989",
+        "after_sha256":  "53071f58fd7ffa432482f9fbfc3c483794acf75b6ddcdebb94252e6b91e3d99d",
+        "size":  1773686
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/NT1Ho-WesleyImageReader/WesleyImageReader.dll",
+        "before_sha256":  "2689e30c2be761347351f12195918438d2810922b28ddb2d1630d6b143da5f19",
+        "after_sha256":  "1bb835138d38bea25a156bb3c311bfde273a4ce835a6b12668bf5ce20ac9b5e9",
+        "size":  34816
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/NT1Ho-WesleyZhCN/WesleyDisplayZh.dll",
+        "before_sha256":  "b33bddad007c889d3c6d366f3f6056794804fd22c0b71800663e1da139317626",
+        "after_sha256":  "699e8443d8054ab18e256f5d6849db66b344970da7f2eaa223f30e7a83a0d539",
+        "size":  129024
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/UniversalWrench/UniversalWrench.dll",
+        "before_sha256":  "97c954ff1f525741ca69d8265e9b4a773e6d7df0414a9981361fc755dd9194d0",
+        "after_sha256":  "3dcbcee2be0148f1de10b2c3293afff8cb870fea787f66dca9a3e6dc628c12d9",
+        "size":  1594368
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/V81TestChn/translations-clean/cfg/zh-CN/wesley-terminal-01.cfg",
+        "before_sha256":  "93dd9d316edbd94755b9310cdbb8cd0f488b0fe82b180f54d8eefa8721d022d4",
+        "after_sha256":  "05c2bd08f30ee46a3e8dfd6d0219411a199cfd67028610410e54d2c632b32459",
+        "size":  199733
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/V81TestChn/translations-clean/cfg/zh-CN/wesley-terminal-02.cfg",
+        "before_sha256":  "3af8f80d4a25b0932b60372cf22e77a70d3d419acc50102f95335988ca14c137",
+        "after_sha256":  "244c4bf543247efe07a4dc51a599c52bb0b5670ae32f9263fa10cde7d7d00792",
+        "size":  143305
+    }
+]
