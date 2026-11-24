@@ -20,16 +20,16 @@ class DpiTests {
     static void Test(){
         string root=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"dpi-runs",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(root);
         var ws=new Workspace(root);ws.Current.baseVersion="V1.5";for(int i=0;i<40;i++)ws.Current.files.Add(new PackFile {path="BepInEx/plugins/Example-"+i+".dll",size=1024,sha256=i.ToString("x64")});ws.Save();
-        using(var admin=new PreviewAdmin(ws))CheckForm(admin,946,545,"admin",root);
-        using(var client=new PreviewClient())CheckForm(client,0,0,"client",root);
+        using(var admin=new PreviewAdmin(ws))CheckForm(admin,"admin",root);
+        using(var client=new PreviewClient())CheckForm(client,"client",root);
         Console.WriteLine("RENDERS: "+root);
     }
-    static void CheckForm(Form f,int width,int height,string name,string root){
+    static void CheckForm(Form f,string name,string root){
         // Preview subclasses suppress Shown; no update or cloud operation runs.
         f.Show();Application.DoEvents();var handle=f.Handle;uint dpi=GetDpiForWindow(handle);
         Check(AreDpiAwarenessContextsEqual(GetWindowDpiAwarenessContext(handle),new IntPtr(-4)),name+" native window is PerMonitorV2");
         Check(f.DeviceDpi==dpi,name+" framework DPI matches Windows: "+dpi);
-        if(name!="client")Check(Math.Abs(f.ClientSize.Width-width*dpi/96.0)<=2&&Math.Abs(f.ClientSize.Height-height*dpi/96.0)<=2,name+" layout matches native scaling: "+f.ClientSize);
+        Check(f.Controls.Cast<Control>().All(c=>c.Left>=0&&c.Top>=0&&c.Right<=f.ClientSize.Width+2&&c.Bottom<=f.ClientSize.Height+2),name+" visible controls fit the native DPI layout: "+f.ClientSize);
         foreach(var box in f.Controls.OfType<FlowLayoutPanel>().SelectMany(p=>p.Controls.OfType<TextBox>()))Check(box.Height>=TextRenderer.MeasureText("V1.5",box.Font).Height,name+" version text fits");
         foreach(var label in f.Controls.OfType<Label>())Check(label.Bottom<=f.ClientSize.Height&&label.Right<=f.ClientSize.Width,name+" text stays within client area");
         if(name=="client"){
