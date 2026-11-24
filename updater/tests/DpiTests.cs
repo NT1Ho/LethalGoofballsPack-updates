@@ -19,7 +19,7 @@ class DpiTests {
     }
     static void Test(){
         string root=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"dpi-runs",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(root);
-        var ws=new Workspace(root);ws.Current.baseVersion="V1.5";for(int i=0;i<40;i++)ws.Current.files.Add(new PackFile {path="BepInEx/plugins/Example-"+i+".dll",size=1024});ws.Save();
+        var ws=new Workspace(root);ws.Current.baseVersion="V1.5";for(int i=0;i<40;i++)ws.Current.files.Add(new PackFile {path="BepInEx/plugins/Example-"+i+".dll",size=1024,sha256=i.ToString("x64")});ws.Save();
         using(var admin=new PreviewAdmin(ws))CheckForm(admin,946,545,"admin",root);
         using(var client=new PreviewClient())CheckForm(client,0,0,"client",root);
         Console.WriteLine("RENDERS: "+root);
