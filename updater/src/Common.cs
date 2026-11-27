@@ -207,6 +207,9 @@ public partial class Transfer : IDisposable {
 }
 public class UpdateResult { public string version; public int downloaded; public int deleted; public int skipped; public bool latest; public bool backupPending; }
 public class Engine {
+    const string HatchetConfig = "BepInEx/config/NT1Ho.Hatchet.cfg";
+    static readonly Regex AimHud = new Regex(@"^[ \t]*\[Aim HUD\][ \t]*(?:\r?\n|\z)(?<body>[\s\S]*?)(?=^[ \t]*\[|\z)", RegexOptions.Multiline|RegexOptions.IgnoreCase|RegexOptions.CultureInvariant);
+    static readonly Regex Crosshair = new Regex(@"^([ \t]*Crosshair[ \t]*=[ \t]*)(?<value>[^ \t\r\n#;]+)", RegexOptions.Multiline|RegexOptions.IgnoreCase|RegexOptions.CultureInvariant);
     const string ReviveConfig = "BepInEx/config/OpJosMod.ReviveCompany.cfg";
     static readonly Regex ReviveLimit = new Regex(@"^([ \t]*LimitAmountOfRevives[ \t]*=[ \t]*)(true|false)(?=[ \t]*\r?$)", RegexOptions.Multiline|RegexOptions.IgnoreCase|RegexOptions.CultureInvariant);
     readonly string root, home, statePath, pending;
@@ -281,7 +284,8 @@ public class Engine {
         foreach (var f in m.files) {
             string p = SafePath.Target(root, f.path);bool exists=File.Exists(p);
             // Adopt existing personal configs; later replace only explicitly changed pack defaults (with backup).
-            if(exists&&f.path.StartsWith("BepInEx/config/",StringComparison.OrdinalIgnoreCase)&&f.path.EndsWith(".cfg",StringComparison.OrdinalIgnoreCase)&&(!owned.ContainsKey(f.path)||owned[f.path].sha256==f.sha256))continue;
+            bool migrateHatchet = NeedsGlobalCrosshair(m.version,state.version,f);
+            if(exists&&!migrateHatchet&&f.path.StartsWith("BepInEx/config/",StringComparison.OrdinalIgnoreCase)&&f.path.EndsWith(".cfg",StringComparison.OrdinalIgnoreCase)&&(!owned.ContainsKey(f.path)||owned[f.path].sha256==f.sha256))continue;
             if (!exists || new FileInfo(p).Length != f.size || Data.Hash(p) != f.sha256) changed.Add(f);
         }
         foreach (string n in m.deletes) {
@@ -326,7 +330,11 @@ public class Engine {
                 var f=changed[i];
                 Backup(journal,f.path,f.sha256);
                 var change=journal.changes[i];
-                if(change.existed)change.newHash=StageReviveDefault(m.version,f,Path.Combine(pending,change.backup),Path.Combine(pending,"new-"+i));
+                if(change.existed) {
+                    string saved=Path.Combine(pending,change.backup), staged=Path.Combine(pending,"new-"+i);
+                    change.newHash=NeedsGlobalCrosshair(m.version,state.version,f)
+                        ? StageGlobalCrosshair(saved,staged) : StageReviveDefault(m.version,f,saved,staged);
+                }
             }
             foreach (string n in deletions) Backup(journal, n, null);
             Data.Atomic(Path.Combine(pending, "journal.json"), Data.Json(journal)); journalWritten = true;
@@ -349,6 +357,31 @@ public class Engine {
         bool backupPending = false;
         try { Archive(); } catch (IOException) { backupPending = true; } catch (UnauthorizedAccessException) { backupPending = true; }
         return new UpdateResult { version = m.version, downloaded = changed.Count, deleted = deletions.Count, skipped = skipped, backupPending = backupPending };
+    }
+    static bool NeedsGlobalCrosshair(string version,string installed,PackFile file) {
+        return version=="V2.6.2" && installed!=version && String.Equals(file.path,HatchetConfig,StringComparison.OrdinalIgnoreCase);
+    }
+    static string StageGlobalCrosshair(string saved,string staged) {
+        var defaults=AimHud.Match(File.ReadAllText(staged));
+        if(!defaults.Success || Crosshair.Match(defaults.Groups["body"].Value).Groups["value"].Value!="Global")
+            throw new InvalidDataException("手斧默认配置缺少全局准星设置。");
+        byte[] bytes=File.ReadAllBytes(saved);
+        bool bom=bytes.Length>=3&&bytes[0]==0xef&&bytes[1]==0xbb&&bytes[2]==0xbf;
+        var encoding=new UTF8Encoding(bom,true);
+        int offset=bom?3:0;
+        string previous=encoding.GetString(bytes,offset,bytes.Length-offset);
+        string newline=previous.Contains("\r\n")?"\r\n":"\n";
+        string migrated=AimHud.Replace(previous,section=>{
+            var body=section.Groups["body"];
+            string values=Crosshair.IsMatch(body.Value) ? Crosshair.Replace(body.Value,key=>key.Groups[1].Value+"Global")
+                : "Crosshair = Global"+newline+body.Value;
+            string header=section.Value.Substring(0,body.Index-section.Index);
+            return header+(header.EndsWith("\n",StringComparison.Ordinal)?"":newline)+values;
+        });
+        if(!AimHud.IsMatch(previous))
+            migrated+=newline+"[Aim HUD]"+newline+"Crosshair = Global"+newline;
+        File.WriteAllText(staged,migrated,encoding);
+        return Data.Hash(staged);
     }
     static string StageReviveDefault(string version, PackFile file, string saved, string staged) {
         if(version!="V2.6"||!String.Equals(file.path,ReviveConfig,StringComparison.OrdinalIgnoreCase))return file.sha256;

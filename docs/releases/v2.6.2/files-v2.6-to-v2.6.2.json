@@ -1,0 +1,121 @@
+[
+    {
+        "change":  "新增",
+        "path":  "BepInEx/config/NT1Ho.Hatchet.cfg",
+        "before_sha256":  null,
+        "after_sha256":  "a5e4889749fd81c02b5ad59c93e093c1db68ace34644541f8644443a87bd4c22",
+        "size":  1171
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/config-changes.json",
+        "before_sha256":  "3e1037ef382162cdd4e65956bec5d82be2b1ce65cce5e5c1adcf9243eb07af05",
+        "after_sha256":  "677d2130630dc8b1db0037278d31497a673c64efa43fc5badb825958d251030b",
+        "size":  48020
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/display-pages.json",
+        "before_sha256":  "615443d8184914db1950436ef50b489e35cf6b490ebab53f60b19f76d461ed26",
+        "after_sha256":  "d9c3ac93656d023f1fe2acfe79cce8597e2685ef48835a17f02e74d4f327f4d5",
+        "size":  69068
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/download-sources.json",
+        "before_sha256":  "a962038c48b07bde25ae01ce6530a160331090ba705adc3238567d57f8a2c97a",
+        "after_sha256":  "322eb777a95e30e2c84974c134415dd54cda6ab75b17a06b1647d61cdd7ba483",
+        "size":  47003
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/installed-files.sha256",
+        "before_sha256":  "bf0476447e437d473fa562b36c5f67a8174730407c1adbd859cc978fcec9ca2b",
+        "after_sha256":  "a2bba9ad5564838cce8f74e49ac3325ee74e315fac73c584b87e5bab6049d3bb",
+        "size":  183360
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/local-universal-wrench.json",
+        "before_sha256":  "1df950069b64daacea4736549c96352c577ec03206165819e765d812930f6f71",
+        "after_sha256":  "e3b0dfaca8901fb325eff3eef3005884c53995fc4210b4fa836a08dd82e04213",
+        "size":  1935
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/manifest.json",
+        "before_sha256":  "ce62fb40c27d6fe0af962d45473902204b975ab7e97cf1dd9d23be975800c7be",
+        "after_sha256":  "79cdbcdd7b3d7fbbe88fb9fa49273cad0a355962bcb888d2a878491d09043005",
+        "size":  5310
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/MODS.txt",
+        "before_sha256":  "196cff5b77de510b26324298732aef62bfac8162a51912ebf23296a6c360bada",
+        "after_sha256":  "4115ac584fab3039765032a7b1ae17f7d0da3611caf8f78145210fd79c9e670b",
+        "size":  9427
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/NT1Ho-Hatchet/PROVENANCE.json",
+        "before_sha256":  "e152a2edb0d36f2f920c61f2707bc2d2eb9e07b5ff45b7b6591ceaf99bfce3f5",
+        "after_sha256":  "966a4692e03bbbb5bc25221166918d7efa47842338ec41f651e6e6e0bcbb0817",
+        "size":  3012
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/NT1Ho-UniversalWrench/SOURCE_COMMIT.txt",
+        "before_sha256":  "51925437c764362ed665c675a5f18a39e243af85cfbb3a97a058355e57d43a84",
+        "after_sha256":  "227b6299f3e077a02ed743c3f503e31a64ddddbd3df6904c254bf5d13c7e8832",
+        "size":  41
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/pack-info/original-files.json",
+        "before_sha256":  "fd1438a55744677dbf7bd42dfdc9d7507d957d2735701dd2b3563dbcd2ea8c95",
+        "after_sha256":  "fe0c2bc28285d05222d829f6cf52155d2bfb0507b3679d8430dec84a604c0045",
+        "size":  352606
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/NT1Ho-Hatchet/Hatchet.Core.dll",
+        "before_sha256":  "e7698fd71a72a50479b74f25d73cd13fc7566841720315d7a97ecced8ee84229",
+        "after_sha256":  "d3e58bfd4a7d325c6af6cf32907a94c0cd92aac2f61358b0d09203e618705ec9",
+        "size":  22016
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/NT1Ho-Hatchet/Hatchet.dll",
+        "before_sha256":  "a34a856e2bb73e69065776fd18b91c82da9b674cda0ba3df2cfa18b943ec1856",
+        "after_sha256":  "4c3b159040b74c95013d3de25266bf2ce9beefbbcff7a2cf0960795a3bf21eb2",
+        "size":  1132544
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/NT1Ho-Hatchet/hatchetrage",
+        "before_sha256":  "abc10230d5e2fa7847301f40a4c0ec36b0879c5006116253c641a1dababd6508",
+        "after_sha256":  "56102f2828147cf5931f9b908310a5b0a2d217c43212ec2d9fab47437b91e6a5",
+        "size":  4331061
+    },
+    {
+        "change":  "新增",
+        "path":  "BepInEx/plugins/UniversalWrench/licenses/super-cruiser/BetterVehicleControls-LICENSE.txt",
+        "before_sha256":  null,
+        "after_sha256":  "e59547390efb062fa89444790d6bb8ca12559ada21875d2ccc6368b030bde18f",
+        "size":  1084
+    },
+    {
+        "change":  "新增",
+        "path":  "BepInEx/plugins/UniversalWrench/licenses/super-cruiser/CruiserImproved-LICENSE.txt",
+        "before_sha256":  null,
+        "after_sha256":  "3e9aa74c158678dc4310541d721261beb65fa25023ef858cc83986582d859f85",
+        "size":  1084
+    },
+    {
+        "change":  "替换",
+        "path":  "BepInEx/plugins/UniversalWrench/UniversalWrench.dll",
+        "before_sha256":  "3dcbcee2be0148f1de10b2c3293afff8cb870fea787f66dca9a3e6dc628c12d9",
+        "after_sha256":  "df530bd440c7508251edbddd555a5f6b3f47318cd2de861a5364a8927bbd3535",
+        "size":  2160640
+    }
+]

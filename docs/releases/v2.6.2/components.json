@@ -1,0 +1,51 @@
+[
+  {
+    "source_branch": "codex/blood-rage-30s",
+    "version": "0.2.84",
+    "archive": "Hatchet-0.2.84-Test.zip",
+    "archive_sha256": "c81ae5b15f33deafe2fce0f7eec87cb2de88cac782ccdd4da8837f910fe7dc6d",
+    "source_commit": "e86e9e5d93ec3c408d2964e14d0edc09cc0cd3e0",
+    "verified_dll_sha256": "4c3b159040b74c95013d3de25266bf2ce9beefbbcff7a2cf0960795a3bf21eb2",
+    "package": "NT1Ho-Hatchet",
+    "core_sha256": "d3e58bfd4a7d325c6af6cf32907a94c0cd92aac2f61358b0d09203e618705ec9",
+    "description": "血怒持续 30 秒，攻速提升 20%，更新心跳、恐惧和场景效果。",
+    "evidence_commit": "472b3dbd0bf9020be0a66aaae22cb10d94352ab4"
+  },
+  {
+    "archive": "UniversalWrench-0.2.25-dev.zip",
+    "archive_sha256": "2b97318e985a0ea0f5ff7bb48dd9ef2009243312beb0b3e3361488d8f30a08db",
+    "description": "加入敌敌畏、超级巡航车和超级机枪，改进扳手额度与交互。",
+    "source_commit": "ac791b666f350608e8eff1fe09b79e138e6953be",
+    "verified_dll_sha256": "df530bd440c7508251edbddd555a5f6b3f47318cd2de861a5364a8927bbd3535",
+    "package": "NT1Ho-UniversalWrench",
+    "version": "0.2.25-dev",
+    "source_branch": "codex/cruiser-turret"
+  },
+  {
+    "version": "1.0.4",
+    "verified_dll_sha256": "ad2f4c73d6872bc6602cb2445e447985e7e33e681c0307800c8bc00085b58b80",
+    "source_commit": "a68f37142b71a5f4abcc92d1233877e74e2c5cc7",
+    "source_branch": "development/v2.6",
+    "package": "NT1Ho-CrewCompatibility",
+    "description": "房主按当前尸体身份确认复活，忽略旧请求，恢复本地 HUD 并保留至少 1 HP。"
+  },
+  {
+    "package": "NT1Ho-WesleyImageReader",
+    "version": "0.1.4",
+    "source_branch": "development/wesley-standalone",
+    "source_commit": "621ea3a89b90f98693f1f3bc60e3ee70ad3e785f",
+    "verified_dll_sha256": "1bb835138d38bea25a156bb3c311bfde273a4ce835a6b12668bf5ce20ac9b5e9",
+    "reader_data_sha256": "53071f58fd7ffa432482f9fbfc3c483794acf75b6ddcdebb94252e6b91e3d99d",
+    "description": "补齐大军械库任务屏幕，修复秘密档案查看和名称，改善中文断行与长文滚动。",
+    "archive": "NT1Ho-Wesley_Moons_ZH-1.0.0.zip"
+  },
+  {
+    "package": "NT1Ho-WesleyZhCN",
+    "version": "1.3.2",
+    "source_branch": "development/wesley-standalone",
+    "source_commit": "621ea3a89b90f98693f1f3bc60e3ee70ad3e785f",
+    "verified_dll_sha256": "699e8443d8054ab18e256f5d6849db66b344970da7f2eaa223f30e7a83a0d539",
+    "description": "Wesley 1.3.2 覆盖 31 段视频、226 个语音播放资源，共 1,121 条字幕。补充地图语音、厂区广播、《清除协议》和荒芜对白，修复进场后才启动的原生广播漏字幕。",
+    "archive": "NT1Ho-Wesley_Moons_ZH-1.0.0.zip"
+  }
+]
